@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>BSM离职签字</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 自定义绿色 */
+        .text-custom-green {
+            color: #00A758;
+        }
+        
+        .bg-custom-green {
+            background-color: #00A758;
+        }
+        
+        /* 全局字体 */
+        body {
+            font-family: 'NotoSansCJKsc-Medium', sans-serif;
+        }
+        
+        /* 标签样式 */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        .signature-pad canvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <!-- APP容器 -->
+    <div class="w-[375px] h-[812px] bg-gray-50 border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+        <!-- 顶部状态栏 -->
+        <div class="h-[44px] bg-white flex justify-between items-center px-6 shrink-0">
+            <span class="text-sm font-semibold">10:05</span>
+            <div class="flex items-center space-x-1.5 opacity-70">
+                <span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+                <div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
+                    <div class="bg-black h-full w-[32%]"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 标题栏 -->
+        <div class="h-[56px] bg-white flex items-center px-4 shrink-0 border-b border-gray-50">
+            <span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded"></span>
+            <h1 class="flex-1 text-center text-lg font-medium text-gray-800">离职申请签字</h1>
+            <div class="w-10"></div>
+        </div>
+        
+        <!-- 内容区 -->
+        <div class="flex-1 overflow-y-auto hide-scrollbar">
+            <div class="p-4 space-y-4">
+                <div class="success-message bg-green-100 text-green-800 p-3 rounded-lg mb-4 text-center hidden" id="successMessage">
+                    签字确认成功！
+                </div>
+                
+                <!-- 申请记录区域 -->
+                <div class="records-section" id="recordsSection">
+                    <h2 class="text-lg font-medium text-gray-800 mb-4">离职申请记录</h2>
+                    <div id="recordList" class="space-y-4">
+                        <!-- 记录将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 直接显示记录，不需要登录验证
+        window.onload = function() {
+            renderRecords();
+        };
+        
+        // 渲染申请记录
+        function renderRecords() {
+            const recordList = document.getElementById('recordList');
+            let records = JSON.parse(localStorage.getItem('resignationRecords') || '[]');
+            
+            // 如果没有记录，添加mock数据
+            if (records.length === 0) {
+                records = [
+                    {
+                        employeeId: 'SH987982',
+                        name: '张三',
+                        region: '上海',
+                        hireDate: '2023-01-15',
+                        positionLevel: '高级经理',
+                        idNumber: '3101**********1234',
+                        contactPhone: '138****8888',
+                        department: '2026-02-01',
+                        position: '2026-02-29',
+                        resignationReason: '个人职业发展',
+                        attachment: '离职申请pdf',
+                        submitDate: '2026-01-28',
+                        status: '待审批'
+                    },
+                    {
+                        employeeId: 'SH987983',
+                        name: '李四',
+                        region: '上海',
+                        hireDate: '2023-03-20',
+                        positionLevel: '高级经理',
+                        idNumber: '3101**********5678',
+                        contactPhone: '139****9999',
+                        department: '2026-02-05',
+                        position: '2026-03-05',
+                        resignationReason: '家庭原因',
+                        attachment: '离职申请.pdf',
+                        submitDate: '2026-01-28',
+                        status: '待审批'
+                    }
+                ];
+                // 保存mock数据到localStorage
+                localStorage.setItem('resignationRecords', JSON.stringify(records));
+            }
+            
+            let html = '';
+            records.forEach((record, index) => {
+                let statusClass = '';
+                
+                switch (record.status) {
+                    case '待审批':
+                        statusClass = 'bg-yellow-100 text-yellow-800';
+                        break;
+                    case '已批准':
+                        statusClass = 'bg-green-100 text-green-800';
+                        break;
+                    case '已拒绝':
+                        statusClass = 'bg-red-100 text-red-800';
+                        break;
+                }
+                
+                html += `
+                    <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-custom-green">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">${record.employeeId}</h3>
+                                <p class="text-xs text-gray-500">Agent Code</p>
+                            </div>
+                            <span class="text-xs px-2 py-1 ${statusClass} rounded-full">${record.status}</span>
+                        </div>
+                        <div class="space-y-2 text-xs mb-3">
+                            <p><span class="text-gray-500">提交日期：</span> <span class="text-gray-700">${record.submitDate}</span></p>
+                        </div>
+                        <button class="text-custom-green text-sm font-medium mb-3" onclick="toggleDetails(${index})">查看详情</button>
+                        
+                        <div class="record-details border-t border-gray-100 pt-3 hidden" id="details-${index}">
+                            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                <div class="space-y-3 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Agent Code：</span>
+                                        <span class="text-gray-700">${record.employeeId}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">姓名：</span>
+                                        <span class="text-gray-700">${record.name || '张三'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">所属地区：</span>
+                                        <span class="text-gray-700">${record.region || '上海'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">入职日期：</span>
+                                        <span class="text-gray-700">${record.hireDate || '2023-01-15'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">岗位级别：</span>
+                                        <span class="text-gray-700">${record.positionLevel || '高级经理'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">证件号码：</span>
+                                        <span class="text-gray-700">${record.idNumber || '3101**********1234'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">联系电话：</span>
+                                        <span class="text-gray-700">${record.contactPhone || '138****8888'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">申请离职日期：</span>
+                                        <span class="text-gray-700">${record.department}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">预计离职日期：</span>
+                                        <span class="text-gray-700">${record.position}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">离职原因：</span>
+                                        <span class="text-gray-700">${record.resignationReason}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">附件：</span>
+                                        <span class="text-gray-700">离职申请pdf</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            ${record.status === '待审批' ? `
+                                <div class="signature-section bg-gray-50 p-4 rounded-lg">
+                                    <h3 class="text-sm font-medium text-gray-800 mb-3">领导签字</h3>
+                                    <div class="signature-pad border border-gray-300 rounded-lg bg-white h-40 mb-4">
+                                        <canvas id="signature-${index}" width="400" height="200"></canvas>
+                                    </div>
+                                    <div class="flex space-x-3">
+                                        <button class="flex-1 bg-custom-green text-white py-2 rounded-lg font-medium text-sm hover:bg-opacity-90 transition" onclick="approveRecord(${index})">批准</button>
+                                        <button class="flex-1 bg-red-500 text-white py-2 rounded-lg font-medium text-sm hover:bg-opacity-90 transition" onclick="rejectRecord(${index})">拒绝</button>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            recordList.innerHTML = html;
+            
+            // 初始化签名画布
+            records.forEach((record, index) => {
+                if (record.status === '待审批') {
+                    initSignatureCanvas(index);
+                }
+            });
+        }
+        
+        // 切换详情显示
+        function toggleDetails(index) {
+            const detailsElement = document.getElementById(`details-${index}`);
+            detailsElement.classList.toggle('hidden');
+        }
+        
+        // 初始化签名画布
+        function initSignatureCanvas(index) {
+            const canvas = document.getElementById(`signature-${index}`);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            // 设置画布样式
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#000';
+            
+            // 绘制函数
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                lastX = x;
+                lastY = y;
+            }
+            
+            // 事件监听
+            canvas.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                const rect = canvas.getBoundingClientRect();
+                lastX = e.clientX - rect.left;
+                lastY = e.clientY - rect.top;
+            });
+            
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mouseout', () => isDrawing = false);
+            
+            // 触摸事件支持
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                isDrawing = true;
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                lastX = touch.clientX - rect.left;
+                lastY = touch.clientY - rect.top;
+            });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                draw(e.touches[0]);
+            });
+            
+            canvas.addEventListener('touchend', () => isDrawing = false);
+        }
+        
+        // 批准申请
+        function approveRecord(index) {
+            const records = JSON.parse(localStorage.getItem('resignationRecords') || '[]');
+            records[index].status = '已批准';
+            records[index].approvedBy = '系统管理员';
+            records[index].approvedDate = new Date().toISOString().split('T')[0];
+            localStorage.setItem('resignationRecords', JSON.stringify(records));
+            
+            // 显示成功消息
+            document.getElementById('successMessage').classList.remove('hidden');
+            
+            // 3秒后隐藏成功消息并刷新记录
+            setTimeout(function() {
+                document.getElementById('successMessage').classList.add('hidden');
+                renderRecords();
+            }, 3000);
+        }
+        
+        // 拒绝申请
+        function rejectRecord(index) {
+            const records = JSON.parse(localStorage.getItem('resignationRecords') || '[]');
+            records[index].status = '已拒绝';
+            records[index].rejectedBy = '系统管理员';
+            records[index].rejectedDate = new Date().toISOString().split('T')[0];
+            localStorage.setItem('resignationRecords', JSON.stringify(records));
+            
+            // 显示成功消息
+            document.getElementById('successMessage').classList.remove('hidden');
+            
+            // 3秒后隐藏成功消息并刷新记录
+            setTimeout(function() {
+                document.getElementById('successMessage').classList.add('hidden');
+                renderRecords();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

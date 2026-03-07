@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BSM入司</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 自定义绿色 */
+        .text-custom-green {
+            color: #00A758;
+        }
+        
+        .bg-custom-green {
+            background-color: #00A758;
+        }
+        
+        /* 全局字体 */
+        body {
+            font-family: 'NotoSansCJKsc-Medium', sans-serif;
+        }
+        
+        /* 标签样式 */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        /* 面试官已分配标签 */
+        .interviewer-assigned {
+            background-color: #E0F2FE;
+            color: #0284C7;
+        }
+    </style>
+    <script>
+        // 切换标签页
+        function switchTab(tabId) {
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // 显示选中的标签内容
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // 更新标签按钮状态
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-custom-green', 'border-custom-green');
+                btn.classList.add('text-gray-500', 'border-transparent');
+            });
+            
+            // 激活选中的标签按钮
+            document.querySelector(`[data-tab="${tabId}"]`).classList.remove('text-gray-500', 'border-transparent');
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('text-custom-green', 'border-custom-green');
+        }
+        
+        // 页面加载时检查URL参数或哈希值
+        window.onload = function() {
+            // 先检查URL参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            
+            // 如果URL参数中指定了标签且存在对应的标签，则切换到该标签
+            if (tabParam && document.querySelector(`[data-tab="${tabParam}"]`)) {
+                switchTab(tabParam);
+                return;
+            }
+            
+            // 再检查URL哈希值
+            const hash = window.location.hash.substring(1);
+            
+            // 如果有哈希值且存在对应的标签，则切换到该标签
+            if (hash && document.querySelector(`[data-tab="${hash}"]`)) {
+                switchTab(hash);
+            }
+        };
+        
+        // 初始化标签按钮点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen p-4">
+<div class="flex gap-4">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[812px] bg-gray-50 border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+        <!-- 顶部状态栏 (44px) -->
+        <div class="h-[44px] bg-white flex justify-between items-center px-6 shrink-0">
+            <span class="text-sm font-semibold">10:05</span>
+            <div class="flex items-center space-x-1.5 opacity-70">
+                <span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+                <div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
+                    <div class="bg-black h-full w-[32%]"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 标题栏 (56px) -->
+        <div class="h-[56px] bg-white flex items-center px-4 shrink-0 border-b border-gray-50">
+            <span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../首页.html';"></span>
+            <h1 class="flex-1 text-center text-lg font-medium text-gray-800">服务人员入司</h1>
+            <div id="inviteButton" class="cursor-pointer">
+                <button class="bg-custom-green text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center" onclick="toggleShareOptions()">
+                    <span class="iconify w-5 h-5" data-icon="material-symbols:person-add"></span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 导航栏 -->
+        <div class="bg-white border-b border-gray-50 shrink-0 overflow-x-auto hide-scrollbar" style="-webkit-overflow-scrolling: touch;">
+            <div class="px-4 py-2 flex space-x-4 min-w-max">
+                <button class="tab-btn text-custom-green font-medium text-sm whitespace-nowrap pb-2 border-b-2 border-custom-green" data-tab="initial-interview">初面</button>
+                <button class="tab-btn text-gray-500 font-medium text-sm whitespace-nowrap pb-2 border-b-2 border-transparent" data-tab="second-interview">二面</button>
+                <button class="tab-btn text-gray-500 font-medium text-sm whitespace-nowrap pb-2 border-b-2 border-transparent" data-tab="onboarding-documents">入司资料填写</button>
+                <button class="tab-btn text-gray-500 font-medium text-sm whitespace-nowrap pb-2 border-b-2 border-transparent" data-tab="joined">已入职</button>
+                <button class="tab-btn text-gray-500 font-medium text-sm whitespace-nowrap pb-2 border-b-2 border-transparent" data-tab="closed">关闭</button>
+            </div>
+        </div>
+        
+        <!-- 内容区 -->
+        <div class="flex-1 overflow-y-auto hide-scrollbar">
+            <!-- 初面模块 -->
+            <div class="tab-content" id="initial-interview">
+                <div class="p-4 space-y-4">
+                    <!-- 待提交初面 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM入职信息界面_待一面.html';">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">张三</h3>
+                            </div>
+                            <span class="text-xs text-gray-500">待预约初面</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">处理人:</span> <span class="text-gray-700">Juliet(SS)</span></p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex justify-end">
+                            <button class="text-custom-green text-sm font-medium" onclick="event.stopPropagation(); window.location.href='招募一面聊天界面.html';">预约初面面试官</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 待初面 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM一面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex items-center space-x-2">
+                                <h3 class="font-bold text-gray-800">赵六</h3>
+                                <div class="relative">
+                                    <span class="tag interviewer-assigned cursor-pointer" onclick="toggleInterviewerText(this)">
+                                        <span class="iconify w-3 h-3 mr-1" data-icon="material-symbols:person"></span>
+                                        <span class="interviewer-text hidden">已分配面试官</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="text-xs text-gray-500">待初面</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">处理人:</span> <span class="text-gray-700">初面面试官</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 二面模块 -->
+            <div class="tab-content hidden" id="second-interview">
+                <div class="p-4 space-y-4">
+                    <!-- 待二面 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM入职信息界面_待二面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">王五</h3>
+                            </div>
+                            <span class="text-xs text-gray-500">待预约二面</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">处理人:</span> <span class="text-gray-700">Juliet(SS)</span></p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex justify-end">
+                            <button class="text-custom-green text-sm font-medium" onclick="event.stopPropagation(); window.location.href='招募二面聊天界面.html';">预约二面面试官</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 已分配面试官 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM二面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <h3 class="font-bold text-gray-800">周八</h3>
+                                    <div class="relative">
+                                        <span class="tag interviewer-assigned cursor-pointer" onclick="toggleInterviewerText(this)">
+                                            <span class="iconify w-3 h-3 mr-1" data-icon="material-symbols:person"></span>
+                                            <span class="interviewer-text hidden">已分配面试官</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end space-y-1">
+                                <span class="text-xs text-gray-500">待二面</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">处理人:</span> <span class="text-gray-700">二面面试官</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 已入职模块 -->
+            <div class="tab-content hidden" id="joined">
+                <div class="p-4 space-y-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM详细信息.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">吴九</h3>
+                            </div>
+                            <span class="text-xs text-gray-500">入职成功</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">入职日期:</span> <span class="text-gray-700">2026-01-01</span></p>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+            
+            <!-- 关闭模块 -->
+            <div class="tab-content hidden" id="closed">
+                <div class="p-4 space-y-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">陈十一</h3>
+                            </div>
+                            <span class="text-xs text-gray-500">关闭</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">关闭原因:</span> <span class="text-gray-700">初面未通过</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">林十二</h3>
+                            </div>
+                            <span class="text-xs text-gray-500">关闭</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">关闭原因:</span> <span class="text-gray-700">二面未通过</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 入司资料填写模块 -->
+            <div class="tab-content hidden" id="onboarding-documents">
+                <div class="p-4 space-y-4">
+                    <!-- 待补充资料 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM资料信息维护界面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">孙七</h3>
+                            </div>
+                            <span class="text-xs text-gray-500">待补充资料</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">处理人:</span> <span class="text-gray-700">Juliet(SS)</span></p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex justify-end">
+                            <button class="text-custom-green text-sm font-medium" onclick="event.stopPropagation(); toggleShareOptionsForOnboarding();">补充入司资料</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 待补充资料 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM资料信息维护界面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">王九</h3>
+                            </div>
+                            <span class="text-xs text-gray-500">待补充资料</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">硕士</span></p>
+                            <p><span class="text-gray-500">处理人:</span> <span class="text-gray-700">王九(候选人)</span></p>
+                        </div>
+
+                    </div>
+                    
+                    <!-- 待AMP审核 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM资料信息维护界面 - AMP审核中.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">周八</h3>
+                            </div>
+                            <span class="text-xs text-gray-500">待AMP审核</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">硕士</span></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部安全条 -->
+        <div class="h-6 bg-white flex justify-center items-center shrink-0">
+            <div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+        </div>
+        
+        <!-- 分享选项弹窗 -->
+        <div id="shareOptions" class="absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl p-4 hidden">
+            <div class="flex flex-col space-y-3">
+                <h3 class="text-center text-sm font-medium text-gray-700 mb-3">分享入司信息</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <button class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-xl" onclick="shareToWechat(); toggleShareOptions();">
+                        <span class="iconify w-8 h-8 text-green-600 mb-2" data-icon="logos:wechat"></span>
+                        <span class="text-xs text-gray-700">微信</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-xl" onclick="shareToMoment(); toggleShareOptions();">
+                        <span class="iconify w-8 h-8 text-green-600 mb-2" data-icon="material-symbols:groups"></span>
+                        <span class="text-xs text-gray-700">朋友圈</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-xl" onclick="copyLink(); toggleShareOptions();">
+                        <span class="iconify w-8 h-8 text-blue-600 mb-2" data-icon="material-symbols:link"></span>
+                        <span class="text-xs text-gray-700">复制链接</span>
+                    </button>
+                </div>
+                <button class="w-full mt-4 py-3 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium" onclick="toggleShareOptions();">
+                    取消
+                </button>
+            </div>
+        </div>
+        
+        <script>
+        // 标签切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // 切换标签的函数
+            function switchTab(tabId) {
+                // 更新按钮样式
+                tabBtns.forEach(b => {
+                    b.classList.remove('text-custom-green', 'border-custom-green');
+                    b.classList.add('text-gray-500', 'border-transparent');
+                });
+                const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+                if (targetBtn) {
+                    targetBtn.classList.remove('text-gray-500', 'border-transparent');
+                    targetBtn.classList.add('text-custom-green', 'border-custom-green');
+                }
+                
+                // 显示对应内容
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            
+            // 绑定点击事件
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // 检查URL参数，切换到指定标签
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            if (tabParam) {
+                switchTab(tabParam);
+            }
+            
+            // 预约面试官功能
+            const interviewButtons = document.querySelectorAll('button');
+            interviewButtons.forEach(button => {
+                if (button.textContent.includes('预约面试官') && !button.hasAttribute('onclick')) {
+                    button.addEventListener('click', function() {
+                        // 这里可以添加预约面试官的逻辑
+                        alert('已成功预约面试官');
+                        // 模拟刷新页面效果
+                        location.reload();
+                    });
+                }
+            });
+            
+            // 按钮点击事件已集成到按钮的onclick属性中
+        });
+        
+        // 全局变量：当前分享类型
+        let currentShareType = 'recruitment'; // 默认：入司信息分享
+
+        // 分享到微信功能
+        function shareToWechat() {
+            if (currentShareType === 'onboarding') {
+                // 跳转入司资料补充微信界面
+                window.location.href = '招募微信界面_入司资料补充.html';
+            } else {
+                // 跳转到招募微信界面
+                window.location.href = '招募微信界面.html';
+            }
+        }
+
+        // 切换入司资料分享选项弹窗
+        function toggleShareOptionsForOnboarding() {
+            currentShareType = 'onboarding';
+            const shareOptions = document.getElementById('shareOptions');
+            shareOptions.classList.toggle('hidden');
+        }
+
+        // 重写切换分享选项弹窗函数
+        function toggleShareOptions() {
+            currentShareType = 'recruitment';
+            const shareOptions = document.getElementById('shareOptions');
+            shareOptions.classList.toggle('hidden');
+        }
+        
+        // 分享到朋友圈功能
+        function shareToMoment() {
+            // 这里可以添加分享到朋友圈的逻辑
+            alert('已生成朋友圈分享链接，请在微信中打开');
+        }
+        
+        // 复制链接功能
+        function copyLink() {
+            // 这里可以添加复制链接的逻辑
+            const link = 'https://example.com/bsm-recruitment';
+            navigator.clipboard.writeText(link).then(function() {
+                alert('链接已复制到剪贴板');
+            }, function() {
+                // 降级方案：创建临时输入框复制
+                const tempInput = document.createElement('input');
+                tempInput.value = link;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('链接已复制到剪贴板');
+            });
+        }
+        
+        // 切换分享选项弹窗
+        function toggleShareOptions() {
+            const shareOptions = document.getElementById('shareOptions');
+            shareOptions.classList.toggle('hidden');
+        }
+        
+        // 切换面试官文字显示/隐藏
+        function toggleInterviewerText(element) {
+            const textElement = element.querySelector('.interviewer-text');
+            textElement.classList.toggle('hidden');
+        }
+        
+        // 点击页面其他地方关闭分享选项弹窗
+        document.addEventListener('click', function(event) {
+            const shareButton = document.querySelector('#inviteButton');
+            const shareOptions = document.getElementById('shareOptions');
+            
+            if (!shareButton.contains(event.target) && !shareOptions.contains(event.target)) {
+                shareOptions.classList.add('hidden');
+            }
+        });
+    </script>
+    </div>
+    <!-- 需求说明面板 -->
+<div class="w-[1200px] h-[812px] bg-gray-200 rounded-xl shadow-2xl p-8">
+  <div class="flex items-center mb-2">
+    <div class="text-2xl font-bold text-gray-800">需求说明</div>
+  </div>
+
+  <div class="space-y-6">
+    <div>
+      <div class="text-lg font-semibold text-gray-800 mb-3">1. 移动端入职支持说明</div>
+      <p class="text-gray-700">移动端仅支持代理制服务人员的入职；合同制人员的入司在AMP做线下入职。</p>
+    </div>
+    
+    <div>
+      <div class="text-lg font-semibold text-gray-800 mb-3">2. BSM入司流程图</div>
+      <div class="bg-white p-4 rounded-lg shadow-sm mb-4">
+        <a href="BSM入司流程图.html" target="_blank" class="block w-full h-auto rounded overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+            <div class="bg-blue-50 p-6 text-center">
+                <div class="text-blue-600 font-semibold mb-2">点击查看BSM入司流程图</div>
+                <div class="text-sm text-gray-500">（新窗口打开）</div>
+            </div>
+        </a>
+      </div>
+      <p class="text-gray-700 text-sm">流程说明：SS转发链接给BSM候选人填写基本信息，填写完成后提交至App端，SS获取基本信息后，App内部聊天预约初面面试官，初面通过后，SS查看结果可在App内部聊天预约二面面试官；初面不通过直接关闭。二面面试官通过后，SS查看结果并转发链接给BSM候选人填写部分入司信息或者自己本人填写，BSM候选人填写完成后提交至App，由SS做最后的提交，提交至AMP系统，AMP系统继续做初审和复审操作，AMP系统复审通过后，则入司成功，复审不通过则关闭。</p>
+    </div>
+    
+    <div>
+      <div class="text-lg font-semibold text-gray-800 mb-3">3. 实名认证要求</div>
+      <p class="text-gray-700">入司基本信息转发至微信给到候选人填写时，要求做实名认证，校验手机号的可用性。</p>
+    </div>
+    
+    <div>
+      <div class="text-lg font-semibold text-gray-800 mb-3">4. SS查看权限说明</div>
+      <p class="text-gray-700">SS支持查看"初面"、"二面"流程中候选人数据和面试结果，不可操作填写面试结果。</p>
+    </div>
+    
+    <div>
+      <div class="text-lg font-semibold text-gray-800 mb-3">5. 入司资料补充界面说明</div>
+      <p class="text-gray-700">"入司资料补充"界面，SS在该页面可查看\操作候选人做入司资料补充填写；SS也可微信转发该界面，给到候选人做入司资料补充填写。</p>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>
