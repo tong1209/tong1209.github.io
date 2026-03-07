@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>新单消息通知助手</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP Container: 375x812 -->
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Title Bar -->
+<div class="h-[56px] flex items-center justify-between px-5 pt-4 bg-white z-10">
+<div class="flex items-center space-x-3">
+<span class="iconify text-xl text-gray-700 cursor-pointer" data-icon="mdi:arrow-left" onclick="window.location.href='../消息列表界面.html'"></span>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<h1 class="text-sm font-bold text-gray-900">新单消息通知助手</h1>
+</div>
+</div>
+
+</div>
+<!-- Chat Messages -->
+<div class="flex-1 overflow-y-auto hide-scrollbar px-4 py-2 space-y-4">
+<!-- System Message -->
+<div class="flex justify-center">
+<span class="text-[10px] text-gray-400 bg-gray-100 px-3 py-1 rounded-full">今天 14:30</span>
+</div>
+
+<!-- 1. 承保成功通知 -->
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[70%]">
+<p class="text-xs font-bold text-gray-700">【承保成功通知】</p>
+<p class="text-xs text-gray-700 mt-1">您服务的投保保单P009237462宏运世家终身寿险已承保。</p>
+</div>
+</div>
+
+<!-- 2. 当日撤单通知 -->
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[70%]">
+<p class="text-xs font-bold text-gray-700">【当日撤单通知】</p>
+<p class="text-xs text-gray-700 mt-1">您服务的投保保单P0092984462中宏盛世赢家已当日撤单。</p>
+</div>
+</div>
+
+<!-- 3. 15天UCR通知提醒 -->
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[70%]">
+<p class="text-xs font-bold text-gray-700">【15天UCR通知提醒】</p>
+<p class="text-xs text-gray-700 mt-1">以下保单签收回执已逾15天,详情查询：P009237462|黄薇、P0092984462|张明.....</p>
+</div>
+</div>
+
+<!-- 4. 25天UCR通知提醒 -->
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[70%]">
+<p class="text-xs font-bold text-gray-700">【25天UCR通知提醒】</p>
+<p class="text-xs text-gray-700 mt-1">以下保单签收回执已逾25天,详情查询：P009287654|李华、P009276543|王芳.....</p>
+</div>
+</div>
+
+
+
+<!-- 6. 逾期照会通知（5日） -->
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[70%]">
+<p class="text-xs font-bold text-gray-700">【逾期照会通知】</p>
+<p class="text-xs text-gray-700 mt-1">您服务的保单P009237462照会下发已逾5日，请尽快联系客户完成照会处理，谢谢！</p>
+</div>
+</div>
+
+<!-- 7. 逾期照会通知（14日） -->
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[70%]">
+<p class="text-xs font-bold text-gray-700">【逾期照会通知】</p>
+<p class="text-xs text-gray-700 mt-1">您服务的保单P0092984462照会下发已逾14日，请尽快联系客户完成照会处理，谢谢！</p>
+</div>
+</div>
+
+<!-- 8. 过犹豫期回访未完成通知 -->
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[70%]">
+<p class="text-xs font-bold text-gray-700">【过犹豫期回访未完成通知】</p>
+<p class="text-xs text-gray-700 mt-1">黄薇P009237462犹豫期今日终止，新单回访未完成，请重视，并抓紧推进，谢谢！</p>
+</div>
+</div>
+
+<!-- 9. 回访完成通知 -->
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+          <span class="iconify w-5 h-5" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[70%]">
+<p class="text-xs font-bold text-gray-700">【回访完成通知】</p>
+<p class="text-xs text-gray-700 mt-1">张明P0092984462已完成新单回访，请知悉，谢谢！</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>
