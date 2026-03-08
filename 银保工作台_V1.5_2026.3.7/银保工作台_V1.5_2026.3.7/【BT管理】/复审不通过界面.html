@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>理财经理信息初审</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .required::before { content: '*'; color: red; margin-right: 2px; }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-start items-start min-h-screen">
+<!-- Container for both app and documentation -->
+<div class="flex flex-row space-x-4 p-4">
+<!-- APP Container -->
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Title Bar -->
+<div class="h-[56px] flex items-center justify-between px-4 pt-4 bg-white border-b border-gray-50">
+<span class="iconify w-6 h-6 text-gray-700 z-10" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='BT管理首页.html?tab=initial-review';"></span>
+<h1 class="text-lg font-bold text-gray-900 flex-1 text-center">理财经理信息初审</h1>
+<div class="w-6"></div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50 px-4 py-4 space-y-2">
+<!-- 卡片1：中宏编号->银行端编码 -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 space-y-3">
+<!-- 中宏编码 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">中宏编码</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="SH787878"/>
+</div>
+
+<!-- 总行 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 required w-24">总行</label>
+<select class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择总行</option>
+<option value="001" selected>001-星展银行</option>
+<option value="002">002-工商银行</option>
+<option value="003">003-建设银行</option>
+</select>
+</div>
+
+<!-- 管理机构 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 required w-24">管理机构</label>
+<select class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择管理机构</option>
+<option value="001">001-南京</option>
+<option value="002" selected>002-上海</option>
+<option value="003">003-北京</option>
+</select>
+</div>
+
+<!-- 网点代码 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 required w-24">网点代码</label>
+<select class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择网点代码</option>
+<option value="001">001-南京分行</option>
+<option value="002" selected>002-上海分行</option>
+</select>
+</div>
+
+<!-- 网点名称 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">网点名称</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="上海招商长宁网点1"/>
+</div>
+
+<!-- 银行端编码 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 required w-24">银行端编码</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="SH8H782"/>
+</div>
+</div>
+
+<!-- 卡片2：姓名->邮政编码 -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 space-y-3">
+<!-- 姓名 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 required w-24">姓名</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="王枫枭"/>
+</div>
+
+<!-- 证件类型 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">证件类型</label>
+<select class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择证件类型</option>
+<option value="001" selected>001-身份证</option>
+<option value="002">002-护照</option>
+</select>
+</div>
+
+<!-- 证件号 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">证件号</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="310101199001011234"/>
+</div>
+
+<!-- 性别 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">性别</label>
+<select class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择性别</option>
+<option value="M" selected>M-男</option>
+<option value="F">F-女</option>
+</select>
+</div>
+
+<!-- 生日 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">生日</label>
+<input type="date" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="1990-01-01"/>
+</div>
+
+<!-- 婚姻状态 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">婚姻状态</label>
+<select class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择婚姻状态</option>
+<option value="D">D－离婚</option>
+<option value="S">S－未婚</option>
+<option value="M" selected>M－已婚</option>
+<option value="W">W－鳏寡</option>
+</select>
+</div>
+
+<!-- 手机号 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">手机号</label>
+<input type="tel" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="13800138000"/>
+</div>
+
+<!-- 现居住地 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">现居住地</label>
+<select class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择现居住地</option>
+<option value="001">001-南京</option>
+<option value="002" selected>002-上海</option>
+</select>
+</div>
+
+<!-- 详细地址 -->
+<div class="flex flex-col space-y-1">
+<label class="text-xs font-medium text-gray-700">详细地址</label>
+<textarea class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs" rows="3">上海市长宁区延安西路1234号</textarea>
+</div>
+
+<!-- 邮政编码 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">邮政编码</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="200050"/>
+</div>
+</div>
+
+<!-- 卡片3：执业证书号->备注 -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 space-y-3">
+<!-- 执业证书号 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">执业证书号</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="20200101001"/>
+</div>
+
+<!-- 执业证发放日期 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">执业证发放日期</label>
+<input type="date" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="2020-01-01"/>
+</div>
+
+<!-- 执业证终止日期 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">执业证终止日期</label>
+<input type="date" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="2025-01-01"/>
+</div>
+
+<!-- 执业区域 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-medium text-gray-700 w-24">执业区域</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" value="上海市"/>
+</div>
+
+<!-- 备注 -->
+<div class="flex flex-col space-y-1">
+<label class="text-xs font-medium text-gray-700">备注</label>
+<textarea class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs" rows="3">无特殊备注</textarea>
+</div>
+
+<!-- 审核不通过原因 -->
+<div class="flex flex-col space-y-1">
+<label class="text-xs font-medium text-gray-700">审核不通过原因</label>
+<textarea class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs bg-gray-50" rows="3" readonly>机构总审核意见：执业证书号格式不符合要求，需提供有效的执业证书号；执业区域填写不完整，需明确具体执业城市。请修改后重新提交审核。</textarea>
+</div>
+
+<!-- 功能按钮 -->
+<div class="flex space-x-2">
+<button class="flex-1 bg-white text-gray-500 border border-gray-200 text-xs font-medium py-2 px-4 rounded-lg" onclick="window.location.href='BT管理首页.html';">关闭</button>
+<button class="flex-1 bg-[#00A758] text-white text-xs font-medium py-2 px-4 rounded-lg shadow-md" onclick="window.location.href='BT管理首页.html';">提交</button>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</body>
+</html>

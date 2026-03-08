@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>理财经理管理首页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .text-custom-green { color: #00A758; }
+        .bg-custom-green { background-color: #00A758; }
+        body { font-family: 'NotoSansCJKsc-Medium', sans-serif; }
+    </style>
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(tabId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-custom-green', 'border-custom-green');
+                btn.classList.add('text-gray-500', 'border-transparent');
+            });
+            document.querySelector(`[data-tab="${tabId}"]`).classList.remove('text-gray-500', 'border-transparent');
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('text-custom-green', 'border-custom-green');
+        }
+        function getURLParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        window.onload = function() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            const tabParam = getURLParam('tab');
+            if (tabParam) {
+                switchTab(tabParam);
+            } else if (window.location.hash) {
+                // 处理URL哈希，自动切换到对应标签页
+                const tabId = window.location.hash.substring(1);
+                if (document.getElementById(tabId)) {
+                    switchTab(tabId);
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex justify-center items-start p-4">
+<div>
+<div class="w-[375px] h-[700px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Status Bar (44px) -->
+<div class="h-[44px] flex justify-between items-center px-6 shrink-0 bg-white">
+<span class="text-sm font-semibold">9:56</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-gray-400 rounded-[2px] px-[1px] h-3 w-6">
+<div class="bg-gray-600 h-full w-[32%]"></div>
+</div>
+<span class="iconify w-4 h-4 ml-1" data-icon="material-symbols:battery-full"></span>
+</div>
+</div>
+<!-- Title Bar (56px) -->
+<div class="h-[56px] flex justify-between items-center px-4 shrink-0 bg-white">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../首页.html';"></span>
+<h1 class="text-xl font-medium text-gray-800 flex-1 text-center">理财经理管理</h1>
+<div class="flex items-center space-x-3">
+</div>
+</div>
+            <div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50/50 p-4 space-y-3 pb-[86px]">
+                <div class="p-3 bg-white rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex space-x-2">
+                        <div class="flex-1 bg-gray-100 rounded-full h-9 flex items-center px-4">
+                            <span class="iconify w-5 h-5 text-gray-400 mr-2" data-icon="material-symbols:search"></span>
+                            <input class="bg-transparent text-sm outline-none w-full text-gray-600 placeholder-gray-400" placeholder="输入BT中宏编号\BT银行端编号" type="text"/>
+                        </div>
+                        <button class="text-custom-green font-medium text-sm px-2">搜索</button>
+                    </div>
+                </div>
+                <div class="bg-white border-b border-gray-50 shrink-0">
+                    <div class="flex w-full">
+                        <button class="tab-btn text-custom-green font-medium text-sm py-2 border-b-2 border-custom-green flex-1 text-center" data-tab="entry">录入</button>
+                        <button class="tab-btn text-gray-500 font-medium text-sm py-2 border-b-2 border-transparent flex-1 text-center" data-tab="initial-review">初审</button>
+                        <button class="tab-btn text-gray-500 font-medium text-sm py-2 border-b-2 border-transparent flex-1 text-center" data-tab="final-review">复审</button>
+                        <button class="tab-btn text-gray-500 font-medium text-sm py-2 border-b-2 border-transparent flex-1 text-center" data-tab="valid">有效</button>
+                        <button class="tab-btn text-gray-500 font-medium text-sm py-2 border-b-2 border-transparent flex-1 text-center" data-tab="closed">关闭</button>
+                    </div>
+                </div>
+                <div class="tab-content" id="entry">
+                    <div class="space-y-3 py-4">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='BT基本信息维护.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">SH787878</span>
+                                        <span class="text-xs text-gray-500">待提交</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: SH8H782</div>
+                                        <div class="text-xs text-gray-600">姓名: 王枫枭</div>
+                                        <div class="text-xs text-gray-600">网点名称: 招商银行 - 上海招商长宁网点1</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content hidden" id="initial-review">
+                    <div class="space-y-3 py-4">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='待初审界面.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">BJ123456</span>
+                                        <span class="text-xs text-gray-500">待初审</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: BJ7X987</div>
+                                        <div class="text-xs text-gray-600">姓名: 李明</div>
+                                        <div class="text-xs text-gray-600">网点名称: 工商银行 - 北京工行海淀网点2</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='复审不通过界面.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">GZ654321</span>
+                                        <span class="text-xs text-gray-500">复审不通过</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: GZ9Y876</div>
+                                        <div class="text-xs text-gray-600">姓名: 赵华</div>
+                                        <div class="text-xs text-gray-600">网点名称: 农业银行 - 广州农行越秀网点4</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content hidden" id="final-review">
+                    <div class="space-y-3 py-4">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='待复审界面.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">CD987654</span>
+                                        <span class="text-xs text-gray-500">待复审</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: CD3Y210</div>
+                                        <div class="text-xs text-gray-600">姓名: 陈丽</div>
+                                        <div class="text-xs text-gray-600">网点名称: 中国银行 - 成都中行武侯网点5</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='待复审界面.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">HZ876543</span>
+                                        <span class="text-xs text-gray-500">待复审</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: HZ4Y567</div>
+                                        <div class="text-xs text-gray-600">姓名: 张伟</div>
+                                        <div class="text-xs text-gray-600">网点名称: 农业银行 - 杭州农行西湖网点7</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='待复审界面.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">NJ765432</span>
+                                        <span class="text-xs text-gray-500">待复审</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: NJ5Y678</div>
+                                        <div class="text-xs text-gray-600">姓名: 李娜</div>
+                                        <div class="text-xs text-gray-600">网点名称: 建设银行 - 南京建行鼓楼网点8</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content hidden" id="valid">
+                    <div class="space-y-3 py-4">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='BT详细信息.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">GZ987654</span>
+                                        <span class="text-xs text-gray-500">有效</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: GZ2Y345</div>
+                                        <div class="text-xs text-gray-600">姓名: 张华</div>
+                                        <div class="text-xs text-gray-600">网点名称: 建设银行 - 广州建行天河网点3</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='BT详细信息.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">SH654321</span>
+                                        <span class="text-xs text-gray-500">有效</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: SH7H890</div>
+                                        <div class="text-xs text-gray-600">姓名: 王明</div>
+                                        <div class="text-xs text-gray-600">网点名称: 工商银行 - 上海工行浦东网点9</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='BT详细信息.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">BJ543210</span>
+                                        <span class="text-xs text-gray-500">有效</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: BJ8X901</div>
+                                        <div class="text-xs text-gray-600">姓名: 刘芳</div>
+                                        <div class="text-xs text-gray-600">网点名称: 中国银行 - 北京中行朝阳网点10</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer" onclick="window.location.href='BT详细信息.html';">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">CD432109</span>
+                                        <span class="text-xs text-gray-500">有效</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: CD9Y012</div>
+                                        <div class="text-xs text-gray-600">姓名: 赵强</div>
+                                        <div class="text-xs text-gray-600">网点名称: 招商银行 - 成都招行锦江网点11</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content hidden" id="closed">
+                    <div class="space-y-3 py-4">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">SH123456</span>
+                                        <span class="text-xs text-gray-500">无效</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: SH5H432</div>
+                                        <div class="text-xs text-gray-600">姓名: 刘强</div>
+                                        <div class="text-xs text-gray-600">网点名称: 交通银行 - 上海交行长宁网点6</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">GZ234567</span>
+                                        <span class="text-xs text-gray-500">无效</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: GZ6Y789</div>
+                                        <div class="text-xs text-gray-600">姓名: 王丽</div>
+                                        <div class="text-xs text-gray-600">网点名称: 农业银行 - 广州农行海珠网点12</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="font-medium text-gray-900">BJ345678</span>
+                                        <span class="text-xs text-gray-500">无效</span>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-xs text-gray-600">银行端编码: BJ9X012</div>
+                                        <div class="text-xs text-gray-600">姓名: 张伟</div>
+                                        <div class="text-xs text-gray-600">网点名称: 工商银行 - 北京工行西城网点13</div>
+                                    </div>
+                                </div>
+                                <span class="iconify w-5 h-5 text-gray-400 ml-2" data-icon="material-symbols:chevron-right"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

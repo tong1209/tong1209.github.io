@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BSM招募</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 自定义绿色 */
+        .text-custom-green {
+            color: #00A758;
+        }
+        
+        .bg-custom-green {
+            background-color: #00A758;
+        }
+        
+        /* 全局字体 */
+        body {
+            font-family: 'NotoSansCJKsc-Medium', sans-serif;
+        }
+        
+        /* 标签样式 */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        /* 面试官已分配标签 */
+        .interviewer-assigned {
+            background-color: #E0F2FE;
+            color: #0284C7;
+        }
+        
+        /* 签名画布样式 */
+        .signature-pad canvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+    </style>
+    <script>
+        // 切换标签页
+        function switchTab(tabId) {
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // 显示选中的标签内容
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // 更新标签按钮状态
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-custom-green', 'border-custom-green');
+                btn.classList.add('text-gray-500', 'border-transparent');
+            });
+            
+            // 激活选中的标签按钮
+            document.querySelector(`[data-tab="${tabId}"]`).classList.remove('text-gray-500', 'border-transparent');
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('text-custom-green', 'border-custom-green');
+        }
+        
+        // 页面加载时检查URL参数或哈希值
+        window.onload = function() {
+            // 先检查URL参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            
+            // 如果URL参数中指定了标签且存在对应的标签，则切换到该标签
+            if (tabParam && document.querySelector(`[data-tab="${tabParam}"]`)) {
+                switchTab(tabParam);
+                return;
+            }
+            
+            // 再检查URL哈希值
+            const hash = window.location.hash.substring(1);
+            
+            // 如果有哈希值且存在对应的标签，则切换到该标签
+            if (hash && document.querySelector(`[data-tab="${hash}"]`)) {
+                switchTab(hash);
+            }
+        };
+        
+        // 初始化标签按钮点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex justify-center items-start p-4">
+<!-- APP容器 (375x700) -->
+<div class="w-[375px] h-[700px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Status Bar (44px) -->
+<div class="h-[44px] flex justify-between items-center px-6 shrink-0 bg-white">
+<span class="text-sm font-semibold">10:05</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-gray-400 rounded-[2px] px-[1px] h-3 w-6">
+<div class="bg-gray-600 h-full w-[32%]"></div>
+</div>
+<span class="iconify w-4 h-4 ml-1" data-icon="material-symbols:battery-full"></span>
+</div>
+</div>
+<!-- Title Bar (56px) -->
+<div class="h-[56px] flex justify-between items-center px-4 shrink-0 bg-white">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../../首页.html';"></span>
+<h1 class="text-xl font-medium text-gray-800 flex-1 text-center">离职管理</h1>
+<div class="flex items-center space-x-3">
+</div>
+</div>
+        
+        <!-- 导航栏 -->
+        <div class="bg-white border-b border-gray-50 shrink-0 overflow-x-auto hide-scrollbar" style="-webkit-overflow-scrolling: touch;">
+            <div class="px-4 py-2 flex space-x-4 min-w-max">
+                <button class="tab-btn text-custom-green font-medium text-sm whitespace-nowrap pb-2 border-b-2 border-custom-green" data-tab="resignation-records">我的申请</button>
+                <button class="tab-btn text-gray-500 font-medium text-sm whitespace-nowrap pb-2 border-b-2 border-transparent" data-tab="my-approvals">我的审批</button>
+            </div>
+        </div>
+        
+        <!-- 内容区 -->
+        <div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50/50 p-4 space-y-3 pb-[86px]">
+<div class="p-4">
+<div class="success-message bg-green-100 text-green-800 p-3 rounded-lg mb-4 text-center hidden" id="successMessage">
+签字确认成功！
+</div>
+</div>
+            <!-- 离职申请记录模块 -->
+            <div class="tab-content" id="resignation-records">
+                <div class="p-4 space-y-4">
+                    <!-- 离职申请记录 -->
+                    <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-custom-green hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location.href='BSM离职申请.html';">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-bold text-gray-800">张三</h3>
+                                <p class="text-xs text-gray-500">Agent Code：SH987982</p>
+                                <p class="text-xs text-gray-500 mt-1">提交日期：2026-01-28</p>
+                            </div>
+                            <span class="text-xs px-3 py-1.5 bg-green-100 text-green-800 rounded-full font-medium">已批准</span>
+                        </div>
+                        <div class="space-y-2 text-xs mb-4">
+                            <p><span class="text-gray-500">申请离职日期：</span> <span class="text-gray-700 font-medium">2026-02-01</span></p>
+                            <p><span class="text-gray-500">预计离职日期：</span> <span class="text-gray-700 font-medium">2026-02-29</span></p>
+                            <p><span class="text-gray-500">离职原因：</span> <span class="text-gray-700 font-medium">个人职业发展</span></p>
+                        </div>
+                        <button class="text-custom-green text-sm font-medium mb-3" onclick="event.stopPropagation(); toggleDetails(2)">查看详情</button>
+                        
+                        <div class="record-details border-t border-gray-100 pt-3 hidden" id="details-2">
+                            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                <div class="space-y-3 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Agent Code：</span>
+                                        <span class="text-gray-700">SH987982</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">姓名：</span>
+                                        <span class="text-gray-700">张三</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">所属地区：</span>
+                                        <span class="text-gray-700">上海</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">入职日期：</span>
+                                        <span class="text-gray-700">2023-01-15</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">岗位级别：</span>
+                                        <span class="text-gray-700">高级经理</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">证件号码：</span>
+                                        <span class="text-gray-700">3101**********1234</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">联系电话：</span>
+                                        <span class="text-gray-700">138****8888</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">申请离职日期：</span>
+                                        <span class="text-gray-700">2026-02-01</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">预计离职日期：</span>
+                                        <span class="text-gray-700">2026-02-29</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">离职原因：</span>
+                                        <span class="text-gray-700">个人职业发展</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">附件：</span>
+                                        <span class="text-gray-700">离职申请pdf</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-blue-500 text-white py-2 rounded-lg font-medium text-sm hover:bg-blue-600 transition flex items-center justify-center" onclick="event.stopPropagation(); alert('已批准的离职申请表下载功能已触发');">
+                            <span class="iconify w-4 h-4 mr-2" data-icon="material-symbols:download"></span>
+                            下载离职表
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-yellow-400 hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location.href='BSM离职申请.html';">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-bold text-gray-800">李四</h3>
+                                <p class="text-xs text-gray-500">Agent Code：SH987983</p>
+                                <p class="text-xs text-gray-500 mt-1">提交日期：2026-01-28</p>
+                            </div>
+                            <span class="text-xs px-3 py-1.5 bg-yellow-100 text-yellow-800 rounded-full font-medium">待审批</span>
+                        </div>
+                        <div class="space-y-2 text-xs mb-4">
+                            <p><span class="text-gray-500">申请离职日期：</span> <span class="text-gray-700 font-medium">2026-02-05</span></p>
+                            <p><span class="text-gray-500">预计离职日期：</span> <span class="text-gray-700 font-medium">2026-03-05</span></p>
+                            <p><span class="text-gray-500">离职原因：</span> <span class="text-gray-700 font-medium">家庭原因</span></p>
+                        </div>
+                        <button class="text-custom-green text-sm font-medium mb-3" onclick="event.stopPropagation(); toggleDetails(3)">查看详情</button>
+                        
+                        <div class="record-details border-t border-gray-100 pt-3 hidden" id="details-3">
+                            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                <div class="space-y-3 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Agent Code：</span>
+                                        <span class="text-gray-700">SH987983</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">姓名：</span>
+                                        <span class="text-gray-700">李四</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">所属地区：</span>
+                                        <span class="text-gray-700">上海</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">入职日期：</span>
+                                        <span class="text-gray-700">2023-03-20</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">岗位级别：</span>
+                                        <span class="text-gray-700">高级经理</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">证件号码：</span>
+                                        <span class="text-gray-700">3101**********5678</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">联系电话：</span>
+                                        <span class="text-gray-700">139****9999</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">申请离职日期：</span>
+                                        <span class="text-gray-700">2026-02-05</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">预计离职日期：</span>
+                                        <span class="text-gray-700">2026-03-05</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">离职原因：</span>
+                                        <span class="text-gray-700">家庭原因</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">附件：</span>
+                                        <span class="text-gray-700">离职申请.pdf</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 我的审批模块 -->
+            <div class="tab-content hidden" id="my-approvals">
+                <div class="p-4 space-y-4">
+                    <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-yellow-400 hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location.href='BSM离职签字.html';">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-bold text-gray-800">李四</h3>
+                                <p class="text-xs text-gray-500">Agent Code：SH987983</p>
+                                <p class="text-xs text-gray-500 mt-1">提交日期：2026-01-28</p>
+                            </div>
+                            <span class="text-xs px-3 py-1.5 bg-yellow-100 text-yellow-800 rounded-full font-medium">待审批</span>
+                        </div>
+                        <div class="space-y-2 text-xs mb-4">
+                            <p><span class="text-gray-500">申请离职日期：</span> <span class="text-gray-700 font-medium">2026-02-05</span></p>
+                            <p><span class="text-gray-500">预计离职日期：</span> <span class="text-gray-700 font-medium">2026-03-05</span></p>
+                            <p><span class="text-gray-500">离职原因：</span> <span class="text-gray-700 font-medium">家庭原因</span></p>
+                        </div>
+                        <button class="text-custom-green text-sm font-medium mb-3" onclick="event.stopPropagation(); toggleDetails(0)">查看详情</button>
+                        
+                        <div class="record-details border-t border-gray-100 pt-3 hidden" id="details-0">
+                            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                <div class="space-y-3 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Agent Code：</span>
+                                        <span class="text-gray-700">SH987983</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">姓名：</span>
+                                        <span class="text-gray-700">李四</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">所属地区：</span>
+                                        <span class="text-gray-700">上海</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">入职日期：</span>
+                                        <span class="text-gray-700">2023-03-20</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">岗位级别：</span>
+                                        <span class="text-gray-700">高级经理</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">证件号码：</span>
+                                        <span class="text-gray-700">3101**********5678</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">联系电话：</span>
+                                        <span class="text-gray-700">139****9999</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">申请离职日期：</span>
+                                        <span class="text-gray-700">2026-02-05</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">预计离职日期：</span>
+                                        <span class="text-gray-700">2026-03-05</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">离职原因：</span>
+                                        <span class="text-gray-700">家庭原因</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">附件：</span>
+                                        <span class="text-gray-700">离职申请.pdf</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="signature-section bg-gray-50 p-4 rounded-lg mb-4 hidden" id="signatureSection-0">
+                                <h3 class="text-sm font-medium text-gray-800 mb-3">领导签字</h3>
+                                <div class="signature-pad border border-gray-300 rounded-lg bg-white h-40 mb-4">
+                                    <canvas id="signature-0" width="400" height="200"></canvas>
+                                </div>
+                                <div class="flex space-x-3">
+                                    <button class="flex-1 bg-custom-green text-white py-2 rounded-lg font-medium text-sm hover:bg-opacity-90 transition" onclick="approveRecord(0)">批准</button>
+                                    <button class="flex-1 bg-red-500 text-white py-2 rounded-lg font-medium text-sm hover:bg-opacity-90 transition" onclick="rejectRecord(0)">拒绝</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-custom-green text-white py-2 rounded-lg font-medium text-sm hover:bg-opacity-90 transition flex items-center justify-center" onclick="event.stopPropagation(); showSignature(0)">
+                            <span class="iconify w-4 h-4 mr-2" data-icon="material-symbols:edit-document"></span>
+                            处理审批
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-green-500 hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location.href='BSM离职签字.html';">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="font-bold text-gray-800">张三</h3>
+                                <p class="text-xs text-gray-500">Agent Code：SH987982</p>
+                                <p class="text-xs text-gray-500 mt-1">提交日期：2026-01-28</p>
+                            </div>
+                            <span class="text-xs px-3 py-1.5 bg-green-100 text-green-800 rounded-full font-medium">已批准</span>
+                        </div>
+                        <div class="space-y-2 text-xs mb-4">
+                            <p><span class="text-gray-500">申请离职日期：</span> <span class="text-gray-700 font-medium">2026-02-01</span></p>
+                            <p><span class="text-gray-500">预计离职日期：</span> <span class="text-gray-700 font-medium">2026-02-29</span></p>
+                            <p><span class="text-gray-500">离职原因：</span> <span class="text-gray-700 font-medium">个人职业发展</span></p>
+                            <p><span class="text-gray-500">批准日期：</span> <span class="text-gray-700 font-medium">2026-01-28</span></p>
+                        </div>
+                        <button class="text-custom-green text-sm font-medium mb-3" onclick="event.stopPropagation(); toggleDetails(1)">查看详情</button>
+                        
+                        <div class="record-details border-t border-gray-100 pt-3 hidden" id="details-1">
+                            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                                <div class="space-y-3 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Agent Code：</span>
+                                        <span class="text-gray-700">SH987982</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">姓名：</span>
+                                        <span class="text-gray-700">张三</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">所属地区：</span>
+                                        <span class="text-gray-700">上海</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">入职日期：</span>
+                                        <span class="text-gray-700">2023-01-15</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">岗位级别：</span>
+                                        <span class="text-gray-700">高级经理</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">证件号码：</span>
+                                        <span class="text-gray-700">3101**********1234</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">联系电话：</span>
+                                        <span class="text-gray-700">138****8888</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">申请离职日期：</span>
+                                        <span class="text-gray-700">2026-02-01</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">预计离职日期：</span>
+                                        <span class="text-gray-700">2026-02-29</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">离职原因：</span>
+                                        <span class="text-gray-700">个人职业发展</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">附件：</span>
+                                        <span class="text-gray-700">离职申请pdf</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+            <!-- 初面模块 -->
+            <div class="tab-content hidden" id="initial-interview">
+                <div class="p-4 space-y-4">
+                    <!-- 未分配面试官 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM入职信息界面_待二面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">王五</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-purple-100 text-purple-800 rounded-full">待二面</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex justify-end">
+                            <button class="text-custom-green text-sm font-medium" onclick="event.stopPropagation(); window.location.href='招募二面聊天界面.html';">预约二面面试官</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 已分配面试官 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM一面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex items-center space-x-2">
+                                <h3 class="font-bold text-gray-800">赵六</h3>
+                                <div class="relative">
+                                    <span class="tag interviewer-assigned cursor-pointer" onclick="toggleInterviewerText(this)">
+                                        <span class="iconify w-3 h-3 mr-1" data-icon="material-symbols:person"></span>
+                                        <span class="interviewer-text hidden">已分配面试官</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">待初面</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">面试官:</span> <span class="text-gray-700">面试官1</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 二面模块 -->
+            <div class="tab-content hidden" id="second-interview">
+                <div class="p-4 space-y-4">
+                    <!-- 已分配面试官 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM二面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <h3 class="font-bold text-gray-800">周八</h3>
+                                    <div class="relative">
+                                        <span class="tag interviewer-assigned cursor-pointer" onclick="toggleInterviewerText(this)">
+                                            <span class="iconify w-3 h-3 mr-1" data-icon="material-symbols:person"></span>
+                                            <span class="interviewer-text hidden">已分配面试官</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end space-y-1">
+                                <span class="text-xs px-2 py-1 bg-purple-100 text-purple-800 rounded-full">待二面</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">面试官:</span> <span class="text-gray-700">面试官2</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 已入职模块 -->
+            <div class="tab-content hidden" id="joined">
+                <div class="p-4 space-y-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM详细信息.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">吴九</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">入职成功</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">入职日期:</span> <span class="text-gray-700">2026-01-01</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM详细信息.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">郑十</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">入职成功</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">硕士</span></p>
+                            <p><span class="text-gray-500">入职日期:</span> <span class="text-gray-700">2026-01-15</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 关闭模块 -->
+            <div class="tab-content hidden" id="closed">
+                <div class="p-4 space-y-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">陈十一</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-full">关闭</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">关闭原因:</span> <span class="text-gray-700">初面未通过</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-sm p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">林十二</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-full">关闭</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                            <p><span class="text-gray-500">关闭原因:</span> <span class="text-gray-700">二面未通过</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 入司资料填写模块 -->
+            <div class="tab-content hidden" id="onboarding-documents">
+                <div class="p-4 space-y-4">
+                    <!-- 待补充资料 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM资料信息维护界面.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">孙七</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-orange-100 text-orange-800 rounded-full">待补充资料</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">本科</span></p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex justify-end">
+                            <button class="text-custom-green text-sm font-medium" onclick="event.stopPropagation(); toggleShareOptions();">补充入司资料</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 待AMP审核 -->
+                    <div class="bg-white rounded-lg shadow-sm p-4 cursor-pointer" onclick="window.location.href='BSM资料信息维护界面 - AMP审核中.html'">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-bold text-gray-800">周八</h3>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">待AMP审核</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <p><span class="text-gray-500">应聘职位:</span> <span class="text-gray-700">银保客户经理</span></p>
+                            <p><span class="text-gray-500">学历:</span> <span class="text-gray-700">硕士</span></p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-50 flex justify-end">
+                            <button class="text-custom-green text-sm font-medium" onclick="event.stopPropagation(); window.location.href='BSM资料信息维护界面 - AMP审核中.html';">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部安全条 -->
+        <div class="h-6 bg-white flex justify-center items-center shrink-0">
+            <div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+        </div>
+        
+        <!-- 分享选项弹窗 -->
+        <div id="shareOptions" class="absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl p-4 hidden">
+            <div class="flex flex-col space-y-3">
+                <h3 class="text-center text-sm font-medium text-gray-700 mb-3">分享招募信息</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <button class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-xl" onclick="shareToWechat(); toggleShareOptions();">
+                        <span class="iconify w-8 h-8 text-green-600 mb-2" data-icon="logos:wechat"></span>
+                        <span class="text-xs text-gray-700">微信</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-xl" onclick="shareToMoment(); toggleShareOptions();">
+                        <span class="iconify w-8 h-8 text-green-600 mb-2" data-icon="material-symbols:groups"></span>
+                        <span class="text-xs text-gray-700">朋友圈</span>
+                    </button>
+                    <button class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-xl" onclick="copyLink(); toggleShareOptions();">
+                        <span class="iconify w-8 h-8 text-blue-600 mb-2" data-icon="material-symbols:link"></span>
+                        <span class="text-xs text-gray-700">复制链接</span>
+                    </button>
+                </div>
+                <button class="w-full mt-4 py-3 bg-gray-100 text-gray-800 rounded-lg text-sm font-medium" onclick="toggleShareOptions();">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 标签切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // 切换标签的函数
+            function switchTab(tabId) {
+                // 更新按钮样式
+                tabBtns.forEach(b => {
+                    b.classList.remove('text-custom-green', 'border-custom-green');
+                    b.classList.add('text-gray-500', 'border-transparent');
+                });
+                const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+                if (targetBtn) {
+                    targetBtn.classList.remove('text-gray-500', 'border-transparent');
+                    targetBtn.classList.add('text-custom-green', 'border-custom-green');
+                }
+                
+                // 显示对应内容
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.getElementById(tabId).classList.remove('hidden');
+            }
+            
+            // 绑定点击事件
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // 检查URL参数，切换到指定标签
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            if (tabParam) {
+                switchTab(tabParam);
+            }
+            
+            // 预约面试官功能
+            const interviewButtons = document.querySelectorAll('button');
+            interviewButtons.forEach(button => {
+                if (button.textContent.includes('预约面试官') && !button.hasAttribute('onclick')) {
+                    button.addEventListener('click', function() {
+                        // 这里可以添加预约面试官的逻辑
+                        alert('已成功预约面试官');
+                        // 模拟刷新页面效果
+                        location.reload();
+                    });
+                }
+            });
+            
+            // 按钮点击事件已集成到按钮的onclick属性中
+        });
+        
+        // 分享到微信功能
+        function shareToWechat() {
+            // 跳转到入司资料补充微信界面
+            window.location.href = '招募微信界面_入司资料补充.html';
+        }
+        
+        // 分享到朋友圈功能
+        function shareToMoment() {
+            // 这里可以添加分享到朋友圈的逻辑
+            alert('已生成朋友圈分享链接，请在微信中打开');
+        }
+        
+        // 复制链接功能
+        function copyLink() {
+            // 这里可以添加复制链接的逻辑
+            const link = 'https://example.com/bsm-recruitment';
+            navigator.clipboard.writeText(link).then(function() {
+                alert('链接已复制到剪贴板');
+            }, function() {
+                // 降级方案：创建临时输入框复制
+                const tempInput = document.createElement('input');
+                tempInput.value = link;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('链接已复制到剪贴板');
+            });
+        }
+        
+        // 切换分享选项弹窗
+        function toggleShareOptions() {
+            const shareOptions = document.getElementById('shareOptions');
+            shareOptions.classList.toggle('hidden');
+        }
+        
+        // 切换面试官文字显示/隐藏
+        function toggleInterviewerText(element) {
+            const textElement = element.querySelector('.interviewer-text');
+            textElement.classList.toggle('hidden');
+        }
+        
+        // 点击页面其他地方关闭分享选项弹窗
+        document.addEventListener('click', function(event) {
+            const shareButton = document.querySelector('#inviteButton');
+            const shareOptions = document.getElementById('shareOptions');
+            
+            if (!shareButton.contains(event.target) && !shareOptions.contains(event.target)) {
+                shareOptions.classList.add('hidden');
+            }
+        });
+        
+        // 切换详情显示
+        function toggleDetails(index) {
+            const detailsElement = document.getElementById(`details-${index}`);
+            detailsElement.classList.toggle('hidden');
+        }
+        
+        // 显示签名界面
+        function showSignature(index) {
+            // 先展开详情
+            const detailsElement = document.getElementById(`details-${index}`);
+            detailsElement.classList.remove('hidden');
+            
+            // 再显示签名部分
+            const signatureSection = document.getElementById(`signatureSection-${index}`);
+            signatureSection.classList.remove('hidden');
+            
+            // 隐藏处理审批按钮
+            const currentCard = document.querySelector(`#details-${index}`).closest('.bg-white');
+            const approveButton = currentCard.querySelector('.w-full.bg-custom-green');
+            if (approveButton) {
+                approveButton.classList.add('hidden');
+            }
+            
+            // 初始化签名画布
+            initSignatureCanvas(index);
+        }
+        
+        // 初始化签名画布
+        function initSignatureCanvas(index) {
+            const canvas = document.getElementById(`signature-${index}`);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            // 设置画布样式
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#000';
+            
+            // 绘制函数
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                lastX = x;
+                lastY = y;
+            }
+            
+            // 事件监听
+            canvas.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                const rect = canvas.getBoundingClientRect();
+                lastX = e.clientX - rect.left;
+                lastY = e.clientY - rect.top;
+            });
+            
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mouseout', () => isDrawing = false);
+            
+            // 触摸事件支持
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                isDrawing = true;
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                lastX = touch.clientX - rect.left;
+                lastY = touch.clientY - rect.top;
+            });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                draw(e.touches[0]);
+            });
+            
+            canvas.addEventListener('touchend', () => isDrawing = false);
+        }
+        
+        // 批准申请
+        function approveRecord(index) {
+            // 获取记录
+            let records = JSON.parse(localStorage.getItem('resignationRecords') || '[]');
+            
+            // 更新状态
+            records[index].status = '已批准';
+            records[index].approvedBy = '系统管理员';
+            records[index].approvedDate = new Date().toISOString().split('T')[0];
+            localStorage.setItem('resignationRecords', JSON.stringify(records));
+            
+            // 显示成功消息
+            alert('批准成功！');
+            
+            // 切换到我的申请标签页
+            switchTab('resignation-records');
+            
+            // 刷新页面
+            location.reload();
+        }
+        
+        // 拒绝申请
+        function rejectRecord(index) {
+            // 获取记录
+            let records = JSON.parse(localStorage.getItem('resignationRecords') || '[]');
+            
+            // 更新状态
+            records[index].status = '已拒绝';
+            records[index].rejectedBy = '系统管理员';
+            records[index].rejectedDate = new Date().toISOString().split('T')[0];
+            localStorage.setItem('resignationRecords', JSON.stringify(records));
+            
+            // 显示成功消息
+            alert('拒绝成功！');
+            
+            // 切换到我的申请标签页
+            switchTab('resignation-records');
+            
+            // 刷新页面
+            location.reload();
+        }
+    </script>
+</body>
+</html>
