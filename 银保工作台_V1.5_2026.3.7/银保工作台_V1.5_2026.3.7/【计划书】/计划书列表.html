@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>保险计划书列表</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP Container -->
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Title Bar -->
+<div class="h-[56px] flex items-center justify-between px-4 pt-4 bg-white border-b border-gray-50">
+<span class="iconify w-6 h-6 text-gray-700 z-10" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../首页.html';"></span>
+<h1 class="text-lg font-bold text-gray-900 flex-1 text-center">我的保险计划书</h1>
+<div class="w-6"></div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50 px-4 py-4 space-y-4 pb-[86px]">
+<!-- Top Functional Nav -->
+<div class="flex justify-around items-center bg-white py-6 rounded-2xl shadow-sm border border-gray-100">
+<div class="flex flex-col items-center space-y-2 cursor-pointer transition-transform active:scale-95">
+<div class="w-12 h-12 bg-[#EC6453] rounded-full flex items-center justify-center shadow-lg shadow-orange-100">
+<span class="iconify text-white text-2xl" data-icon="mdi:book-open-variant"></span>
+</div>
+<span class="text-xs font-medium text-gray-700">我的计划书</span>
+</div>
+<a href="计划书定制.html" class="flex flex-col items-center space-y-2 cursor-pointer transition-transform active:scale-95">
+<div class="w-12 h-12 bg-[#EC6453] rounded-full flex items-center justify-center shadow-lg shadow-orange-100">
+<span class="iconify text-white text-2xl" data-icon="mdi:file-document-edit-outline"></span>
+</div>
+<span class="text-xs font-medium text-gray-700">定制计划书</span>
+</a>
+</div>
+<h2 class="text-sm font-bold text-gray-800 px-1 pt-2">我的计划书列表</h2>
+<!-- Card 1 -->
+<div class="block">
+<div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm relative group">
+<div class="flex justify-between items-start mb-3">
+<div class="space-y-1">
+<p class="text-[10px] text-gray-400 font-mono">计划书 - PSH856860103906</p>
+<div class="flex items-center space-x-2 text-xs font-bold text-gray-800">
+<span>投保人: 卡卡 女 30岁</span>
+</div>
+<div class="flex items-center space-x-2 text-xs text-gray-500">
+<span>被保险人: 卡卡 女 30岁</span>
+</div>
+</div>
+<span class="iconify text-gray-300 text-lg cursor-pointer hover:text-[#EC6453]" data-icon="mdi:trash-can-outline"></span>
+</div>
+<div class="bg-gray-50/50 rounded-xl p-3 border border-gray-50 mb-3">
+<div class="flex items-center space-x-1 mb-2">
+<span class="bg-[#EC6453] text-[8px] text-white px-1 rounded-sm">主</span>
+<span class="text-xs font-bold text-gray-700">中宏交宏福特定疾病保险</span>
+</div>
+<div class="flex justify-between items-center text-[10px] text-gray-500">
+<div class="flex items-center space-x-3">
+<span class="flex items-center"><span class="iconify mr-0.5" data-icon="mdi:pencil"></span> 修改主险</span>
+<span class="flex items-center"><span class="iconify mr-0.5" data-icon="mdi:file-pdf-box"></span> 查看PDF</span>
+</div>
+<span class="text-[#EC6453] font-bold text-xs">100,000.00元</span>
+</div>
+</div>
+<div class="flex justify-between items-end border-t border-gray-50 pt-3">
+<div class="text-[10px] text-gray-400">
+<p>备注: 18:26写的备注</p>
+<p class="mt-1">2025-12-29 18:27:34</p>
+</div>
+<button class="bg-[#EC6453] text-white text-xs px-4 py-1.5 rounded-full shadow-md shadow-red-100 transition-active active:scale-95">继续制作</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="block">
+<div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm relative group">
+<div class="flex justify-between items-start mb-3">
+<div class="space-y-1">
+<p class="text-[10px] text-gray-400 font-mono">计划书 - PSH856860103905</p>
+<div class="flex items-center space-x-2 text-xs font-bold text-gray-800">
+<span>投保人: 测试 女 30岁</span>
+</div>
+<div class="flex items-center space-x-2 text-xs text-gray-500">
+<span>被保险人: 测试 女 30岁</span>
+</div>
+</div>
+<span class="iconify text-gray-300 text-lg cursor-pointer" data-icon="mdi:trash-can-outline"></span>
+</div>
+<div class="bg-gray-50/50 rounded-xl p-3 border border-gray-50 mb-3">
+<div class="flex items-center space-x-1 mb-2">
+<span class="bg-[#EC6453] text-[8px] text-white px-1 rounded-sm">主</span>
+<span class="text-xs font-bold text-gray-700">中宏交宏福特定疾病保险</span>
+</div>
+<div class="flex justify-between items-center text-[10px] text-gray-500">
+<div class="flex items-center space-x-3">
+<span class="flex items-center"><span class="iconify mr-0.5" data-icon="mdi:pencil"></span> 修改主险</span>
+<span class="flex items-center"><span class="iconify mr-0.5" data-icon="mdi:file-pdf-box"></span> 查看PDF</span>
+</div>
+<span class="text-[#EC6453] font-bold text-xs">200,000.00元</span>
+</div>
+</div>
+<div class="flex justify-between items-end border-t border-gray-50 pt-3">
+<div class="text-[10px] text-gray-400">
+<p>备注: 该计划书制作于周一下午四点</p>
+<p class="mt-1">2025-12-29 16:48:48</p>
+</div>
+<button class="bg-[#EC6453] text-white text-xs px-4 py-1.5 rounded-full shadow-md shadow-red-100 transition-active active:scale-95">继续制作</button>
+</div>
+</div>
+</div>
+<!-- 底部导航栏 (80px) -->
+<div class="h-[80px] bg-white border-t border-gray-100 flex items-center justify-around px-2 pb-2 absolute bottom-0 left-0 right-0 z-10">
+<div class="flex flex-col items-center space-y-1 group cursor-pointer relative" onclick="window.location.href='../消息列表界面.html'">
+<div class="relative">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:chat-processing-outline"></span>
+<span class="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center border border-white">39</span>
+</div>
+<span class="text-[10px] text-gray-400">消息</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='../通讯录.html'">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:account-box-outline"></span>
+<span class="text-[10px] text-gray-400">通讯录</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='../首页.html'">
+<span class="iconify text-2xl text-orange-500" data-icon="mdi:view-grid"></span>
+<span class="text-[10px] text-orange-500 font-bold">工作台</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='../我的.html'">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:account-outline"></span>
+<span class="text-[10px] text-gray-400">我的</span>
+</div>
+</div>
+<!-- 底部安全条 -->
+<div class="h-6 bg-white flex justify-center items-center shrink-0 absolute bottom-0 left-0 right-0 z-20">
+<div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+</div>
+</div>
+</body>
+</html>

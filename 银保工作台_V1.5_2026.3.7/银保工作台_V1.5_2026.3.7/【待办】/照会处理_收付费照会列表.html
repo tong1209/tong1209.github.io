@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>收付费照会列表</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[812px] bg-gray-50 border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- 系统状态栏模拟 -->
+<div class="h-[44px] flex justify-between items-center px-6 shrink-0 bg-white">
+<span class="text-sm font-semibold">10:05</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4 text-custom-green" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6 relative">
+<div class="bg-black h-full w-[31%]"></div>
+</div>
+</div>
+</div>
+<!-- 标题栏 -->
+<div class="h-[56px] bg-white flex justify-between items-center px-4 shrink-0 border-b border-gray-50">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.history.back();"></span>
+<h1 class="text-lg font-medium text-gray-800 text-center w-full">收付费照会列表</h1>
+
+</div>
+<!-- 搜索功能 -->
+<div class="p-3 bg-white shrink-0">
+<div class="flex space-x-2">
+<div class="flex-1 bg-gray-100 rounded-full h-9 flex items-center px-4">
+<span class="iconify w-5 h-5 text-gray-400 mr-2" data-icon="material-symbols:search"></span>
+<input class="bg-transparent text-sm outline-none w-full text-gray-600 placeholder-gray-400" placeholder="投/被保人/保单号" type="text"/>
+</div>
+<button class="text-custom-green font-medium text-sm px-2">搜索</button>
+</div>
+</div>
+<!-- 内容滚动区 (676px) -->
+<div class="flex-1 overflow-y-auto hide-scrollbar p-3 space-y-3">
+<!-- 业务明细卡片 -->
+<div class="bg-white rounded-lg shadow-sm p-4 text-sm relative">
+<!-- 保单号和状态 -->
+<div class="flex justify-between items-center mb-4">
+<div class="flex items-center">
+<span class="iconify w-5 h-5 text-gray-800 mr-1" data-icon="material-symbols:person-outline"></span>
+<span class="font-bold text-gray-900">43A1094839303</span>
+</div>
+<span class="text-red-500 font-medium">待回复</span>
+</div>
+<!-- 核心列表数据 -->
+<div class="space-y-2.5">
+<p class="flex justify-between"><span class="text-gray-400">交费类型</span><span class="text-gray-700">趸交</span></p>
+<p class="flex justify-between"><span class="text-gray-400">交费方式</span><span class="text-gray-700">转账</span></p>
+<p class="flex justify-between"><span class="text-gray-400">销售网点</span><span class="text-gray-700">招商银行陆家嘴支行</span></p>
+<p class="flex justify-between"><span class="text-gray-400">理财经理</span><span class="text-gray-700">张三（SH88889）</span></p>
+<p class="flex justify-between"><span class="text-gray-400">被保险人</span><span class="text-gray-700">张三</span></p>
+<p class="flex justify-between"><span class="text-gray-400">申请日期</span><span class="text-gray-700">2023年1月31日</span></p>
+<p class="flex justify-between"><span class="text-gray-400">预计关闭日期</span><span class="text-gray-700">2024年1月31日</span></p>
+</div>
+<!-- 人员身份标签 -->
+<div class="flex justify-between items-center mb-4">
+<div class="flex items-center">
+<div class="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-[10px]">投</div>
+<span class="text-gray-700 ml-2">宏意</span>
+</div>
+<div class="flex items-center">
+<div class="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 text-[10px]">被</div>
+<span class="text-gray-700 ml-2">宏意 女</span>
+</div>
+</div>
+<!-- 底部操作条 -->
+<div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-end">
+<div class="flex space-x-2">
+<button class="border border-custom-green text-custom-green px-3 py-1 rounded-full text-xs">查看照会</button>
+<button class="bg-custom-green text-white px-3 py-1 rounded-full text-xs shadow-sm">回复照会</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text-center py-6">
+<span class="text-gray-300 text-xs tracking-wider">暂无更多数据</span>
+</div>
+</div>
+<!-- 底部右下角悬浮工具按钮 -->
+<div class="absolute bottom-6 right-4 z-50 flex flex-col space-y-3 items-end">
+<div class="bg-custom-green text-white px-3 py-1 rounded text-[10px] font-mono shadow-md">vConsole</div>
+
+</div>
+</body>
+</html>
