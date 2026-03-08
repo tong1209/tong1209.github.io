@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>首页</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+    
+    /* 弹窗样式 */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .popup-content {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      text-align: center;
+      width: 70%;
+      max-width: 300px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+</head>
+<body class="bg-gray-100 min-h-screen flex justify-center items-start p-4">
+<div>
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- 系统状态栏 (44px) -->
+<div class="h-[44px] flex justify-between items-center px-6">
+<span class="text-sm font-semibold">9:53</span>
+<div class="flex items-center space-x-1.5">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
+<div class="bg-black h-full w-[33%]"></div>
+</div>
+</div>
+</div>
+<!-- 标题栏 (56px) -->
+<div class="h-[56px] flex justify-between items-center px-4">
+<h1 class="text-2xl font-bold text-gray-900 ml-2">工作台</h1>
+<div class="flex items-center space-x-5 text-gray-700">
+<span class="iconify w-6 h-6" data-icon="material-symbols:search"></span>
+<span class="iconify w-6 h-6" data-icon="material-symbols:grid-view-outline"></span>
+<span class="iconify w-6 h-6" data-icon="material-symbols:settings-outline"></span>
+</div>
+</div>
+<!-- 内容区 (676px) - 滚动区域 -->
+<div class="flex-1 overflow-y-auto hide-scrollbar bg-white pb-[86px]">
+<!-- 银保工具模块 -->
+<section class="mb-4">
+<div class="px-4 py-3 bg-gray-50 text-gray-500 font-medium border-b border-gray-100">银保工具</div>
+<div class="grid grid-cols-4 gap-y-6 py-6 px-2">
+<!-- 展宏图 -->
+<a href="https://rtkpi-uat.internal.manulife-sinochem.com/ybrdph5/" class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#F49600] rounded-xl flex items-center justify-center shadow-sm">
+<div class="flex flex-col items-center">
+<span class="text-[8px] text-white font-bold leading-none">YB</span>
+<span class="iconify text-white w-5 h-5 mt-0.5" data-icon="material-symbols:show-chart"></span>
+</div>
+</div>
+<span class="text-xs text-gray-700 text-center px-1">展宏图</span>
+</a>
+<!-- 计划书 -->
+<a href="https://wxcs.internal.manulife-sinochem.com/sit/moip/sit-yb/login/#/login?agentCode=SH85686&channelCode=B&openId=15646511654654654" class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#F49600] rounded-xl flex items-center justify-center shadow-sm">
+<div class="flex flex-col items-center">
+<span class="text-[8px] text-white font-bold leading-none">JH</span>
+<span class="iconify text-white w-5 h-5 mt-0.5" data-icon="material-symbols:description"></span>
+</div>
+</div>
+<span class="text-xs text-gray-700 text-center px-1">计划书</span>
+</a>
+<!-- 保单查询 -->
+<a href="【保单查询】/保单列表.html" class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#F49600] rounded-xl flex items-center justify-center shadow-sm">
+<div class="flex flex-col items-center">
+<span class="text-[8px] text-white font-bold leading-none">BD</span>
+<span class="iconify text-white w-5 h-5 mt-0.5" data-icon="material-symbols:receipt-long"></span>
+</div>
+</div>
+<span class="text-xs text-gray-700 text-center px-1">保单查询</span>
+</a>
+<!-- 客户查询 -->
+<a href="客户列表.html" class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#F49600] rounded-xl flex items-center justify-center shadow-sm">
+<div class="flex flex-col items-center">
+<span class="text-[8px] text-white font-bold leading-none">KH</span>
+<span class="iconify text-white w-5 h-5 mt-0.5" data-icon="material-symbols:groups"></span>
+</div>
+</div>
+<span class="text-xs text-gray-700 text-center px-1">客户查询</span>
+</a>
+<!-- 待办事项 -->
+<a href="【待办】/待办事项.html" class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#00A758] rounded-xl flex items-center justify-center shadow-sm">
+<div class="flex flex-col items-center">
+<span class="text-[8px] text-white font-bold leading-none">DB</span>
+<span class="iconify text-white w-5 h-5 mt-0.5" data-icon="material-symbols:checklist"></span>
+</div>
+</div>
+<span class="text-xs text-gray-700 text-center px-1">待办事项</span>
+</a>
+<!-- BT管理图标 -->
+<a href="【BT管理】/BT管理首页.html" class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#00A758] rounded-xl flex items-center justify-center shadow-sm">
+<div class="flex flex-col items-center">
+<span class="text-[8px] text-white font-bold leading-none">BT</span>
+<span class="iconify text-white w-5 h-5 mt-0.5" data-icon="material-symbols:manage-accounts"></span>
+</div>
+</div>
+<span class="text-xs text-gray-700 text-center px-1">BT管理</span>
+</a>
+<!-- 入司图标 -->
+<a href="【BSM管理】/BSM入司主界面.html" class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#00A758] rounded-xl flex items-center justify-center shadow-sm cursor-pointer">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:add-business"></span>
+</div>
+<span class="text-xs text-gray-700">入司</span>
+</a>
+<!-- 离司图标 -->
+<div class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#00A758] rounded-xl flex items-center justify-center shadow-sm cursor-pointer" onclick="window.location.href='【BSM管理】/【BSM离职】/离职管理.html';">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:person-remove"></span>
+</div>
+<span class="text-xs text-gray-700">离司</span>
+</div>
+<!-- 宏博士 -->
+<a href="#" class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-[#00A758] rounded-xl flex items-center justify-center shadow-sm">
+<div class="flex flex-col items-center">
+<span class="text-[8px] text-white font-bold leading-none">HS</span>
+<span class="iconify text-white w-5 h-5 mt-0.5" data-icon="material-symbols:school"></span>
+</div>
+</div>
+<span class="text-xs text-gray-700 text-center px-1">宏博士</span>
+</a>
+</div>
+</section>
+<!-- 常用办公模块 -->
+<section class="mb-4">
+<div class="px-4 py-3 bg-gray-50 text-gray-500 font-medium border-b border-gray-100">常用办公</div>
+<div class="grid grid-cols-4 gap-y-6 py-6 px-2">
+<!-- 图标条目 -->
+<div class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center shadow-sm">
+<span class="text-white font-bold text-lg">OA</span>
+</div>
+<span class="text-xs text-gray-700">OA办公</span>
+</div>
+<div class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-sm">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:school"></span>
+</div>
+<span class="text-xs text-gray-700">宏学堂</span>
+</div>
+<div class="flex flex-col items-center space-y-2 text-center">
+<div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-sm">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:arrow-upward"></span>
+</div>
+<span class="text-[10px] leading-tight text-gray-700 px-1">中欧在线学习平台</span>
+</div>
+<div class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shadow-sm">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:flight"></span>
+</div>
+<span class="text-xs text-gray-700">美亚商旅</span>
+</div>
+<div class="flex flex-col items-center space-y-2 text-center">
+<div class="w-12 h-12 bg-white border border-gray-100 rounded-xl flex items-center justify-center shadow-sm overflow-hidden">
+<img alt="mobile exhibition" class="w-full h-full object-cover" id="1" src="https://modao.cc/agent-py/media/generated_images/2026-01-04/0473af69f9104e80a66f09c123614bce.jpg"/>
+</div>
+<span class="text-[10px] leading-tight text-gray-700 px-1">移动展业2.0计划书体验版</span>
+</div>
+<div class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center shadow-sm">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:calendar-month-outline"></span>
+</div>
+<span class="text-xs text-gray-700">日程</span>
+</div>
+<div class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-orange-400 rounded-xl flex items-center justify-center shadow-sm">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:video-camera-front-outline"></span>
+</div>
+<span class="text-xs text-gray-700">会议</span>
+</div>
+<div class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-teal-400 rounded-xl flex items-center justify-center shadow-sm">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:checklist"></span>
+</div>
+<span class="text-xs text-gray-700">任务</span>
+</div>
+</div>
+</section>
+<!-- 数据报表模块 -->
+<section>
+<div class="px-4 py-3 bg-gray-50 text-gray-500 font-medium border-b border-gray-100">数据报表</div>
+<div class="grid grid-cols-4 py-6 px-2">
+<div class="flex flex-col items-center space-y-2">
+<div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-sm">
+<span class="iconify text-white w-7 h-7" data-icon="material-symbols:data-info-alert-outline"></span>
+</div>
+<span class="text-xs text-gray-700 text-center px-1">用户数据报表</span>
+</div>
+</div>
+</section>
+<!-- 日期水印 (20260104) -->
+<div class="absolute inset-0 pointer-events-none opacity-[0.03] select-none text-[8px] flex flex-wrap gap-10 p-4 transform rotate-[-15deg]">
+<span class="whitespace-nowrap">20260104 21:32:01</span>
+<span class="whitespace-nowrap">20260104 21:32:01</span>
+<span class="whitespace-nowrap">20260104 21:32:01</span>
+<span class="whitespace-nowrap">20260104 21:32:01</span>
+<span class="whitespace-nowrap">20260104 21:32:01</span>
+<span class="whitespace-nowrap">20260104 21:32:01</span>
+</div>
+<!-- Bottom Navigation -->
+<div class="h-[80px] bg-white border-t border-gray-100 flex items-center justify-around px-2 pb-2 absolute bottom-0 left-0 right-0 z-10">
+<div class="flex flex-col items-center space-y-1 group cursor-pointer relative" onclick="window.location.href='消息列表界面.html';">
+<div class="relative">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:chat-processing-outline"></span>
+<span class="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center border border-white">39</span>
+</div>
+<span class="text-[10px] text-gray-400">消息</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='通讯录.html';">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:account-box-outline"></span>
+<span class="text-[10px] text-gray-400">通讯录</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='首页.html';">
+<span class="iconify text-2xl text-orange-500" data-icon="mdi:view-grid"></span>
+<span class="text-[10px] text-orange-500 font-bold">工作台</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='我的.html';">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:account-outline"></span>
+<span class="text-[10px] text-gray-400">我的</span>
+</div>
+</div>
+<!-- 底部安全条 -->
+<div class="h-6 bg-white flex justify-center items-center shrink-0 absolute bottom-0 left-0 right-0 z-20">
+<div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+</div>
+</div>
+<!-- 弹窗 -->
+<div id="popup" class="popup-overlay" style="display: none;">
+  <div class="popup-content">
+    <p>敬请期待</p>
+  </div>
+</div>
+
+<script>
+  function showPopup(title) {
+    document.getElementById('popup').style.display = 'flex';
+    
+    // 点击弹窗外部区域关闭弹窗
+    document.getElementById('popup').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+      }
+    });
+  }
+</script>
+</div>
+</body>
+</html>
