@@ -102,29 +102,26 @@
 <body class="bg-gray-100 min-h-screen flex justify-center items-start p-4">
 <div>
 <!-- APP容器 (375x812) -->
-<div class="w-[375px] h-[812px] bg-gray-50 border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
-        <!-- 顶部状态栏 (44px) -->
-        <div class="h-[44px] bg-white flex justify-between items-center px-6 shrink-0">
-            <span class="text-sm font-semibold">10:05</span>
-            <div class="flex items-center space-x-1.5 opacity-70">
-                <span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
-                <span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
-                <div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
-                    <div class="bg-black h-full w-[32%]"></div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 标题栏 (56px) -->
-        <div class="h-[56px] bg-white flex items-center px-4 shrink-0 border-b border-gray-50">
-            <span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../首页.html';"></span>
-            <h1 class="flex-1 text-center text-lg font-medium text-gray-800">服务人员入司</h1>
-            <div id="inviteButton" class="cursor-pointer">
-                <button class="bg-custom-green text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center" onclick="toggleShareOptions()">
-                    <span class="iconify w-5 h-5" data-icon="material-symbols:person-add"></span>
-                </button>
-            </div>
-        </div>
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Status Bar (44px) -->
+<div class="h-[44px] flex justify-between items-center px-6 shrink-0 bg-white">
+<span class="text-sm font-semibold">10:05</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-gray-400 rounded-[2px] px-[1px] h-3 w-6">
+<div class="bg-gray-600 h-full w-[32%]"></div>
+</div>
+<span class="iconify w-4 h-4 ml-1" data-icon="material-symbols:battery-full"></span>
+</div>
+</div>
+<!-- Title Bar (56px) -->
+<div class="h-[56px] flex justify-between items-center px-4 shrink-0 bg-white">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../首页.html';"></span>
+<h1 class="text-xl font-medium text-gray-800 flex-1 text-center">服务人员入司</h1>
+<div class="flex items-center space-x-3">
+</div>
+</div>
         
         <!-- 导航栏 -->
         <div class="bg-white border-b border-gray-50 shrink-0 overflow-x-auto hide-scrollbar" style="-webkit-overflow-scrolling: touch;">
@@ -138,7 +135,7 @@
         </div>
         
         <!-- 内容区 -->
-        <div class="flex-1 overflow-y-auto hide-scrollbar">
+        <div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50/50 p-4 space-y-3 pb-[86px]">
             <!-- 初面模块 -->
             <div class="tab-content" id="initial-interview">
                 <div class="p-4 space-y-4">

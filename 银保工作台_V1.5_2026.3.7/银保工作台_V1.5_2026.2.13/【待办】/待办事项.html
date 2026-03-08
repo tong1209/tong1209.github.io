@@ -30,41 +30,52 @@
     }
   </style>
 </head>
-<body class="bg-slate-100 flex justify-center items-center min-h-screen py-8">
-<!-- Container for both app and documentation -->
-<div class="flex flex-row space-x-4 p-4">
+<body class="bg-gray-100 min-h-screen flex justify-center items-start p-4">
+<div>
 <!-- APP Container: 375x812 -->
-<div class="w-[375px] h-[812px] bg-slate-50 border border-gray-200 rounded-[40px] shadow-2xl flex flex-col overflow-hidden relative">
-<!-- Header: 56px -->
-<header class="h-[56px] bg-white border-b border-gray-100 flex items-center px-4 flex-shrink-0 z-10">
-<button class="text-gray-600" onclick="window.location.href='../首页.html';">
-<span class="iconify w-6 h-6" data-icon="lucide:chevron-left"></span>
-</button>
-<h1 class="flex-1 text-center text-lg font-medium text-gray-800 pr-6">待办事项</h1>
-</header>
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl flex flex-col overflow-hidden relative">
+<!-- Status Bar (44px) -->
+<div class="h-[44px] flex justify-between items-center px-6 shrink-0 bg-white">
+<span class="text-sm font-semibold">9:56</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-gray-400 rounded-[2px] px-[1px] h-3 w-6">
+<div class="bg-gray-600 h-full w-[32%]"></div>
+</div>
+<span class="iconify w-4 h-4 ml-1" data-icon="material-symbols:battery-full"></span>
+</div>
+</div>
+<!-- Title Bar (56px) -->
+<div class="h-[56px] flex justify-between items-center px-4 shrink-0 bg-white">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../首页.html';"></span>
+<h1 class="text-xl font-medium text-gray-800 flex-1 text-center">待办事项</h1>
+<div class="flex items-center space-x-3">
+</div>
+</div>
 <!-- Content Area: 676px -->
-<main class="flex-1 overflow-y-auto hide-scrollbar pb-[86px]">
+<main class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50/50 p-4 space-y-3 pb-[86px]">
 
 <!-- 照会处理 -->
-<section class="mt-4 bg-white mx-3 rounded-xl overflow-hidden shadow-sm">
-<h2 class="px-4 py-3 text-sm font-bold text-gray-800 bg-gray-50/50">照会处理</h2>
-<div class="divide-y divide-gray-50 px-4">
+<section class="mb-4">
+<div class="px-4 py-3 bg-gray-50 text-gray-500 font-medium border-b border-gray-100">照会处理</div>
+<div class="bg-white">
 <a href="照会处理_新单照会列表.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4 border-b border-gray-50">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:file-text"></span>
 <span class="flex-1 text-sm text-gray-700">新单照会</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">5</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
 </a>
 <a href="照会处理_质检再核保照会.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4 border-b border-gray-50">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:check-square"></span>
 <span class="flex-1 text-sm text-gray-700">质检再核保照会</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">3</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
 </a>
 <a href="照会处理_保全照会列表.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4 border-b border-gray-50">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:refresh-cw"></span>
 <span class="flex-1 text-sm text-gray-700">保全照会</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">7</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
@@ -72,22 +83,21 @@
 </a>
 
 <a href="照会处理_收付费照会列表.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4 border-b border-gray-50">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:wallet"></span>
 <span class="flex-1 text-sm text-gray-700">收付费照会</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">2</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
 </a>
-<a href="照会处理_理赔照会列表.html" class="block group border-l-0">
-<div class="flex items-center py-4">
+<a href="照会处理_理赔照会列表.html" class="block group">
+<div class="flex items-center py-4 px-4 border-b border-gray-50">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:shield-check"></span>
 <span class="flex-1 text-sm text-gray-700">理赔照会</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">4</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
 </a>
-
 <a href="照会处理_双录质检照会.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:check-circle"></span>
 <span class="flex-1 text-sm text-gray-700">双录质检照会</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">6</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
@@ -96,18 +106,17 @@
 </div>
 </section>
 <!-- 回访回执 -->
-<section class="mt-4 bg-white mx-3 rounded-xl overflow-hidden shadow-sm">
-<h2 class="px-4 py-3 text-sm font-bold text-gray-800 bg-gray-50/50">回执回访</h2>
-<div class="divide-y divide-gray-50 px-4">
-
+<section class="mb-4">
+<div class="px-4 py-3 bg-gray-50 text-gray-500 font-medium border-b border-gray-100">回执回访</div>
+<div class="bg-white">
 <a href="回访回执_新单回访清单.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4 border-b border-gray-50">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:clipboard-check"></span>
 <span class="flex-1 text-sm text-gray-700">新单回访清单</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">8</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
 </a>
-<div class="flex items-center py-4 group" onclick="window.location.href='回访回执_新单回执未签收清单.html'">
+<div class="flex items-center py-4 px-4 group" onclick="window.location.href='回访回执_新单回执未签收清单.html'">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:mail"></span>
 <span class="flex-1 text-sm text-gray-700">新单回执未签收清单</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">9</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
@@ -115,10 +124,10 @@
 </div>
 </section>
 <!-- 续保转保 -->
-<section class="mt-4 bg-white mx-3 rounded-xl overflow-hidden shadow-sm">
-<h2 class="px-4 py-3 text-sm font-bold text-gray-800 bg-gray-50/50">续保转保</h2>
-<div class="divide-y divide-gray-50 px-4">
-<div class="flex items-center py-4 group" onclick="window.location.href='续保转包_一年期附加险续保未完成清单.html'">
+<section class="mb-4">
+<div class="px-4 py-3 bg-gray-50 text-gray-500 font-medium border-b border-gray-100">续保转保</div>
+<div class="bg-white">
+<div class="flex items-center py-4 px-4 group" onclick="window.location.href='续保转包_一年期附加险续保未完成清单.html'">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:calendar-clock"></span>
 <div class="flex-1 flex items-center justify-between">
 <span class="text-sm text-gray-700 truncate">一年期附加险续保未完成</span>
@@ -129,11 +138,10 @@
 </div>
 </section>
 <!-- 收付费 -->
-<section class="mt-4 bg-white mx-3 rounded-xl overflow-hidden shadow-sm">
-<h2 class="px-4 py-3 text-sm font-bold text-gray-800 bg-gray-50/50">收付费</h2>
-<div class="divide-y divide-gray-50 px-4">
-
-<div class="flex items-center py-4 group" onclick="window.location.href='收付费_保单款项支付失败清单.html'">
+<section class="mb-4">
+<div class="px-4 py-3 bg-gray-50 text-gray-500 font-medium border-b border-gray-100">收付费</div>
+<div class="bg-white">
+<div class="flex items-center py-4 px-4 group" onclick="window.location.href='收付费_保单款项支付失败清单.html'">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:alert-circle"></span>
 <div class="flex-1 flex items-center justify-between">
 <span class="text-sm text-gray-700 truncate">保单款项支付失败清单</span>
@@ -141,7 +149,7 @@
 </div>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
-<div class="flex items-center py-4 group" onclick="window.location.href='收付费_保单款项待支付清单.html'">
+<div class="flex items-center py-4 px-4 group" onclick="window.location.href='收付费_保单款项待支付清单.html'">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:alert-circle"></span>
 <div class="flex-1 flex items-center justify-between">
 <span class="text-sm text-gray-700 truncate">保单款项待支付清单</span>
@@ -149,37 +157,33 @@
 </div>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
-
 </div>
 </section>
 <!-- 其他 -->
-<section class="mt-4 bg-white mx-3 rounded-xl overflow-hidden shadow-sm mb-4">
-<h2 class="px-4 py-3 text-sm font-bold text-gray-800 bg-gray-50/50">其他</h2>
-<div class="divide-y divide-gray-50 px-4">
-
+<section class="mb-4">
+<div class="px-4 py-3 bg-gray-50 text-gray-500 font-medium border-b border-gray-100">其他</div>
+<div class="bg-white">
 <a href="其他_银保身份证件待更新.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4 border-b border-gray-50">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:user-cog"></span>
 <span class="flex-1 text-sm text-gray-700">身份证件待更新清单</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">14</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
 </a>
 <a href="其他_保单满期利益待领取清单.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4 border-b border-gray-50">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:bell"></span>
-<span class="flex-1 text-sm text-gray-700">保单满期利益待领取清单</span>
-<span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2 z-50">13</span>
+<span class="flex-1 text-sm text-gray-700">保单满期利益待领取清单</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2 z-50">13</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
 </a>
 <a href="其他_客户身份信息补充清单.html" class="block group">
-<div class="flex items-center py-4">
+<div class="flex items-center py-4 px-4">
 <span class="iconify w-5 h-5 text-emerald-500 mr-3" data-icon="lucide:user-plus"></span>
 <span class="flex-1 text-sm text-gray-700">客户身份信息补充清单</span><span class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full mr-2">15</span>
 <span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
 </div>
 </a>
-
 </div>
 </section>
 </main>
