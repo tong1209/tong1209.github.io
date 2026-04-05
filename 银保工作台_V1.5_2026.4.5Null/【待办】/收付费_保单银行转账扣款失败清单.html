@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>保单银行转账扣款失败清单</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-card {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[770px] bg-gray-50 border border-gray-200 rounded-xl shadow-2xl relative overflow-hidden flex flex-col">
+<!-- 顶部状态栏 (44px) -->
+<div class="h-[44px] bg-white flex justify-between items-center px-6 shrink-0">
+<span class="text-sm font-semibold">10:06</span>
+<div class="flex items-center space-x-1.5 grayscale opacity-70">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
+<div class="bg-black h-full w-[31%]"></div>
+</div>
+</div>
+</div>
+<!-- 标题栏 (56px) -->
+<div class="h-[56px] bg-white border-b border-gray-100 flex items-center px-4 shrink-0">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.history.back();"></span>
+<h1 class="flex-1 text-center text-lg font-medium text-gray-800 pr-6">保单银行转账扣款失败清单</h1>
+</div>
+<!-- 搜索功能 -->
+<div class="p-3 bg-white shrink-0">
+<div class="flex space-x-2">
+<div class="flex-1 bg-gray-100 rounded-full h-9 flex items-center px-4">
+<span class="iconify w-5 h-5 text-gray-400 mr-2" data-icon="material-symbols:search"></span>
+<input class="bg-transparent text-sm outline-none w-full text-gray-600 placeholder-gray-400" placeholder="投保人/被保险人/保单号码" type="text"/>
+</div>
+<button class="text-custom-green font-medium text-sm px-2">搜索</button>
+</div>
+</div>
+<!-- 内容区 (676px) -->
+<div class="flex-1 overflow-y-auto hide-scrollbar p-3 space-y-3">
+<!-- 保单卡片 1 -->
+<div class="bg-white rounded-lg shadow-sm p-4 animate-card" style="animation-delay: 0.1s">
+<div class="flex items-center space-x-2 border-b border-gray-50 pb-3 mb-3">
+<div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+<span class="iconify w-5 h-5 text-gray-400" data-icon="material-symbols:person-outline"></span>
+</div>
+<span class="font-medium text-gray-800">郑劳吟</span>
+</div>
+<div class="space-y-2 text-sm">
+<div class="flex justify-between">
+<span class="text-gray-400">保单号码</span>
+<span class="text-gray-700 font-mono">P900972091</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">主险名称</span>
+<span class="text-gray-700">宏图相伴悦享版</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">收费类型</span>
+<span class="text-gray-700">首期收费</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">到期保费</span>
+<span class="text-gray-700">100,000.00</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">应交日期</span>
+<span class="text-gray-700">2025年11月17日</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">扣款日期</span>
+<span class="text-gray-700">2025年11月17日</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">扣款金额</span>
+<span class="text-gray-700">100,000.00</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">失败原因</span>
+<span class="text-gray-700">其它错误</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">扣款银行</span>
+<span class="text-gray-700">工商银行</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">银行账号</span>
+<span class="text-gray-700 font-mono">6222**********1000</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">账户所有人</span>
+<span class="text-gray-700">郑劳吟</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-gray-50 flex items-center space-x-6 text-xs text-gray-500">
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-emerald-500 text-emerald-500 flex items-center justify-center mr-1 scale-90">投</div>
+<span>郑劳吟</span>
+</div>
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center mr-1 scale-90">被</div>
+<span>赵缝荇</span>
+</div>
+</div>
+</div>
+<!-- 保单卡片 2 -->
+<div class="bg-white rounded-lg shadow-sm p-4 animate-card" style="animation-delay: 0.2s">
+<div class="flex items-center space-x-2 border-b border-gray-50 pb-3 mb-3">
+<div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+<span class="iconify w-5 h-5 text-gray-400" data-icon="material-symbols:person-outline"></span>
+</div>
+<span class="font-medium text-gray-800">李凝</span>
+</div>
+<div class="space-y-2 text-sm">
+<div class="flex justify-between">
+<span class="text-gray-400">保单号码</span>
+<span class="text-gray-700 font-mono">P900972092</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">主险名称</span>
+<span class="text-gray-700">宏图相伴悦享版</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">收费类型</span>
+<span class="text-gray-700">首期收费</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">到期保费</span>
+<span class="text-gray-700">50,000.00</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">应交日期</span>
+<span class="text-gray-700">2025年11月18日</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">扣款日期</span>
+<span class="text-gray-700">2025年11月18日</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">扣款金额</span>
+<span class="text-gray-700">100,000.00</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">失败原因</span>
+<span class="text-gray-700">账户余额不足</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">扣款银行</span>
+<span class="text-gray-700">农业银行</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">银行账号</span>
+<span class="text-gray-700 font-mono">6228**********2000</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">账户所有人</span>
+<span class="text-gray-700">李凝</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-gray-50 flex items-center space-x-6 text-xs text-gray-500">
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-emerald-500 text-emerald-500 flex items-center justify-center mr-1 scale-90">投</div>
+<span>李凝</span>
+</div>
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center mr-1 scale-90">被</div>
+<span>李凝</span>
+</div>
+</div>
+</div>
+<div class="text-center py-4 text-gray-300 text-xs">没有更多了</div>
+</div>
+<!-- 底部悬浮按钮 (模拟) -->
+<div class="absolute bottom-6 right-6 z-50">
+<div class="bg-emerald-500 text-white px-3 py-1 rounded text-[10px] font-mono shadow-md cursor-pointer hover:bg-emerald-600 transition-colors">
+        vConsole
+      </div>
+</div>
+<!-- 底部安全条 -->
+<div class="h-6 bg-white flex justify-center items-center shrink-0">
+<div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+</div>
+</div>
+</body>
+</html>

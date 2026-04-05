@@ -1,0 +1,159 @@
+﻿
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>银保身份证件待更新</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[770px] bg-gray-50 border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- 系统状态栏模拟 -->
+<div class="h-[44px] flex justify-between items-center px-6 shrink-0 bg-white">
+<span class="text-sm font-semibold">10:05</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4 text-custom-green" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6 relative">
+<div class="bg-black h-full w-[31%]"></div>
+</div>
+</div>
+</div>
+<!-- 标题栏 -->
+<div class="h-[56px] bg-white flex justify-between items-center px-4 shrink-0 border-b border-gray-50">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.history.back();"></span>
+<h1 class="text-lg font-medium text-gray-800 flex-1 text-center">银保身份证件待更新</h1>
+
+</div>
+<!-- 搜索功能 -->
+<div class="p-3 bg-white shrink-0">
+<div class="flex space-x-2">
+<div class="flex-1 bg-gray-100 rounded-full h-9 flex items-center px-4">
+<span class="iconify w-5 h-5 text-gray-400 mr-2" data-icon="material-symbols:search"></span>
+<input class="bg-transparent text-sm outline-none w-full text-gray-600 placeholder-gray-400" placeholder="客户姓名/保单号码" type="text"/>
+</div>
+<button class="text-custom-green font-medium text-sm px-2">
+<span class="iconify w-5 h-5" data-icon="material-symbols:filter-alt-outline"></span>
+</button>
+</div>
+</div>
+<!-- 内容滚动区 (676px) -->
+<div class="flex-1 overflow-y-auto hide-scrollbar p-0">
+<!-- 客户列表 -->
+<div class="space-y-0">
+<div class="bg-white p-4 border-b border-gray-50">
+<div class="flex items-center justify-between mb-3">
+<span class="iconify w-8 h-8 text-gray-400 mr-3" data-icon="lucide:user"></span>
+<span class="flex-1 text-sm font-bold text-gray-700">王副舄</span>
+<span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
+</div>
+<div class="space-y-1">
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">证件有效期</span>
+<span class="text-red-500">2013-01-01</span>
+</p>
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">投保人</span>
+<span class="text-gray-700">赵锡莆</span>
+</p>
+</div>
+</div>
+<div class="bg-white p-4 border-b border-gray-50">
+<div class="flex items-center justify-between mb-3">
+<span class="iconify w-8 h-8 text-gray-400 mr-3" data-icon="lucide:user"></span>
+<span class="flex-1 text-sm font-bold text-gray-700">王兖缟</span>
+<span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
+</div>
+<div class="space-y-1">
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">证件有效期</span>
+<span class="text-red-500">2013-01-01</span>
+</p>
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">投保人</span>
+<span class="text-gray-700">谷镰桥</span>
+</p>
+</div>
+</div>
+<div class="bg-white p-4 border-b border-gray-50">
+<div class="flex items-center justify-between mb-3">
+<span class="iconify w-8 h-8 text-gray-400 mr-3" data-icon="lucide:user"></span>
+<span class="flex-1 text-sm font-bold text-gray-700">王颜樵</span>
+<span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
+</div>
+<div class="space-y-1">
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">证件有效期</span>
+<span class="text-red-500">2013-01-01</span>
+</p>
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">投保人</span>
+<span class="text-gray-700">梅哥</span>
+</p>
+</div>
+</div>
+<div class="bg-white p-4 border-b border-gray-50">
+<div class="flex items-center justify-between mb-3">
+<span class="iconify w-8 h-8 text-gray-400 mr-3" data-icon="lucide:user"></span>
+<span class="flex-1 text-sm font-bold text-gray-700">张急</span>
+<span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
+</div>
+<div class="space-y-1">
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">证件有效期</span>
+<span class="text-red-500">2015-04-27</span>
+</p>
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">投保人</span>
+<span class="text-gray-700">张急</span>
+</p>
+</div>
+</div>
+<div class="bg-white p-4">
+<div class="flex items-center justify-between mb-3">
+<span class="iconify w-8 h-8 text-gray-400 mr-3" data-icon="lucide:user"></span>
+<span class="flex-1 text-sm font-bold text-gray-700">卞锡佩</span>
+<span class="iconify w-4 h-4 text-gray-300" data-icon="lucide:chevron-right"></span>
+</div>
+<div class="space-y-1">
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">证件有效期</span>
+<span class="text-red-500">2013-01-01</span>
+</p>
+<p class="flex justify-between text-sm">
+<span class="text-gray-500">投保人</span>
+<span class="text-gray-700">赵锡莆</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 底部右下角悬浮工具按钮 -->
+<div class="absolute bottom-6 right-4 z-50 flex flex-col space-y-3 items-end">
+<div class="bg-custom-green text-white px-3 py-1 rounded text-[10px] font-mono shadow-md">vConsole</div>
+
+</div>
+</body>
+</html>

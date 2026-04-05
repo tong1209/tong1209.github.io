@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>权益概览</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 全局字体 */
+        body {
+            font-family: 'NotoSansCJKsc-Medium', sans-serif;
+        }
+        
+        /* 中宏绿 */
+        .text-custom-green {
+            color: #00A758;
+        }
+        
+        .bg-custom-green {
+            background-color: #00A758;
+        }
+        
+        /* 卡片样式 */
+        .benefit-card {
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- APP Container -->
+    <div class="w-full h-screen bg-white relative overflow-hidden flex flex-col">
+        <!-- Status Bar -->
+        <div class="h-[47px] flex justify-between items-center px-6 shrink-0 bg-white">
+            <span class="text-sm font-semibold">16:28</span>
+            <div class="flex items-center space-x-2">
+                <span class="text-xs text-gray-500">5G</span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+                <span class="text-xs text-gray-500">77%</span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:battery-full"></span>
+            </div>
+        </div>
+        
+        <!-- Title Bar -->
+        <div class="h-[56px] flex justify-between items-center px-4 shrink-0 bg-white border-b border-gray-100">
+            <button class="text-gray-700" onclick="window.location.href='客户信息详情.html';">
+                <span class="iconify w-6 h-6" data-icon="material-symbols:arrow-back-ios-new-rounded"></span>
+            </button>
+            <h1 class="text-lg font-medium text-gray-800">权益概览</h1>
+            <div class="w-6"></div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50 p-4">
+            <!-- 权益分类卡片 -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="benefit-card bg-white rounded-xl p-4 shadow-sm">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+                            <span class="iconify w-5 h-5 text-custom-green" data-icon="material-symbols:card-membership"></span>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-800">尊享会</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">当前等级：白金会员</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-custom-green font-medium">查看详情</span>
+                        <span class="iconify w-4 h-4 text-gray-400" data-icon="material-symbols:chevron-right-rounded"></span>
+                    </div>
+                </div>
+                
+                <div class="benefit-card bg-white rounded-xl p-4 shadow-sm">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                            <span class="iconify w-5 h-5 text-blue-500" data-icon="material-symbols:health-and-safety"></span>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-800">健康管理</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">当前权益：8项</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-custom-green font-medium">查看详情</span>
+                        <span class="iconify w-4 h-4 text-gray-400" data-icon="material-symbols:chevron-right-rounded"></span>
+                    </div>
+                </div>
+                
+                <div class="benefit-card bg-white rounded-xl p-4 shadow-sm">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center">
+                            <span class="iconify w-5 h-5 text-orange-500" data-icon="material-symbols:home"></span>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-800">养老服务</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">当前等级：无</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-custom-green font-medium">查看详情</span>
+                        <span class="iconify w-4 h-4 text-gray-400" data-icon="material-symbols:chevron-right-rounded"></span>
+                    </div>
+                </div>
+                
+                <div class="benefit-card bg-white rounded-xl p-4 shadow-sm">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center">
+                            <span class="iconify w-5 h-5 text-purple-500" data-icon="material-symbols:directions-run"></span>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-800">MOVE权益</h3>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">当前等级：银卡会员</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-custom-green font-medium">查看详情</span>
+                        <span class="iconify w-4 h-4 text-gray-400" data-icon="material-symbols:chevron-right-rounded"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 最近使用的权益 -->
+            <div class="bg-white rounded-xl p-4 shadow-sm mb-6">
+                <h3 class="text-base font-bold text-gray-800 mb-4">最近使用的权益</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center">
+                                <span class="iconify w-4 h-4 text-custom-green" data-icon="material-symbols:person"></span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">专家门诊预约服务</p>
+                                <p class="text-xs text-gray-500">2024-01-15</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-custom-orange font-medium">已使用</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center">
+                                <span class="iconify w-4 h-4 text-blue-500" data-icon="material-symbols:phone-in-talk"></span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">电话健康咨询</p>
+                                <p class="text-xs text-gray-500">2024-01-10</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-custom-orange font-medium">已使用</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 即将到期的权益 -->
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <h3 class="text-base font-bold text-gray-800 mb-4">即将到期的权益</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-orange-50 rounded-full flex items-center justify-center">
+                                <span class="iconify w-4 h-4 text-orange-500" data-icon="material-symbols:medical-services"></span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">健康体检</p>
+                                <p class="text-xs text-gray-500">有效期至：2024-03-31</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-coral-red font-medium">剩余2个月</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

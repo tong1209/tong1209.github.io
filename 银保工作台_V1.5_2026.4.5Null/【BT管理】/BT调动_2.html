@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BT调动_2</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .required::before { content: '*'; color: red; margin-right: 2px; }
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+</style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP Container -->
+<div class="w-[375px] h-[770px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Title Bar -->
+<div class="h-[56px] flex items-center justify-between px-4 pt-4 bg-white border-b border-gray-50">
+<span class="iconify w-6 h-6 text-gray-700 z-10" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='BT调动.html';"></span>
+<h1 class="text-lg font-bold text-gray-900 flex-1 text-center">BT调动</h1>
+<div class="w-6"></div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50 px-4 py-4 space-y-4">
+<!-- Transfer Form -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 space-y-4">
+<h2 class="text-sm font-bold text-gray-900">调动信息</h2>
+
+<!-- 目标总行 -->
+<div class="flex flex-col space-y-1">
+<label class="text-xs font-medium text-gray-700 required">目标总行</label>
+<select class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择目标总行</option>
+<option value="001">001-招商银行</option>
+<option value="002">002-工商银行</option>
+<option value="003">003-建设银行</option>
+</select>
+</div>
+
+<!-- 目标管理机构 -->
+<div class="flex flex-col space-y-1">
+<label class="text-xs font-medium text-gray-700 required">目标管理机构</label>
+<select class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择目标管理机构</option>
+<option value="001">001-上海</option>
+<option value="002">002-北京</option>
+<option value="003">003-南京</option>
+</select>
+</div>
+
+<!-- 目标网点 -->
+<div class="flex flex-col space-y-1">
+<label class="text-xs font-medium text-gray-700 required">目标网点</label>
+<select class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option value="">请选择目标网点</option>
+<option value="001">001-上海招商长宁网点2</option>
+<option value="002">002-上海招商浦东网点1</option>
+</select>
+</div>
+
+<!-- 调动原因 -->
+<div class="flex flex-col space-y-1">
+<label class="text-xs font-medium text-gray-700 required">调动原因</label>
+<textarea class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs" rows="3" placeholder="请输入调动原因"></textarea>
+</div>
+
+<!-- 调动日期 -->
+<div class="flex flex-col space-y-1">
+<label class="text-xs font-medium text-gray-700 required">调动日期</label>
+<input type="date" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs"/>
+</div>
+
+<!-- 提交按钮 -->
+<div class="flex justify-center">
+<button class="w-full bg-[#00A758] text-white text-xs font-medium py-2 px-4 rounded-lg shadow-md">提交调动申请</button>
+</div>
+</div>
+</div>
+
+
+</div>
+</body>
+</html>

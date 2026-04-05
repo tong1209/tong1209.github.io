@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>保单列表 - 核保阻断</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    body { background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .policy-card { transition: all 0.2s ease; }
+    .policy-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1); }
+</style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<div class="w-[375px] h-[770px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+    <header class="pt-12 pb-4 px-4 bg-white flex items-center justify-between border-b border-slate-50 sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <a class="p-2 hover:bg-slate-50 rounded-full transition-colors" href="投保追踪主页面.html">
+                <span class="iconify text-2xl text-slate-800" data-icon="solar:alt-arrow-left-outline"></span>
+            </a>
+            <div>
+                <h1 class="text-lg font-bold text-slate-800">保单明细清单</h1>
+                <p class="text-xs text-slate-500">线上单 - 核保阻断 (204)</p>
+            </div>
+        </div>
+        <button class="p-2"><span class="iconify text-2xl text-slate-600" data-icon="solar:magnifer-linear"></span></button>
+    </header>
+    
+    <div class="bg-rose-50/50 px-4 py-3 flex items-center justify-between border-b border-slate-100">
+        <div class="flex items-center gap-2">
+            <span class="text-xs text-rose-600 font-medium bg-white px-2 py-1 rounded border border-rose-100 shadow-sm">
+                当前状态: 核保阻断
+            </span>
+            <span class="text-[10px] text-slate-400">共 204 条记录</span>
+        </div>
+        <span class="iconify text-rose-600" data-icon="solar:filter-bold-duotone"></span>
+    </div>
+    
+    <main class="h-[630px] overflow-y-auto px-4 py-4 hide-scrollbar space-y-3">
+        <!-- 紧急处理提醒 -->
+        <div class="bg-rose-50 border border-rose-200 rounded-xl p-3 mb-2">
+            <div class="flex items-start gap-2">
+                <span class="iconify text-rose-500 mt-0.5" data-icon="solar:danger-circle-bold"></span>
+                <div>
+                    <p class="text-xs font-bold text-rose-700">需要紧急处理</p>
+                    <p class="text-[10px] text-rose-600 mt-1">以下保单因核保阻断需要人工干预，请及时处理</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 保单卡片 1 -->
+        <div class="policy-card bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
+            <div class="flex justify-between items-start mb-3">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-[9px] font-bold rounded">线上单</span>
+                        <span class="text-xs font-bold text-slate-800">张*三</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">投保编码: PA20260214000845</p>
+                </div>
+                <span class="text-sm font-bold text-blue-600">¥ 12,800.00</span>
+            </div>
+            <div class="flex justify-between items-center bg-slate-50 rounded-lg p-2 mb-3">
+                <div class="text-[10px] text-slate-500">
+                    <p>产品：平安乐惠保综合意外险</p>
+                    <p>银行：招商银行 - 深圳分行营业部</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] text-rose-600 font-semibold">核保阻断</span>
+                </div>
+            </div>
+            <div class="bg-amber-50 border border-amber-100 rounded-lg p-2 mb-3">
+                <p class="text-[10px] text-amber-700">
+                    <span class="font-medium">阻断原因：</span>健康告知异常，被保险人有高血压病史且未规律服药
+                </p>
+            </div>
+            <div class="flex justify-between items-center text-[10px] text-slate-400">
+                <span>阻断时间: 2026-02-14 10:20:15</span>
+                <div class="flex gap-2">
+                    <button class="text-rose-600 font-medium text-[10px] px-2 py-1 bg-rose-50 rounded">立即处理</button>
+                    <button class="text-blue-600 font-medium">查看详情</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 保单卡片 2 -->
+        <div class="policy-card bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
+            <div class="flex justify-between items-start mb-3">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 text-[9px] font-bold rounded">线下单</span>
+                        <span class="text-xs font-bold text-slate-800">李*明</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">投保编码: BK20260214001292</p>
+                </div>
+                <span class="text-sm font-bold text-blue-600">¥ 500,000.00</span>
+            </div>
+            <div class="flex justify-between items-center bg-slate-50 rounded-lg p-2 mb-3">
+                <div class="text-[10px] text-slate-500">
+                    <p>产品：五年期年金保险 (分红型)</p>
+                    <p>银行：工商银行 - 长安支行</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] text-rose-600 font-semibold">核保阻断</span>
+                </div>
+            </div>
+            <div class="bg-amber-50 border border-amber-100 rounded-lg p-2 mb-3">
+                <p class="text-[10px] text-amber-700">
+                    <span class="font-medium">阻断原因：</span>职业类别为高空作业人员，超出标准承保范围
+                </p>
+            </div>
+            <div class="flex justify-between items-center text-[10px] text-slate-400">
+                <span>阻断时间: 2026-02-14 09:45:00</span>
+                <div class="flex gap-2">
+                    <button class="text-rose-600 font-medium text-[10px] px-2 py-1 bg-rose-50 rounded">立即处理</button>
+                    <button class="text-blue-600 font-medium">查看详情</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 更多保单卡片... -->
+        <div class="policy-card bg-white rounded-2xl border border-slate-100 p-4 shadow-sm opacity-90">
+            <div class="flex justify-between items-start mb-3">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-[9px] font-bold rounded">线上单</span>
+                        <span class="text-xs font-bold text-slate-800">王*华</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">投保编码: PA20260214000733</p>
+                </div>
+                <span class="text-sm font-bold text-blue-600">¥ 3,200.00</span>
+            </div>
+            <div class="flex justify-between items-center bg-slate-50 rounded-lg p-2 mb-3">
+                <div class="text-[10px] text-slate-500">
+                    <p>产品：e生无忧住院医疗</p>
+                    <p>银行：建设银行 - 北京分行</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] text-rose-600 font-semibold">核保阻断</span>
+                </div>
+            </div>
+            <div class="bg-amber-50 border border-amber-100 rounded-lg p-2 mb-3">
+                <p class="text-[10px] text-amber-700">
+                    <span class="font-medium">阻断原因：</span>年龄超过产品承保上限（65周岁）
+                </p>
+            </div>
+            <div class="flex justify-between items-center text-[10px] text-slate-400">
+                <span>阻断时间: 2026-02-14 09:12:33</span>
+                <div class="flex gap-2">
+                    <button class="text-rose-600 font-medium text-[10px] px-2 py-1 bg-rose-50 rounded">立即处理</button>
+                    <button class="text-blue-600 font-medium">查看详情</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="absolute bottom-1 w-32 h-1 bg-slate-200 left-1/2 -translate-x-1/2 rounded-full"></div>
+</div>
+</body>
+</html>

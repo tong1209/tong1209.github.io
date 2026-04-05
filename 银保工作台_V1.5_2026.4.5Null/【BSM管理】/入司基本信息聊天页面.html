@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>招募微信界面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 自定义绿色 */
+        .text-custom-green {
+            color: #00A758;
+        }
+        
+        .bg-custom-green {
+            background-color: #00A758;
+        }
+        
+        /* 全局字体 */
+        body {
+            font-family: 'NotoSansCJKsc-Medium', sans-serif;
+        }
+        
+        /* 微信聊天样式 */
+        .chat-bubble-left {
+            background-color: #FFFFFF;
+            border-radius: 4px 12px 12px 12px;
+            align-self: flex-start;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .chat-bubble-right {
+            background-color: #95EC69;
+            color: #000;
+            border-radius: 12px 4px 12px 12px;
+            align-self: flex-end;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .chat-time {
+            font-size: 10px;
+            color: #999;
+            margin: 8px 0;
+            text-align: center;
+        }
+        
+        .message-status {
+            font-size: 10px;
+            color: #999;
+            margin-left: 4px;
+        }
+        
+        /* 微信图文链接卡片 */
+        .wechat-link-card {
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .wechat-link-card .card-header {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        
+        .wechat-link-card .card-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #07C160;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .wechat-link-card .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .wechat-link-card .card-desc {
+            font-size: 12px;
+            color: #999;
+            padding: 8px 12px;
+            line-height: 1.5;
+        }
+        
+        .wechat-link-card .card-link {
+            background-color: #F7F7F7;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .wechat-link-card .card-link-text {
+            font-size: 12px;
+            color: #576B95;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <!-- APP容器 (375x812) -->
+    <div class="w-[375px] h-[770px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+        <!-- 顶部状态栏 (44px) -->
+        <div class="h-[44px] bg-white flex justify-between items-center px-6 shrink-0">
+            <span class="text-sm font-semibold">10:05</span>
+            <div class="flex items-center space-x-1.5 opacity-70">
+                <span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+                <div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
+                    <div class="bg-black h-full w-[32%]"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 微信聊天顶部栏 -->
+        <div class="h-[56px] bg-white flex items-center px-4 shrink-0 border-b border-gray-200">
+            <span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.history.back();"></span>
+            <div class="flex-1 flex flex-col items-center justify-center">
+                <h1 class="text-lg font-medium text-gray-900">BSM候选人</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="iconify w-5 h-5 text-gray-700" data-icon="material-symbols:more-horiz"></span>
+            </div>
+        </div>
+        
+        <!-- 聊天内容区 -->
+        <div class="flex-1 overflow-y-auto hide-scrollbar p-4" style="background-color: #EDEDED;">
+            <!-- 日期分隔 -->
+            <div class="chat-time">今天 10:00</div>
+            
+            <!-- SS消息 -->
+            <div class="flex items-start justify-end mb-4">
+                <div class="chat-bubble-right px-4 py-2 max-w-[70%]">
+                    <p class="text-sm">你好！我是XX公司的SS，看到你的简历很符合我们BSM的招聘要求，想和你聊聊这个机会。</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center ml-2 flex-shrink-0">
+                    <span class="text-xs font-medium text-gray-700">SS</span>
+                </div>
+            </div>
+            
+            <!-- BSM消息 -->
+            <div class="flex items-start mb-4">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-2 flex-shrink-0 bg-blue-100">
+                    <span class="iconify w-5 h-5 text-blue-500" data-icon="material-symbols:person"></span>
+                </div>
+                <div class="chat-bubble-left px-3 py-2 max-w-[70%]">
+                    <p class="text-sm text-gray-800">你好！请问BSM具体是做什么的呢？</p>
+                </div>
+            </div>
+            
+            <!-- SS消息 -->
+            <div class="flex items-start justify-end mb-4">
+                <div class="chat-bubble-right px-3 py-2 max-w-[70%]">
+                    <p class="text-sm text-gray-800">银保专管员主要负责银行渠道的保险产品销售和客户服务。我们提供完善的培训和有竞争力的薪酬福利。</p>
+                </div>
+                <div class="w-8 h-8 rounded-full flex items-center justify-center ml-2 flex-shrink-0 bg-gray-200">
+                    <span class="iconify w-5 h-5 text-gray-600" data-icon="material-symbols:person"></span>
+                </div>
+            </div>
+            
+            <!-- SS消息 -->
+            <div class="flex items-start justify-end mb-4">
+                <div class="chat-bubble-right px-3 py-2 max-w-[70%]">
+                    <p class="text-sm text-gray-800">如果你感兴趣的话，我可以发送一个入职信息填写链接给你，你填写完基本信息后我们安排面试。</p>
+                </div>
+                <div class="w-8 h-8 rounded-full flex items-center justify-center ml-2 flex-shrink-0 bg-gray-200">
+                    <span class="iconify w-5 h-5 text-gray-600" data-icon="material-symbols:person"></span>
+                </div>
+            </div>
+            
+            <!-- BSM消息 -->
+            <div class="flex items-start mb-4">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center mr-2 flex-shrink-0 bg-blue-100">
+                    <span class="iconify w-5 h-5 text-blue-500" data-icon="material-symbols:person"></span>
+                </div>
+                <div class="chat-bubble-left px-3 py-2 max-w-[70%]">
+                    <p class="text-sm text-gray-800">好的，我感兴趣，麻烦发我链接吧。</p>
+                </div>
+            </div>
+            
+            <!-- 时间分隔 -->
+            <div class="chat-time">10:05</div>
+            
+            <!-- SS消息 - 基本信息已填写卡片（已完成） -->
+            <div class="flex items-start justify-end mb-4">
+                <div class="chat-bubble-right px-3 py-2 max-w-[80%]">
+                    <div class="wechat-link-card cursor-pointer" onclick="window.location.href='BSM入司时间线.html'">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <span class="iconify w-6 h-6 text-white" data-icon="material-symbols:description"></span>
+                            </div>
+                            <div class="card-title">基本信息已填写</div>
+                        </div>
+                        <div class="card-desc">您已成功填写入职基本信息，请点击查看入司进度和后续安排。</div>
+                        <div class="card-link">
+                            <span class="card-link-text">查看入司进度</span>
+                            <span class="iconify w-4 h-4 text-gray-400" data-icon="material-symbols:chevron-right"></span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end mt-2">
+                        <span class="text-xs text-gray-500">10:10</span>
+                        <span class="message-status">已读</span>
+                    </div>
+                </div>
+                <div class="w-8 h-8 rounded-full flex items-center justify-center ml-2 flex-shrink-0 bg-gray-200">
+                    <span class="iconify w-5 h-5 text-gray-600" data-icon="material-symbols:person"></span>
+                </div>
+            </div>
+            
+            <!-- SS消息 - 入职信息填写（未完成） -->
+            <div class="flex items-start justify-end mb-4">
+                <div class="chat-bubble-right px-3 py-2 max-w-[80%]">
+                    <div class="wechat-link-card cursor-pointer" onclick="window.location.href='BSM信息录入.html'">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <span class="iconify w-6 h-6 text-white" data-icon="material-symbols:description"></span>
+                            </div>
+                            <div class="card-title">入职信息填写</div>
+                        </div>
+                        <div class="card-desc">请点击下方链接填写你的基本信息，我们会尽快与你联系安排面试。</div>
+                        <div class="card-link">
+                            <span class="card-link-text">点击进入填写</span>
+                            <span class="iconify w-4 h-4 text-gray-400" data-icon="material-symbols:chevron-right"></span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end mt-2">
+                        <span class="text-xs text-gray-500">10:05</span>
+                        <span class="message-status">已读</span>
+                    </div>
+                </div>
+                <div class="w-8 h-8 rounded-full flex items-center justify-center ml-2 flex-shrink-0 bg-gray-200">
+                    <span class="iconify w-5 h-5 text-gray-600" data-icon="material-symbols:person"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 聊天输入区 -->
+        <div class="bg-gray-100 border-t border-gray-200 p-2">
+            <div class="flex items-center bg-white rounded-full px-3 py-2 shadow-sm">
+                <span class="iconify w-5 h-5 text-gray-500 mr-3" data-icon="material-symbols:mic"></span>
+                <input type="text" class="flex-1 border-none text-sm focus:outline-none" placeholder="输入消息..."/>
+                <span class="iconify w-5 h-5 text-gray-500 mx-3" data-icon="material-symbols:insert-emoticon"></span>
+                <span class="iconify w-5 h-5 text-gray-500" data-icon="material-symbols:add"></span>
+            </div>
+        </div>
+        
+        <!-- 底部安全条 -->
+        <div class="h-6 bg-white flex justify-center items-center shrink-0">
+            <div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+        </div>
+    </div>
+    
+</body>
+</html>
