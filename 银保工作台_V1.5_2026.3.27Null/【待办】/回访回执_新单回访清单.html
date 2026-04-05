@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>新单回访清单</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-card {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- 顶部状态栏 (44px) -->
+<div class="h-[44px] bg-white flex justify-between items-center px-6 shrink-0">
+<span class="text-sm font-semibold">10:06</span>
+<div class="flex items-center space-x-1.5 grayscale opacity-70">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
+<div class="bg-black h-full w-[31%]"></div>
+</div>
+</div>
+</div>
+<!-- 标题栏 (56px) -->
+<div class="h-[56px] bg-white border-b border-gray-100 flex items-center px-4 shrink-0">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.history.back();"></span>
+<h1 class="flex-1 text-center text-lg font-medium text-gray-800 pr-6">新单回访清单</h1>
+</div>
+<!-- 搜索功能 -->
+<div class="p-3 bg-white shrink-0">
+<div class="flex space-x-2">
+<div class="flex-1 bg-gray-100 rounded-full h-9 flex items-center px-4">
+<span class="iconify w-5 h-5 text-gray-400 mr-2" data-icon="material-symbols:search"></span>
+<input class="bg-transparent text-sm outline-none w-full text-gray-600 placeholder-gray-400" placeholder="投/被保人/保单号" type="text"/>
+</div>
+<button class="text-custom-green font-medium text-sm px-2">搜索</button>
+</div>
+</div>
+<!-- 内容区 (676px) -->
+<div class="flex-1 overflow-y-auto hide-scrollbar p-3 space-y-3">
+<!-- 保单卡片 1 -->
+<div class="bg-white rounded-lg shadow-sm p-4 animate-card cursor-pointer hover:shadow-md transition-shadow" style="animation-delay: 0.1s" onclick="window.location.href='../【保单查询】/保单详情.html'">
+<div class="space-y-2 text-sm">
+<div class="flex justify-between">
+<span class="text-gray-400">保单号码</span>
+<span class="text-gray-700 font-mono">P000058091</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">主险名称</span>
+<span class="text-gray-700">中宏福优护理保险</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">签发日期</span>
+<span class="text-gray-700">2024年12月24日</span>
+</div>
+<div class="flex justify-between text-orange-500">
+<span class="text-gray-400">犹豫期结束日</span>
+<span>2025年01月31日</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">网点名称</span>
+<span class="text-gray-700">SH83009-招商陆家嘴支行</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">理财经理</span>
+<span class="text-gray-700">SH8889-张三</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">是否可微信回访</span>
+<span class="text-gray-700">否</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-gray-50 flex items-center space-x-6 text-xs text-gray-500">
+<div class="flex items-center cursor-pointer hover:text-gray-700" onclick="event.stopPropagation(); window.location.href='../客户信息详情.html?source=【待办】/回访回执_新单回访清单.html'">
+<div class="w-5 h-5 rounded-full border border-emerald-500 text-emerald-500 flex items-center justify-center mr-1 scale-90">投</div>
+<span>业绩战报陈婉</span>
+</div>
+<div class="flex items-center cursor-pointer hover:text-gray-700" onclick="event.stopPropagation(); window.location.href='../客户信息详情.html?source=【待办】/回访回执_新单回访清单.html'">
+<div class="w-5 h-5 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center mr-1 scale-90">被</div>
+<span>业绩战报陈婉</span>
+</div>
+</div>
+</div>
+<!-- 保单卡片 2 -->
+<div class="bg-white rounded-lg shadow-sm p-4 animate-card cursor-pointer hover:shadow-md transition-shadow" style="animation-delay: 0.2s" onclick="window.location.href='../【保单查询】/保单详情.html'">
+<div class="space-y-2 text-sm text-right">
+<div class="flex justify-between">
+<span class="text-gray-400">保单号码</span>
+<span class="text-gray-700 font-mono">P000065986</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">主险名称</span>
+<span class="text-gray-700 text-left pl-10 leading-tight">中宏健康双星2024重大疾病保险</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">签发日期</span>
+<span class="text-gray-700">2025年01月17日</span>
+</div>
+<div class="flex justify-between text-orange-500">
+<span class="text-gray-400">犹豫期结束日</span>
+<span>2025年01月31日</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">网点名称</span>
+<span class="text-gray-700">SH83009-招商陆家嘴支行</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">理财经理</span>
+<span class="text-gray-700">SH8889-张三</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">是否可微信回访</span>
+<span class="text-gray-700">否</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-gray-50 flex items-center space-x-6 text-xs text-gray-500">
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-emerald-500 text-emerald-500 flex items-center justify-center mr-1 scale-90">投</div>
+<span>赠险升级</span>
+</div>
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-gray-300 text-gray-400 flex items-center justify-center mr-1 scale-90">被</div>
+<span>赠险升级</span>
+</div>
+</div>
+</div>
+
+<div class="text-center py-4 text-gray-300 text-xs">没有更多了</div>
+</div>
+<!-- 底部悬浮按钮 (模拟) -->
+<div class="absolute bottom-6 right-6 z-50">
+<div class="bg-emerald-500 text-white px-3 py-1 rounded text-[10px] font-mono shadow-md cursor-pointer hover:bg-emerald-600 transition-colors">
+        vConsole
+      </div>
+</div>
+<!-- 底部安全条 -->
+<div class="h-6 bg-white flex justify-center items-center shrink-0">
+<div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>客户信息详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 全局字体 */
+        body {
+            font-family: 'NotoSansCJKsc-Medium', sans-serif;
+        }
+        
+        /* 中宏绿 */
+        .text-custom-green,
+        .text-zhonghong-green {
+            color: #00A758;
+        }
+        
+        .bg-custom-green,
+        .bg-zhonghong-green {
+            background-color: #00A758;
+        }
+        
+        /* 珊瑚红 */
+        .text-coral-red {
+            color: #EC6453;
+        }
+        
+        .bg-coral-red {
+            background-color: #EC6453;
+        }
+        
+        /* 自定义橙色 */
+        .text-custom-orange {
+            color: #FF9500;
+        }
+        
+        /* 客户标签样式 */
+        .customer-tag {
+            background-color: #E6F7EE;
+            color: #00A758;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 10px;
+        }
+        
+        /* 统计卡片样式 */
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        /* 信息项样式 */
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+        
+        /* 底部安全条 */
+        .safe-area {
+            height: 34px;
+            background-color: white;
+        }
+        
+        /* 鼠标悬浮显示提示 */
+        .cursor-pointer:hover > div {
+            display: block;
+        }
+    </style>
+    <script>
+        function toggleCustomerInfo() {
+            // 只选择客户信息卡片中的字段，不影响尊享会卡片
+            const infoItems = document.querySelectorAll('#customerInfoDetails .info-item');
+            const toggleDiv = document.querySelector('.text-gray-500.flex.items-center');
+            const isExpanded = toggleDiv.textContent.includes('收起');
+            
+            // 需要始终显示的字段
+            const alwaysShowFields = ['姓名', '性别', '手机号码', '证件号码'];
+            
+            if (isExpanded) {
+                // 收起状态：只显示指定字段
+                infoItems.forEach(item => {
+                    const fieldName = item.querySelector('.text-gray-500').textContent;
+                    if (!alwaysShowFields.includes(fieldName)) {
+                        item.style.display = 'none';
+                    }
+                });
+                toggleDiv.innerHTML = '详情 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span>';
+            } else {
+                // 展开状态：显示所有字段
+                infoItems.forEach(item => {
+                    item.style.display = 'flex';
+                });
+                toggleDiv.innerHTML = '收起 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-up"></span>';
+            }
+        }
+        
+        function toggleVIPCard() {
+            const vipDetails = document.getElementById('vipCardDetails');
+            const infoItems = vipDetails.querySelectorAll('.info-item');
+            const vipBenefitsTable = document.getElementById('vipBenefitsTable');
+            const toggleDiv = document.querySelector('#vipCardDetails').previousElementSibling.querySelector('.text-gray-500.flex.items-center');
+            const benefitsToggleIcon = document.querySelector('.benefits-toggle-icon');
+            const isExpanded = toggleDiv.textContent.includes('收起');
+            
+            // 需要始终显示的字段
+            const alwaysShowFields = ['当前等级'];
+            
+            if (isExpanded) {
+                // 收起状态：只显示指定字段
+                infoItems.forEach(item => {
+                    const fieldName = item.querySelector('.text-gray-500').textContent;
+                    if (!alwaysShowFields.includes(fieldName)) {
+                        item.style.display = 'none';
+                    }
+                });
+                // 收起权益详情表格
+                vipBenefitsTable.classList.add('hidden');
+                // 更新当前权益字段的图标
+                if (benefitsToggleIcon) {
+                    benefitsToggleIcon.setAttribute('data-icon', 'lucide:chevron-down');
+                }
+                // 更新图标
+                toggleDiv.innerHTML = '详情 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span>';
+            } else {
+                // 展开状态：显示所有字段
+                infoItems.forEach(item => {
+                    item.style.display = 'flex';
+                });
+                // 更新图标
+                toggleDiv.innerHTML = '收起 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-up"></span>';
+            }
+        }
+        
+        function toggleVIPBenefitsTable() {
+            const vipBenefitsTable = document.getElementById('vipBenefitsTable');
+            const benefitsToggleIcon = document.querySelector('.benefits-toggle-icon');
+            const isExpanded = vipBenefitsTable.classList.contains('hidden') === false;
+            
+            if (isExpanded) {
+                // 收起权益详情表格
+                vipBenefitsTable.classList.add('hidden');
+                // 更新图标
+                benefitsToggleIcon.setAttribute('data-icon', 'lucide:chevron-down');
+            } else {
+                // 显示权益详情表格
+                vipBenefitsTable.classList.remove('hidden');
+                // 更新图标
+                benefitsToggleIcon.setAttribute('data-icon', 'lucide:chevron-up');
+            }
+        }
+        
+        function toggleElderlyCare() {
+            const elderlyCareDetails = document.getElementById('elderlyCareDetails');
+            const infoItems = elderlyCareDetails.querySelectorAll('.info-item');
+            const toggleDiv = document.querySelector('#elderlyCareDetails').previousElementSibling.querySelector('.text-gray-500.flex.items-center');
+            const isExpanded = toggleDiv.textContent.includes('收起');
+            
+            // 需要始终显示的字段
+            const alwaysShowFields = ['当前等级'];
+            
+            if (isExpanded) {
+                // 收起状态：只显示指定字段
+                infoItems.forEach(item => {
+                    const fieldName = item.querySelector('.text-gray-500').textContent;
+                    if (!alwaysShowFields.includes(fieldName)) {
+                        item.style.display = 'none';
+                    }
+                });
+                toggleDiv.innerHTML = '详情 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span>';
+            } else {
+                // 展开状态：显示所有字段
+                infoItems.forEach(item => {
+                    item.style.display = 'flex';
+                });
+                toggleDiv.innerHTML = '收起 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-up"></span>';
+            }
+        }
+        
+        function toggleHealthService() {
+            const healthServiceDetails = document.getElementById('healthServiceDetails');
+            const toggleDiv = document.querySelector('#healthServiceDetails').previousElementSibling.querySelector('.text-gray-500.flex.items-center');
+            const isHidden = healthServiceDetails.style.display === 'none' || healthServiceDetails.style.display === '';
+            
+            if (isHidden) {
+                healthServiceDetails.style.display = 'block';
+                toggleDiv.innerHTML = '收起 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-up"></span>';
+            } else {
+                healthServiceDetails.style.display = 'none';
+                toggleDiv.innerHTML = '详情 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span>';
+            }
+        }
+        
+        function toggleHealthServiceBenefits(listId) {
+            const benefitsList = document.getElementById(listId);
+            const toggleDiv = benefitsList.previousElementSibling.querySelector('.text-gray-500.flex.items-center');
+            const isExpanded = toggleDiv.textContent.includes('收起');
+            
+            if (isExpanded) {
+                // 收起状态
+                benefitsList.style.display = 'none';
+                toggleDiv.innerHTML = '展开 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span>';
+            } else {
+                // 展开状态
+                benefitsList.style.display = 'block';
+                toggleDiv.innerHTML = '收起 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-up"></span>';
+            }
+        }
+        
+        function toggleMoveBenefit() {
+            const moveBenefitDetails = document.getElementById('moveBenefitDetails');
+            const infoItems = moveBenefitDetails.querySelectorAll('.info-item');
+            const toggleDiv = document.querySelector('#moveBenefitDetails').previousElementSibling.querySelector('.text-gray-500.flex.items-center');
+            const isExpanded = toggleDiv.textContent.includes('收起');
+            
+            // 需要始终显示的字段
+            const alwaysShowFields = ['当前等级'];
+            
+            if (isExpanded) {
+                // 收起状态：只显示指定字段
+                infoItems.forEach(item => {
+                    const fieldName = item.querySelector('.text-gray-500').textContent;
+                    if (!alwaysShowFields.includes(fieldName)) {
+                        item.style.display = 'none';
+                    }
+                });
+                toggleDiv.innerHTML = '详情 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span>';
+            } else {
+                // 展开状态：显示所有字段
+                infoItems.forEach(item => {
+                    item.style.display = 'flex';
+                });
+                toggleDiv.innerHTML = '收起 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-up"></span>';
+            }
+        }
+        
+        function toggleMoveBenefitsTable() {
+            const moveBenefitsTable = document.getElementById('moveBenefitsTable');
+            const benefitsToggleIcon = document.querySelector('.move-benefits-toggle-icon');
+            const isExpanded = moveBenefitsTable.classList.contains('hidden') === false;
+            
+            if (isExpanded) {
+                // 收起权益详情表格
+                moveBenefitsTable.classList.add('hidden');
+                // 更新图标
+                benefitsToggleIcon.setAttribute('data-icon', 'lucide:chevron-down');
+            } else {
+                // 显示权益详情表格
+                moveBenefitsTable.classList.remove('hidden');
+                // 更新图标
+                benefitsToggleIcon.setAttribute('data-icon', 'lucide:chevron-up');
+            }
+        }
+        
+
+        
+        // 页面加载时默认显示所有必要字段
+        window.onload = function() {
+            // 获取URL参数中的source
+            const urlParams = new URLSearchParams(window.location.search);
+            const source = urlParams.get('source');
+            
+            // 设置返回按钮的跳转链接
+            const backButton = document.querySelector('button[onclick*="window.location.href"]');
+            if (backButton && source) {
+                backButton.setAttribute('onclick', `window.location.href='${source}'`);
+            }
+            
+            const toggleDiv = document.querySelector('.text-gray-500.flex.items-center');
+            toggleDiv.innerHTML = '详情 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span>';
+            
+            // 默认只显示指定字段，只影响客户信息卡片
+            const infoItems = document.querySelectorAll('#customerInfoDetails .info-item');
+            const alwaysShowFields = ['姓名', '性别', '手机号码', '证件号码'];
+            
+            infoItems.forEach(item => {
+                const fieldName = item.querySelector('.text-gray-500').textContent;
+                if (!alwaysShowFields.includes(fieldName)) {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // 默认显示尊享会卡片所有必要字段
+            const vipDetails = document.getElementById('vipCardDetails');
+            const vipInfoItems = vipDetails.querySelectorAll('.info-item');
+            const vipBenefitsTable = document.getElementById('vipBenefitsTable');
+            
+            // 显示所有尊享会字段
+            vipInfoItems.forEach(item => {
+                item.style.display = 'flex';
+            });
+            // 默认隐藏权益详情表格
+            vipBenefitsTable.classList.add('hidden');
+            
+            // 默认显示养老综合服务卡片所有必要字段
+            const elderlyCareDetails = document.getElementById('elderlyCareDetails');
+            const elderlyInfoItems = elderlyCareDetails.querySelectorAll('.info-item');
+            
+            // 显示所有养老综合服务字段
+            elderlyInfoItems.forEach(item => {
+                item.style.display = 'flex';
+            });
+            
+            // 默认显示健康管理服务卡片信息
+            const healthServiceDetails = document.getElementById('healthServiceDetails');
+            healthServiceDetails.style.display = 'block';
+            
+            // 默认收起健康管理服务卡片的权益详情
+            // 两个表格已通过class="hidden"默认收起
+            
+            // 默认显示MOVE权益卡片所有必要字段
+            const moveBenefitDetails = document.getElementById('moveBenefitDetails');
+            const moveInfoItems = moveBenefitDetails.querySelectorAll('.info-item');
+            const moveBenefitsTable = document.getElementById('moveBenefitsTable');
+            
+            // 显示所有MOVE权益字段
+            moveInfoItems.forEach(item => {
+                item.style.display = 'flex';
+            });
+            // 默认隐藏MOVE权益详情表格
+            moveBenefitsTable.classList.add('hidden');
+        };
+    </script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+        <!-- Status Bar (47px) -->
+        <div class="h-[47px] flex justify-between items-center px-6 shrink-0 bg-white">
+            <span class="text-sm font-semibold">16:28</span>
+            <div class="flex items-center space-x-2">
+                <span class="text-xs text-gray-500">5G</span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+                <span class="text-xs text-gray-500">77%</span>
+                <span class="iconify w-4 h-4" data-icon="material-symbols:battery-full"></span>
+            </div>
+        </div>
+        
+        <!-- Title Bar (56px) -->
+        <div class="h-[56px] flex justify-between items-center px-4 shrink-0 bg-white border-b border-gray-100">
+            <button class="text-gray-700" onclick="window.location.href='客户列表.html';">
+                <span class="iconify w-6 h-6" data-icon="material-symbols:arrow-back-ios-new-rounded"></span>
+            </button>
+            <h1 class="text-lg font-medium text-gray-800">客户详情</h1>
+            <div class="w-6"></div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50">
+            <!-- Customer Basic Info -->
+            <div class="bg-white p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                        <span class="iconify w-6 h-6 text-gray-500" data-icon="material-symbols:person"></span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <h2 class="text-base font-bold text-gray-800">黄薇</h2>
+                                <span class="text-xs text-gray-500">43岁</span>
+                            </div>
+                            <button class="text-xs text-custom-green font-medium px-3 py-1 rounded-full border border-custom-green hover:bg-green-50 transition-colors" onclick="window.location.href='https://amasit01.manulife-sinochem.com/newh5/#/customerBenefits/benefitsOverview?agentCode=SH68699&clientId=15RYDH77SVUY&fromPage=holderClientDetail';">权益概览</button>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="flex justify-between items-center mt-4">
+                    <a href="【保单查询】/客户保单列表.html" class="flex-1 text-center">
+                        <div class="text-sm font-bold text-zhonghong-green">8</div>
+                        <div class="text-xs text-gray-500">件数(件)</div>
+                    </a>
+                    <div class="w-px h-12 bg-gray-200"></div>
+                    <div class="flex-1 text-center">
+                        <div class="text-sm font-bold text-zhonghong-green">6,540.00</div>
+                        <div class="text-xs text-gray-500">年交保费(元)</div>
+                    </div>
+                    <div class="w-px h-12 bg-gray-200"></div>
+                    <div class="flex-1 text-center">
+                        <div class="text-sm font-bold text-zhonghong-green">1</div>
+                        <div class="text-xs text-gray-500">理赔(件)</div>
+                    </div>
+                </div>
+                
+
+            </div>
+            
+            <!-- Customer Info -->
+            <div class="bg-white p-4 mt-2 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center" onclick="toggleCustomerInfo()">
+                    <h3 class="text-sm font-medium text-gray-800">客户信息</h3>
+                    <div class="flex items-center space-x-2">
+                        <div class="text-xs text-gray-500 flex items-center">收起 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-up"></span></div>
+                    </div>
+                </div>
+                
+                <!-- Customer Info Details -->
+                <div id="customerInfoDetails" class="mt-3">
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">姓名</span>
+                        <span class="text-xs text-gray-800">黄薇</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">性别</span>
+                        <span class="text-xs text-gray-800">女</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">职业类别</span>
+                        <span class="text-xs text-gray-800">软件工程师(3610001)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">家庭电话</span>
+                        <span class="text-xs text-gray-400">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">单位电话</span>
+                        <span class="text-xs text-gray-800">1437497****</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">手机号码</span>
+                        <span class="text-xs text-gray-800">1437497****</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">联系地址</span>
+                        <span class="text-xs text-gray-800">上海市浦东新区展航路****</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">邮编</span>
+                        <span class="text-xs text-gray-800">200137</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">证件留存</span>
+                        <span class="text-xs text-gray-800">已留存</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">证件类型</span>
+                        <span class="text-xs text-gray-800">居民身份证</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">证件号码</span>
+                        <span class="text-xs text-gray-800">230405198209****</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">证件有效期</span>
+                        <span class="text-xs text-gray-800">2021-01-01</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">是否接力单客户</span>
+                        <span class="text-xs text-gray-800">否</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">有无投诉</span>
+                        <span class="text-xs text-gray-800">无</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">有无保单贷款</span>
+                        <span class="text-xs text-gray-800">无</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">贷款金额</span>
+                        <span class="text-xs text-gray-800">0 元</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">贷款类型</span>
+                        <span class="text-xs text-gray-400">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">有无待续期保单</span>
+                        <span class="text-xs text-gray-800">无</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">是否绑定微服务</span>
+                        <span class="text-xs text-gray-800">是</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">理赔</span>
+                        <span class="text-xs text-gray-800">无</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VIP Membership Card -->
+            <div class="bg-white p-4 mt-2 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-medium text-gray-800">尊享会</h3>
+                </div>
+                <div id="vipCardDetails">
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">当前等级</span>
+                        <span class="text-xs text-gray-800">白金会员</span>
+                    </div>
+                    <div class="info-item cursor-pointer" onclick="toggleVIPBenefitsTable()">
+                        <span class="text-xs text-gray-500">当前权益</span>
+                        <div class="flex items-center">
+                            <span class="benefits-toggle-icon toggle-icon iconify w-3 h-3 text-red-500" data-icon="lucide:chevron-down"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- 权益详情表格 -->
+                    <div id="vipBenefitsTable" class="mt-4 border-t border-gray-100 pt-4 hidden">
+                        <div class="grid grid-cols-3 gap-2 mb-4 bg-gradient-to-r from-green-50 to-white p-3 rounded-lg shadow-sm">
+                            <div class="text-xs font-bold text-custom-green flex items-center">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:card-membership"></span>
+                                享有权益
+                            </div>
+                            <div class="text-xs font-bold text-custom-green text-center flex items-center justify-center">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:calendar-today"></span>
+                                权益次数
+                            </div>
+                            <div class="text-xs font-bold text-custom-green text-center flex items-center justify-center">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:check-circle"></span>
+                                已用次数
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:trending-up"></span>
+                                    贵宾绿色通道
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow relative">
+                                <div class="text-xs text-gray-800 cursor-pointer hover:text-custom-green flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:emergency"></span>
+                                    国际 SOS 援助
+                                    <div id="sosInfo" class="text-xs text-gray-500 absolute left-0 top-full mt-1 bg-white p-2 rounded shadow-lg z-10 w-48 hidden">
+                                        （国际旅行医疗服务、全球医疗救援）
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:description"></span>
+                                    法律顾问电话咨询
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:fitness-center"></span>
+                                    健康体检(白金)/高端体检(钻石)
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">2 年 1 次</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:phone-in-talk"></span>
+                                    电话健康咨询
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:medical-services"></span>
+                                    非重疾门诊挂号预约
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:person"></span>
+                                    专家门诊预约服务
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">3 次 / 年</div>
+                                <div class="text-xs text-custom-orange font-medium text-center">1</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow relative">
+                                <div class="text-xs text-gray-800 cursor-pointer hover:text-custom-green flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:local-hospital"></span>
+                                    重疾绿色通道
+                                    <div class="text-xs text-gray-500 absolute left-0 top-full mt-1 bg-white p-2 rounded shadow-lg z-10 w-64 hidden">
+                                        含特需 / 专家门诊预约；住院 / 手术协调；质子重离子绿色通道；陪诊服务
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">1 次 / 年</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:medical-bag"></span>
+                                    重疾全国/全球二次诊疗
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">1 次 / 年</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:event"></span>
+                                    会员活动礼遇
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">下一等级</span>
+                        <span class="text-xs text-gray-800">宏运世家钻石会员</span>
+                    </div>
+                    <div class="pt-2">
+                        <div class="text-xs text-gray-500 mb-2">距离下一等级</div>
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="p-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="iconify w-4 h-4 text-gray-500 mr-2" data-icon="material-symbols:trending-up"></span>
+                                        <span class="text-xs text-gray-600">年化保费差额</span>
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-800">200,000 元</span>
+                                </div>
+                            </div>
+                            <div class="p-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="iconify w-4 h-4 text-gray-500 mr-2" data-icon="material-symbols:account-balance-wallet"></span>
+                                        <span class="text-xs text-gray-600">单张终身寿险保额差额</span>
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-800">2,000,000 元</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <!-- 养老综合服务 Card -->
+            <div class="bg-white p-4 mt-2 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-medium text-gray-800">养老综合服务</h3>
+                </div>
+                <div id="elderlyCareDetails">
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">当前等级</span>
+                        <span class="text-xs text-gray-800">无</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">当前权益</span>
+                        <span class="text-xs text-gray-800">无</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">下一等级</span>
+                        <span class="text-xs text-gray-800">颐养版</span>
+                    </div>
+                    <div class="pt-2">
+                        <div class="text-xs text-gray-500 mb-2">距离下一等级</div>
+                        <div class="flex flex-col gap-2 w-full">
+                            <div class="p-1">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="iconify w-4 h-4 text-gray-500 mr-2" data-icon="material-symbols:trending-up"></span>
+                                        <span class="text-xs text-gray-600">累计应缴总保费差额</span>
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-800">73,000 元</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <!-- 健康管理服务 Card -->
+            <div class="bg-white p-4 mt-2 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-medium text-gray-800">健康管理服务</h3>
+                </div>
+                <div id="healthServiceDetails" class="mt-3">
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 mb-2">当前有以下保单享有权益：</p>
+                        <div class="flex items-center justify-between bg-gray-50 p-2 rounded">
+                            <div class="flex items-center">
+                                <span class="text-xs text-gray-800">保单号：43E1784504</span>
+                                <span class="ml-1.5 iconify w-4 h-4 text-gray-400 cursor-pointer" data-icon="material-symbols:content-copy"></span>
+                            </div>
+                            <div class="text-xs text-gray-500 flex items-center" onclick="toggleHealthServiceBenefits('healthServiceBenefitsList1')">展开 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span></div>
+                        </div>
+                    </div>
+                    <div id="healthServiceBenefitsList1" class="hidden">
+                        <div class="grid grid-cols-3 gap-2 mb-4 bg-gradient-to-r from-green-50 to-white p-3 rounded-lg shadow-sm relative">
+                            <div class="text-xs font-bold text-custom-green flex items-center">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:card-membership"></span>
+                                享有权益
+                            </div>
+                            <div class="text-xs font-bold text-custom-green text-center flex items-center justify-center cursor-pointer hover:text-custom-green">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:calendar-today"></span>
+                                权益次数
+                                <div class="text-xs text-gray-500 absolute left-0 top-full mt-1 bg-white p-2 rounded shadow-lg z-10 w-64 hidden">
+                                    权益时限说明：保单有效期
+                                </div>
+                            </div>
+                            <div class="text-xs font-bold text-custom-green text-center flex items-center justify-center">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:check-circle"></span>
+                                已用次数
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:phone-in-talk"></span>
+                                    电话健康咨询
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">不限次</div>
+                                <div class="text-xs text-gray-800 text-center"></div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:groups"></span>
+                                    MDT 多学科会诊
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">1</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow relative">
+                                <div class="text-xs text-gray-800 flex items-center cursor-pointer hover:text-custom-green">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:home-health"></span>
+                                    中宏家医
+                                    <div class="text-xs text-gray-500 absolute left-0 top-full mt-1 bg-white p-2 rounded shadow-lg z-10 w-64 hidden">
+                                        见服务细则
+                                    </div>
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">有效期三年</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:medical-services"></span>
+                                    重疾康复支持
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">1</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:medical-bag"></span>
+                                    海外二次诊疗
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">1</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:flight"></span>
+                                    海外就医安排
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">1</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mock 保单 Case -->
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between bg-gray-50 p-2 rounded">
+                            <div class="flex items-center">
+                                <span class="text-xs text-gray-800">保单号：43E1784505</span>
+                                <span class="ml-1.5 iconify w-4 h-4 text-gray-400 cursor-pointer" data-icon="material-symbols:content-copy"></span>
+                            </div>
+                            <div class="text-xs text-gray-500 flex items-center" onclick="toggleHealthServiceBenefits('healthServiceBenefitsList2')">展开 <span class="toggle-icon iconify w-3 h-3 text-red-500 ml-1" data-icon="lucide:chevron-down"></span></div>
+                        </div>
+                    </div>
+                    <div id="healthServiceBenefitsList2" class="hidden">
+                        <div class="grid grid-cols-3 gap-2 mb-4 bg-gradient-to-r from-green-50 to-white p-3 rounded-lg shadow-sm relative">
+                        <div class="text-xs font-bold text-custom-green flex items-center">
+                            <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:card-membership"></span>
+                            享有权益
+                        </div>
+                        <div class="text-xs font-bold text-custom-green text-center flex items-center justify-center cursor-pointer hover:text-custom-green">
+                            <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:calendar-today"></span>
+                            权益次数
+                            <div class="text-xs text-gray-500 absolute left-0 top-full mt-1 bg-white p-2 rounded shadow-lg z-10 w-64 hidden">
+                                权益时限说明：保单有效期
+                            </div>
+                        </div>
+                        <div class="text-xs font-bold text-custom-green text-center flex items-center justify-center">
+                            <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:check-circle"></span>
+                            已用次数
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                            <div class="text-xs text-gray-800 flex items-center">
+                                <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:medical-services"></span>
+                                就医管家尊享版
+                            </div>
+                            <div class="text-xs text-gray-800 text-center">1 次</div>
+                            <div class="text-xs text-gray-800 text-center">-</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                            <div class="text-xs text-gray-800 flex items-center">
+                                <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:sports-injury"></span>
+                                意外严重骨折术后康复服务
+                            </div>
+                            <div class="text-xs text-gray-800 text-center">不限次</div>
+                            <div class="text-xs text-gray-800 text-center">-</div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MOVE权益 Card -->
+            <div class="bg-white p-4 mt-2 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-medium text-gray-800">MOVE权益</h3>
+                </div>
+                <div id="moveBenefitDetails">
+                    <div class="info-item">
+                        <span class="text-xs text-gray-500">当前等级</span>
+                        <span class="text-xs text-gray-800">体验会员</span>
+                    </div>
+                    <div class="info-item cursor-pointer" onclick="toggleMoveBenefitsTable()">
+                        <span class="text-xs text-gray-500">当前权益</span>
+                        <div class="flex items-center">
+                            <span class="move-benefits-toggle-icon toggle-icon iconify w-3 h-3 text-red-500" data-icon="lucide:chevron-down"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- MOVE权益详情表格 -->
+                    <div id="moveBenefitsTable" class="mt-4 border-t border-gray-100 pt-4 hidden">
+                        <div class="grid grid-cols-3 gap-2 mb-4 bg-gradient-to-r from-green-50 to-white p-3 rounded-lg shadow-sm">
+                            <div class="text-xs font-bold text-custom-green flex items-center">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:card-membership"></span>
+                                享有权益
+                            </div>
+                            <div class="text-xs font-bold text-custom-green text-center flex items-center justify-center">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:calendar-today"></span>
+                                权益次数
+                            </div>
+                            <div class="text-xs font-bold text-custom-green text-center flex items-center justify-center">
+                                <span class="iconify w-4 h-4 mr-1" data-icon="material-symbols:check-circle"></span>
+                                已用次数
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:trending-up"></span>
+                                    免费申领给付型防癌险
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">1</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:trending-up"></span>
+                                    自诊测评
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">不限次</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:trending-up"></span>
+                                    在线问诊
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">不限次</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:trending-up"></span>
+                                    就医购药
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">不限次</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <div class="text-xs text-gray-800 flex items-center">
+                                    <span class="iconify w-3 h-3 mr-2 text-custom-green" data-icon="material-symbols:trending-up"></span>
+                                    不定期抽奖活动
+                                </div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                                <div class="text-xs text-gray-800 text-center">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+
+                </div>
+            </div>
+            
+
+            
+            <!-- Bottom Space -->
+            <div class="h-24"></div>
+        </div>
+        
+
+        
+
+        
+        <!-- Safe Area -->
+        <div class="safe-area"></div>
+        
+        <!-- vConsole Button -->
+        <div class="fixed bottom-20 right-4 z-50">
+            <button class="w-10 h-10 bg-gray-800 text-white rounded-full flex items-center justify-center text-xs">
+                vConsole
+            </button>
+        </div>
+    </div>
+</body>
+</html>

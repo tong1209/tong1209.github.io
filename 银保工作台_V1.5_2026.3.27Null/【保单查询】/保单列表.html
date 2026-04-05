@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>银保保单列表</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* 添加激活状态样式 */
+    .nav-active {
+      color: #111827;
+      font-weight: bold;
+    }
+    
+    .nav-inactive {
+      color: #9CA3AF;
+    }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 筛选弹窗样式 */
+    .filter-modal {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .filter-modal.active {
+      display: flex;
+    }
+    
+    .filter-modal-content {
+      background: white;
+      width: 90%;
+      max-height: 70%;
+      border-radius: 16px;
+      padding: 16px;
+      position: relative;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .filter-modal-content::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+    
+    /* 底部附挂弹窗样式 */
+    .bottom-modal {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
+    
+    .bottom-modal.active {
+      display: flex;
+    }
+    
+    .bottom-modal-content {
+      background: white;
+      width: 100%;
+      border-radius: 16px 16px 0 0;
+      padding: 16px;
+      position: relative;
+      box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* 保存筛选弹窗样式 */
+    .save-filter-modal {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 30;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .save-filter-modal.active {
+      display: flex;
+    }
+    
+    .save-filter-modal-content {
+      background: white;
+      width: 80%;
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .filter-group {
+      margin-bottom: 8px;
+    }
+    
+    .filter-group-title {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #374151;
+    }
+    
+    .filter-option {
+      display: inline-block;
+      margin: 4px 4px 4px 0;
+    }
+    
+    .filter-option button {
+      padding: 4px 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      background: white;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-option button:hover {
+      border-color: #00A758;
+      color: #00A758;
+    }
+    
+    .filter-option button.active {
+      background-color: #00A758 !important;
+      color: white !important;
+      border-color: #00A758 !important;
+    }
+    
+    .custom-date-panel {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- 顶部状态栏 (44px) -->
+<div class="h-[44px] flex justify-between items-center px-6 shrink-0 bg-white">
+<span class="text-sm font-semibold">9:54</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:battery-3-bar"></span>
+</div>
+</div>
+<!-- 标题栏 (56px) -->
+<div class="h-[56px] flex justify-between items-center px-4 shrink-0 bg-white">
+<span class="iconify w-6 h-6 text-gray-700" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../首页.html';"></span>
+<h1 class="text-xl font-medium text-gray-800 flex-1 text-center">保单列表</h1>
+<span class="w-6 h-6"></span> <!-- 空白占位符，保持居中 -->
+</div>
+<!-- 标签导航栏 -->
+<div class="flex items-center space-x-6 px-4 py-2 border-b border-gray-50 bg-white overflow-x-auto hide-scrollbar shrink-0 text-sm overflow-hidden">
+<div class="flex flex-col items-center" id="all-tab" onclick="window.location.href='保单列表.html'">
+<span class="nav-active font-bold whitespace-nowrap">全部</span>
+<div class="w-6 h-1 bg-custom-green mt-1 rounded-full"></div>
+</div>
+<div class="flex flex-col items-center" id="renewal-tab" onclick="window.location.href='保单列表_待续期.html'">
+<span class="nav-inactive whitespace-nowrap">待续期</span>
+<div class="w-6 h-1 bg-transparent mt-1 rounded-full"></div>
+</div>
+<div class="flex flex-col items-center" id="loan-tab" onclick="window.location.href='保单列表_保单贷款.html'">
+<span class="nav-inactive whitespace-nowrap">保单贷款</span>
+<div class="w-6 h-1 bg-transparent mt-1 rounded-full"></div>
+</div>
+<div class="flex flex-col items-center" id="deduction-tab" onclick="window.location.href='保单列表_扣款失败.html'">
+<span class="nav-inactive whitespace-nowrap">扣款失败</span>
+<div class="w-6 h-1 bg-transparent mt-1 rounded-full"></div>
+</div>
+<div class="flex flex-col items-center" id="lapse-tab" onclick="window.location.href='保单列表_失效.html'">
+<span class="nav-inactive whitespace-nowrap">失效</span>
+<div class="w-6 h-1 bg-transparent mt-1 rounded-full"></div>
+</div>
+
+</div>
+<!-- 筛选弹窗 -->
+<div id="filterModal" class="filter-modal">
+<div class="filter-modal-content">
+<div class="flex justify-end mb-2">
+<span class="iconify w-4 h-4 text-gray-400 cursor-pointer" data-icon="material-symbols:close" onclick="toggleFilter()"></span>
+</div>
+<div class="p-4 space-y-2">
+<!-- 产品 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-bold text-gray-700 w-24">产品</label>
+<select class="flex-1 min-w-[200px] px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option>全部</option>
+<option>AOD-宏佑世家逸享版</option>
+<option>                                    </option>
+</select>
+</div>
+
+<!-- 银行渠道 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-bold text-gray-700 w-24">银行渠道</label>
+<select class="flex-1 min-w-[200px] px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option>全部</option>
+<option>006-招商银行</option>
+<option>                                    </option>
+</select>
+</div>
+
+<!-- 网点名称 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-bold text-gray-700 w-24">网点名称</label>
+<select class="flex-1 min-w-[200px] px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option>全部</option>
+<option>SH0A00-招商银行利园支行</option>
+<option>SH0A01-招商陆家嘴支行</option>
+</select>
+</div>
+
+<!-- 下辖人员 -->
+<div class="flex items-center space-x-2">
+<label class="text-xs font-bold text-gray-700 w-24">下辖人员</label>
+<select class="flex-1 min-w-[200px] px-3 py-2 border border-gray-200 rounded-lg text-xs">
+<option>全部</option>
+<option>SH87238-七七</option>
+<option>SH99999-张三</option>
+<option>                                    </option>
+</select>
+</div>
+<!-- 保单状态 -->
+<div class="space-y-2">
+<div class="flex items-center">
+<label class="text-xs font-bold text-gray-700 w-24">保单状态</label>
+</div>
+<div class="flex items-start">
+<div class="flex flex-wrap gap-2">
+<div class="filter-option"><button class="active">全部</button></div>
+<div class="filter-option"><button>复核</button></div>
+<div class="filter-option"><button>核保</button></div>
+<div class="filter-option"><button>待承保</button></div>
+<div class="filter-option"><button>未生效</button></div>
+<div class="filter-option"><button>有效-交清</button></div>
+<div class="filter-option"><button>有效-交费有效</button></div>
+<div class="filter-option"><button>有效-豁免保费</button></div>
+<div class="filter-option"><button>有效-减额交清</button></div>
+<div class="filter-option"><button>失效</button></div>
+<div class="filter-option"><button>终止</button></div>
+</div>
+</div>
+</div>
+
+<!-- 出单方式 -->
+<div class="space-y-2">
+<div class="flex items-center">
+<label class="text-xs font-bold text-gray-700 w-24">出单方式</label>
+</div>
+<div class="flex items-start">
+<div class="flex flex-wrap gap-2">
+<div class="filter-option"><button class="active">全部</button></div>
+<div class="filter-option"><button>线上</button></div>
+<div class="filter-option"><button>线下</button></div>
+</div>
+</div>
+</div>
+
+<!-- 其他 -->
+<div class="space-y-2">
+<div class="flex items-center">
+<label class="text-xs font-bold text-gray-700 w-24">其他</label>
+</div>
+<div class="flex items-start">
+<div class="flex flex-nowrap gap-2">
+<div class="filter-option"><button class="active">全部</button></div>
+<div class="filter-option"><button>预投保</button></div>
+</div>
+</div>
+</div>
+
+<!-- 保单承保日 -->
+<div class="filter-group space-y-2">
+<div class="flex items-center">
+<label class="text-xs font-bold text-gray-700 w-24">保单承保日</label>
+</div>
+<div class="flex items-start">
+<div class="flex flex-nowrap gap-2">
+<div class="filter-option"><button class="active">全部</button></div>
+<div class="filter-option"><button>近一个月</button></div>
+<div class="filter-option"><button>近三个月</button></div>
+<div class="filter-option"><button>自定义</button></div>
+</div>
+</div>
+
+<!-- 保单承保日自定义日期选择区域，初始隐藏 -->
+<div id="customDatePanel" class="custom-date-panel hidden flex items-center space-x-1">
+<input type="date" id="startDate" class="flex-1 px-2 py-1.5 border border-gray-200 rounded-lg text-xs" value="2024-01-01"/>
+<span class="text-xs text-gray-700 mx-1">-</span>
+<input type="date" id="endDate" class="flex-1 px-2 py-1.5 border border-gray-200 rounded-lg text-xs" value="2024-10-01"/>
+</div>
+</div>
+
+<!-- 保单递交日 -->
+<div class="filter-group space-y-2">
+<div class="flex items-center">
+<label class="text-xs font-bold text-gray-700 w-24">保单递交日</label>
+</div>
+<div class="flex items-start">
+<div class="flex flex-nowrap gap-2">
+<div class="filter-option"><button class="active">全部</button></div>
+<div class="filter-option"><button>近一个月</button></div>
+<div class="filter-option"><button>近三个月</button></div>
+<div class="filter-option"><button>自定义</button></div>
+</div>
+</div>
+
+<!-- 保单递交日自定义日期选择区域，初始隐藏 -->
+<div id="customDatePanel2" class="custom-date-panel hidden flex items-center space-x-1">
+<input type="date" id="startDate2" class="flex-1 px-2 py-1.5 border border-gray-200 rounded-lg text-xs" value="2024-01-01"/>
+<span class="text-xs text-gray-700 mx-1">-</span>
+<input type="date" id="endDate2" class="flex-1 px-2 py-1.5 border border-gray-200 rounded-lg text-xs" value="2024-10-01"/>
+</div>
+</div>
+<div class="flex justify-end mt-4 space-x-3">
+<button class="bg-gray-200 text-gray-700 px-4 py-1.5 rounded-full text-xs" onclick="resetFilters()">重置</button>
+<button class="bg-custom-green text-white px-4 py-1.5 rounded-full text-xs" onclick="applyFilters()">确定</button>
+<button class="bg-blue-500 text-white px-4 py-1.5 rounded-full text-xs" onclick="showSaveFilterModal()">保存筛选</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 搜索筛选栏 -->
+<div class="py-1 px-3 bg-white shrink-0">  <!-- 调整上下内边距为4px -->
+<div class="flex items-center space-x-3">
+<div class="flex-1 bg-gray-100 rounded-full h-9 flex items-center px-4 relative">
+<span class="iconify w-5 h-5 text-gray-400 mr-2" data-icon="material-symbols:search"></span>
+<input class="bg-transparent text-sm outline-none w-full text-gray-600 placeholder-gray-400 pr-20" placeholder="身份证号、保单号、姓名/首字符等" type="text" id="search-input"/>
+<span class="iconify w-5 h-5 text-gray-400 cursor-pointer hidden absolute right-10 top-1/2 transform -translate-y-1/2" data-icon="material-symbols:close" id="clear-search"></span>  <!-- 将删除图标移到搜索按钮左侧 -->
+<button class="text-custom-green font-medium text-xs absolute right-3 top-1/2 transform -translate-y-1/2">搜索</button>
+</div>
+<div class="flex flex-col items-center cursor-pointer" onclick="toggleFilter()" style="height: 36px;">
+  <span class="iconify w-4 h-4 text-custom-green" data-icon="material-symbols:filter-alt-outline"></span>
+  <span class="text-[10px] text-custom-green mt-0.5">筛选</span>
+</div>
+<span class="iconify w-5 h-5 text-custom-green cursor-pointer" data-icon="material-symbols:more-horiz" onclick="showMoreOptions()"></span>
+</div>
+</div>
+<!-- 保单列表内容区 (676px) -->
+<div class="flex-1 -mt-2 overflow-y-auto hide-scrollbar bg-gray-50 p-3 space-y-1 pb-[86px]">
+<!-- 列表条目 2 -->
+<a href="保单详情.html" class="policy-item block renewal-policy">
+<div class="bg-white rounded-lg shadow-sm p-4 text-sm">
+<div class="flex justify-between items-center mb-4">
+<div class="flex items-center"><span class="font-bold text-gray-800">P000327990</span><span class="bg-gray-100 text-gray-400 text-[10px] ml-2 px-1 rounded">年金保险</span></div>
+<span class="text-custom-green font-medium tracking-tight">有效</span>
+</div>
+<div class="grid grid-cols-2 gap-y-2 mb-4 border-b border-gray-50 pb-4">
+
+<div class="text-gray-400">保单生效日</div><div class="text-gray-700 text-right font-mono">2026-01-01</div>
+<div class="text-gray-400">交费期</div><div class="text-gray-700 text-right">10</div>
+<div class="text-gray-400">主险名称</div><div class="text-gray-700 text-right">宏佑世家</div>
+<div class="text-gray-400">网点名称</div><div class="text-gray-700 text-right">SH0A00-招商陆家嘴支行</div>
+<div class="text-gray-400">理财经理</div><div class="text-gray-700 text-right">SH88889-张三</div>
+<div class="text-gray-400">服务人员</div><div class="text-gray-700 text-right">SH99998-李四</div>
+</div>
+<div class="flex text-gray-700">
+<div class="flex items-center">
+  <div class="w-5 h-5 rounded-full border border-gray-200 flex items-center justify-center mr-1 scale-90 text-gray-400 text-[10px]">投</div>
+  <a href="客户详情.html" class="text-gray-800">郝**零零 女 43岁</a>
+</div>
+<div class="flex items-center ml-auto">
+  <div class="w-5 h-5 rounded-full border border-gray-200 flex items-center justify-center mr-1 scale-90 text-gray-400 text-[10px]">被</div>
+  <a href="客户详情.html" class="text-gray-800">郝**零零 女 43岁</a>
+</div>
+</div>
+</div>
+</a>
+</div>
+<!-- 更多选项弹窗 -->
+<div id="moreOptionsModal" class="bottom-modal">
+<div class="bottom-modal-content">
+<div class="p-4">
+<div class="flex justify-around items-center gap-2 p-2">
+<button class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 transition-colors" onclick="forwardPolicy()">
+<span class="iconify w-10 h-10 text-custom-green mb-1" data-icon="material-symbols:forward"></span>
+<span class="text-sm text-gray-700">转发</span>
+</button>
+<button class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 transition-colors" onclick="goToHome()">
+<span class="iconify w-10 h-10 text-custom-green mb-1" data-icon="material-symbols:home"></span>
+<span class="text-sm text-gray-700">回到主页</span>
+</button>
+<button class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 transition-colors" onclick="goToTodo()">
+<span class="iconify w-10 h-10 text-custom-green mb-1" data-icon="material-symbols:task"></span>
+<span class="text-sm text-gray-700">我的待办</span>
+</button>
+<button class="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 transition-colors" onclick="feedback()">
+<span class="iconify w-10 h-10 text-custom-green mb-1" data-icon="material-symbols:feedback"></span>
+<span class="text-sm text-gray-700">意见反馈</span>
+</button>
+</div>
+<div class="flex justify-center mt-8">
+<button class="bg-gray-200 text-gray-700 px-8 py-2 rounded-full text-sm w-64" onclick="closeMoreOptions()">取消</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 保存筛选弹窗 -->
+<div id="saveFilterModal" class="save-filter-modal">
+<div class="save-filter-modal-content">
+<div class="space-y-4">
+<div class="text-sm font-bold text-gray-800">保存筛选</div>
+<div class="flex items-center space-x-2">
+<label class="text-xs font-bold text-gray-700 w-24">自定义名称</label>
+<input type="text" class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs" placeholder="输入筛选名称" id="filterNameInput"/>
+</div>
+<div class="flex justify-end space-x-3">
+<button class="bg-gray-200 text-gray-700 px-4 py-1.5 rounded-full text-xs" onclick="closeSaveFilterModal()">取消</button>
+<button class="bg-custom-green text-white px-4 py-1.5 rounded-full text-xs" onclick="saveFilter()">保存</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 底部安全条 -->
+<div class="h-6 bg-white flex justify-center items-center shrink-0 absolute bottom-0 left-0 right-0 z-20">
+<div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+</div>
+</div>
+
+
+</div>
+
+<script>
+  // 当前激活的标签
+  let currentTab = 'all';
+  let currentFilter = 'valid'; // 默认显示有效保单
+  
+  // 搜索框交互
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    const clearSearch = document.getElementById('clear-search');
+    
+    if (searchInput && clearSearch) {
+      searchInput.addEventListener('input', () => {
+        if (searchInput.value.trim() !== '') {
+          clearSearch.classList.remove('hidden');
+        } else {
+          clearSearch.classList.add('hidden');
+        }
+      });
+      
+      clearSearch.addEventListener('click', () => {
+        searchInput.value = '';
+        clearSearch.classList.add('hidden');
+        searchInput.focus();
+      });
+    }
+  });
+  
+  // 保存筛选弹窗
+  function showSaveFilterModal() {
+    document.getElementById('saveFilterModal').classList.add('active');
+  }
+  
+  function closeSaveFilterModal() {
+    document.getElementById('saveFilterModal').classList.remove('active');
+  }
+  
+  function saveFilter() {
+    const filterName = document.getElementById('filterNameInput').value;
+    if (filterName.trim() === '') {
+      alert('请输入筛选名称');
+      return;
+    }
+    
+    // 模拟保存筛选
+    alert('筛选已保存：' + filterName);
+    
+    // 在导航栏添加筛选标签
+    const tabNav = document.querySelector('.flex.items-center.space-x-6');
+    const newTab = document.createElement('div');
+    newTab.className = 'flex flex-col items-center';
+    newTab.innerHTML = `
+      <span class="nav-inactive whitespace-nowrap">${filterName}</span>
+      <div class="w-6 h-1 bg-transparent mt-1 rounded-full"></div>
+    `;
+    tabNav.appendChild(newTab);
+    
+    closeSaveFilterModal();
+  }
+  
+  // 切换标签页
+  function switchTab(tabName) {
+    // 重置所有标签为非活动状态
+    document.querySelectorAll('.flex-col.items-center').forEach(el => {
+      const spanElement = el.querySelector('span');
+      const indicator = el.querySelector('div:last-child');
+      if(spanElement && indicator) {
+        spanElement.classList.remove('nav-active');
+        spanElement.classList.add('nav-inactive');
+        spanElement.classList.remove('font-bold');
+        indicator.classList.remove('bg-custom-green');
+        indicator.classList.add('bg-transparent');
+      }
+    });
+    
+    // 设置选中标签为活动状态
+    const activeTab = document.getElementById(tabName + '-tab');
+    const activeSpan = activeTab.querySelector('span');
+    const activeIndicator = activeTab.querySelector('div:last-child');
+    
+    activeSpan.classList.remove('nav-inactive');
+    activeSpan.classList.add('nav-active', 'font-bold');
+    activeIndicator.classList.remove('bg-transparent');
+    activeIndicator.classList.add('bg-custom-green');
+    
+    currentTab = tabName;
+    
+    // 显示对应标签的内容
+    showTabContent(tabName);
+  }
+  
+  // 显示对应标签的内容
+  function showTabContent(tabName) {
+    // 这里可以添加加载对应列表的逻辑
+    // 目前只是简单隐藏/显示内容，实际项目中可能需要从服务器获取数据
+    console.log('Switched to tab: ' + tabName);
+    
+    // 根据标签名称显示对应的保单列表
+    const policyItems = document.querySelectorAll('.policy-item');
+    
+    policyItems.forEach(item => {
+      switch(tabName) {
+        case 'all':
+          item.style.display = 'block';
+          break;
+        case 'renewal':
+          // 在实际应用中，这里会根据保单的续期状态来决定显示/隐藏
+          // 这里我们模拟显示续期保单
+          item.style.display = item.classList.contains('renewal-policy') ? 'block' : 'none';
+          break;
+        case 'loan':
+          // 在实际应用中，这里会根据保单的贷款状态来决定显示/隐藏
+          item.style.display = item.classList.contains('loan-policy') ? 'block' : 'none';
+          break;
+        case 'deduction':
+          // 在实际应用中，这里会根据保单的扣款状态来决定显示/隐藏
+          item.style.display = item.classList.contains('deduction-policy') ? 'block' : 'none';
+          break;
+        case 'lapse':
+          // 在实际应用中，这里会根据保单的失效状态来决定显示/隐藏
+          item.style.display = item.classList.contains('lapse-policy') ? 'block' : 'none';
+          break;
+        default:
+          item.style.display = 'block';
+      }
+    });
+  }
+  
+  // 更多选项弹窗控制
+  function showMoreOptions() {
+    const modal = document.getElementById('moreOptionsModal');
+    modal.classList.add('active');
+  }
+  
+  function closeMoreOptions() {
+    const modal = document.getElementById('moreOptionsModal');
+    modal.classList.remove('active');
+  }
+  
+  // 更多选项功能
+  function forwardPolicy() {
+    // 转发功能逻辑
+    alert('转发功能开发中');
+    closeMoreOptions();
+  }
+  
+  function goToHome() {
+    // 返回主页
+    window.location.href = '../首页.html';
+    closeMoreOptions();
+  }
+  
+  function goToTodo() {
+    // 我的待办
+    alert('我的待办功能开发中');
+    closeMoreOptions();
+  }
+  
+  function feedback() {
+    // 意见反馈
+    alert('意见反馈功能开发中');
+    closeMoreOptions();
+  }
+  
+  // 按状态筛选保单
+  function filterByStatus(status) {
+    // 更新按钮样式
+    const validBtn = document.getElementById('valid-btn');
+    const validBtnFilter = document.getElementById('valid-btn-filter');
+    const preBtn = document.getElementById('pre-btn');
+    const preBtnFilter = document.getElementById('pre-btn-filter');
+    
+    if (status === 'valid') {
+      // 更新主页面按钮样式
+      validBtn.classList.remove('bg-gray-50', 'text-gray-400');
+      validBtn.classList.add('bg-custom-green', 'text-white');
+      preBtn.classList.remove('bg-custom-green', 'text-white');
+      preBtn.classList.add('bg-gray-50', 'text-gray-400');
+      
+      // 更新筛选面板内按钮样式
+      validBtnFilter.classList.remove('bg-gray-50', 'text-gray-400');
+      validBtnFilter.classList.add('bg-custom-green', 'text-white');
+      preBtnFilter.classList.remove('bg-custom-green', 'text-white');
+      preBtnFilter.classList.add('bg-gray-50', 'text-gray-400');
+    } else {
+      // 更新主页面按钮样式
+      preBtn.classList.remove('bg-gray-50', 'text-gray-400');
+      preBtn.classList.add('bg-custom-green', 'text-white');
+      validBtn.classList.remove('bg-custom-green', 'text-white');
+      validBtn.classList.add('bg-gray-50', 'text-gray-400');
+      
+      // 更新筛选面板内按钮样式
+      preBtnFilter.classList.remove('bg-gray-50', 'text-gray-400');
+      preBtnFilter.classList.add('bg-custom-green', 'text-white');
+      validBtnFilter.classList.remove('bg-custom-green', 'text-white');
+      validBtnFilter.classList.add('bg-gray-50', 'text-gray-400');
+    }
+    
+    currentFilter = status;
+    
+    // 这里可以添加筛选保单的逻辑
+  }
+  
+  // 执行搜索
+  function performSearch() {
+    const searchInput = document.querySelector('input[type="text"]').value;
+    // 这里可以添加搜索逻辑
+    alert('正在搜索: ' + searchInput);
+  }
+  
+  // 切换筛选弹窗显示/隐藏
+  function toggleFilter() {
+    const filterModal = document.getElementById('filterModal');
+    filterModal.classList.toggle('active');
+    
+    // 如果弹窗被激活，阻止内容滚动
+    const mainContent = document.querySelector('.flex-1.overflow-y-auto');
+    if (filterModal.classList.contains('active')) {
+      mainContent.style.overflow = 'hidden';
+    } else {
+      mainContent.style.overflow = 'auto';
+    }
+  }
+  
+  // 重置筛选条件
+  function resetFilters() {
+    // 重置所有筛选条件为默认值
+    document.querySelectorAll('.filter-option button').forEach(button => {
+      if(button.textContent !== '全部') {
+        button.classList.remove('active');
+      } else {
+        button.classList.add('active');
+      }
+    });
+    
+    // 重置下拉选择框
+    document.querySelectorAll('select').forEach(select => {
+      // 重置为第一个选项（通常是"全部"）
+      select.selectedIndex = 0;
+    });
+    
+    // 隐藏自定义日期面板
+    document.getElementById('customDatePanel').classList.add('hidden');
+    document.getElementById('customDatePanel2').classList.add('hidden');
+  }
+  
+  // 处理筛选选项点击
+  document.querySelectorAll('.filter-option button').forEach(button => {
+    button.addEventListener('click', function() {
+      const parentDiv = this.parentElement.parentElement;
+      let parentGroupTitle = '';
+      
+      // 尝试获取父组标题
+      let container = parentDiv.parentElement;
+      // 向上查找直到找到包含label的容器
+      while (container && !parentGroupTitle) {
+        const label = container.querySelector('label');
+        if (label) {
+          parentGroupTitle = label.textContent;
+        } else {
+          container = container.parentElement;
+        }
+      }
+      
+      // 对于保单承保日、保单递交日，只允许单选
+      if(['保单承保日', '保单递交日'].includes(parentGroupTitle)) {
+        // 移除同组内其他按钮的active类
+        parentDiv.querySelectorAll('button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        // 为当前按钮添加active类
+        this.classList.add('active');
+        
+        // 如果点击的是"保单承保日-自定义"，则显示日期选择器
+        if(parentGroupTitle === '保单承保日' && this.textContent === '自定义') {
+          document.getElementById('customDatePanel').classList.remove('hidden');
+        } else if(parentGroupTitle === '保单承保日') {
+          // 如果点击的是保单承保日的其他选项，隐藏日期选择器
+          document.getElementById('customDatePanel').classList.add('hidden');
+        }
+        
+        // 如果点击的是"保单递交日-自定义"，则显示日期选择器
+        if(parentGroupTitle === '保单递交日' && this.textContent === '自定义') {
+          document.getElementById('customDatePanel2').classList.remove('hidden');
+        } else if(parentGroupTitle === '保单递交日') {
+          // 如果点击的是保单递交日的其他选项，隐藏日期选择器
+          document.getElementById('customDatePanel2').classList.add('hidden');
+        }
+      } else {
+        // 对于其他组（包括保单状态、出单方式），可以多选
+        const parentGroup = this.closest('.space-y-2');
+        const allButton = parentGroup.querySelector('.filter-option:first-child button');
+        
+        if (this.textContent === '全部') {
+          // 如果点击的是"全部"，取消其他所有选项的选中状态
+          parentGroup.querySelectorAll('.filter-option button').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          this.classList.add('active');
+        } else {
+          // 如果点击的是其他选项，切换其选中状态
+          this.classList.toggle('active');
+          
+          // 检查是否有其他选项被选中
+          const hasActiveButtons = Array.from(parentGroup.querySelectorAll('.filter-option button')).some(btn => {
+            return btn !== allButton && btn.classList.contains('active');
+          });
+          
+          // 如果有其他选项被选中，取消"全部"的选中状态
+          if (hasActiveButtons && allButton) {
+            allButton.classList.remove('active');
+          } else if (!hasActiveButtons && allButton) {
+            // 如果没有其他选项被选中，选中"全部"
+            allButton.classList.add('active');
+          }
+        }
+      }
+    });
+  });
+  
+  // 确定筛选条件
+  function applyFilters() {
+    // 这里可以添加应用筛选条件的逻辑
+    toggleFilter(); // 关闭弹窗
+  }
+</script>
+</body>
+</html>

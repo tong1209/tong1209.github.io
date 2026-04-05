@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BSM入司时间线</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 自定义绿色 */
+        .text-custom-green {
+            color: #00A758;
+        }
+        
+        .bg-custom-green {
+            background-color: #00A758;
+        }
+        
+        /* 全局字体 */
+        body {
+            font-family: 'NotoSansCJKsc-Medium', sans-serif;
+        }
+        
+        /* 时间线样式 */
+        .timeline-container {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                #00A758 0%, 
+                #00A758 40%, 
+                #3B82F6 40%, 
+                #3B82F6 60%, 
+                #E5E7EB 60%, 
+                #E5E7EB 100%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 24px;
+        }
+        
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -24px;
+            top: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 3px solid;
+            background-color: white;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-dot.completed {
+            border-color: #00A758;
+            background-color: #00A758;
+        }
+        
+        .timeline-dot.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .timeline-dot.current {
+            border-color: #3B82F6;
+            background-color: #3B82F6;
+            animation: pulse-blue 2s infinite;
+        }
+        
+        .timeline-dot.pending {
+            border-color: #E5E7EB;
+            background-color: white;
+        }
+        
+        @keyframes pulse-blue {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+                transform: scale(1.1);
+            }
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .status-badge.completed {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+        
+        .status-badge.current {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+        
+        .status-badge.pending {
+            background-color: #F3F4F6;
+            color: #6B7280;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-start items-start min-h-screen">
+    <!-- Container for both app and documentation -->
+    <div class="flex flex-row space-x-4 p-4 w-full">
+        <!-- APP Container -->
+        <div class="w-[375px] h-[812px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+            <!-- Title Bar (56px) -->
+            <div class="h-[56px] flex items-center justify-between px-4 pt-4 bg-white border-b border-gray-50">
+                <span class="iconify w-6 h-6 text-gray-700 z-10" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.history.back();"></span>
+                <h1 class="text-lg font-bold text-gray-900 flex-1 text-center">入司时间线</h1>
+                <div class="w-6"></div>
+            </div>
+            
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50 px-4 py-4 space-y-4">
+                <!-- 候选人信息卡片 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                            <span class="iconify w-6 h-6 text-gray-500" data-icon="material-symbols:person"></span>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="font-bold text-gray-900">张三</h2>
+                            <p class="text-xs text-gray-500">应聘职位：银保专管员</p>
+                            <p class="text-xs text-gray-500">当前状态：二面进行中</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 时间线卡片 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                    <h3 class="font-bold text-gray-900 mb-4 text-sm">入司流程进度</h3>
+                    
+                    <!-- 线性时间线 -->
+                    <div class="timeline-container">
+                        <!-- 信息录入 - 已完成 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot completed"></div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="font-semibold text-gray-900 text-sm">信息录入</h4>
+                                <span class="status-badge completed">已完成</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-1">2026-03-22 09:30</p>
+                            <p class="text-xs text-gray-600">基本信息填写完成</p>
+                        </div>
+                        
+                        <!-- 一面 - 已完成 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot completed"></div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="font-semibold text-gray-900 text-sm">一面</h4>
+                                <span class="status-badge completed">已完成</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-1">2026-03-22 14:15</p>
+                            <p class="text-xs text-gray-600">面试通过，表现优秀</p>
+                        </div>
+                        
+                        <!-- 二面 - 进行中 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot current"></div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="font-semibold text-gray-900 text-sm">二面</h4>
+                                <span class="status-badge current">进行中</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-1">预计完成：2026-03-22 16:30</p>
+                            <p class="text-xs text-gray-600">深度面试评估中</p>
+                        </div>
+                        
+                        <!-- 资料审核 - 待开始 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot pending"></div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="font-semibold text-gray-500 text-sm">资料审核</h4>
+                                <span class="status-badge pending">待开始</span>
+                            </div>
+                            <p class="text-xs text-gray-400">等待二面结果</p>
+                        </div>
+                        
+                        <!-- 入职办理 - 待开始 -->
+                        <div class="timeline-item">
+                            <div class="timeline-dot pending"></div>
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="font-semibold text-gray-500 text-sm">入职办理</h4>
+                                <span class="status-badge pending">待开始</span>
+                            </div>
+                            <p class="text-xs text-gray-400">资料审核通过后</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 进度概览 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                    <h3 class="font-bold text-gray-900 mb-3 text-sm">进度概览</h3>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-gray-600">整体进度</span>
+                        <span class="text-sm font-bold text-custom-green">60%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style="width: 60%"></div>
+                    </div>
+                    <div class="flex justify-between mt-3 text-xs">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-custom-green mr-1"></div>
+                            <span class="text-gray-600">已完成 2</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-blue-500 mr-1 animate-pulse"></div>
+                            <span class="text-gray-600">进行中 1</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-gray-300 mr-1"></div>
+                            <span class="text-gray-600">待开始 2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Documentation Panel -->
+        <div class="w-[700px] h-[812px] bg-gray-100 border border-gray-200 rounded-[20px] shadow-xl p-6 overflow-y-auto">
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">需求说明</h1>
+            
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-3">入司时间线：</h2>
+                <div class="pl-6 space-y-4 text-gray-700">
+                    <p class="mb-2">1. 展示具体候选人的入司流程时间线，线性排列各阶段</p>
+                    <p class="mb-2">2. 状态标识：已完成（中宏绿）、进行中（蓝色动态标记）、待开始（灰色）</p>
+                    <p class="mb-2">3. 每个阶段显示：阶段名称、状态标签、时间节点、简要说明</p>
+                    <p class="mb-2">4. 进度条采用渐变色（绿到蓝），直观显示整体完成度</p>
+                    <p class="mb-2">5. 顶部显示候选人基本信息：姓名、应聘职位、当前状态</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
