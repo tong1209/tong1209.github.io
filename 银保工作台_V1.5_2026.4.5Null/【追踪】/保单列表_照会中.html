@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>保单列表 - 照会中</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    body { background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .policy-card { transition: all 0.2s ease; }
+    .policy-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1); }
+</style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<div class="w-[375px] h-[780px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+    <header class="pt-12 pb-4 px-4 bg-white flex items-center justify-between border-b border-slate-50 sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <a class="p-2 hover:bg-slate-50 rounded-full transition-colors" href="投保追踪主页面.html">
+                <span class="iconify text-2xl text-slate-800" data-icon="solar:alt-arrow-left-outline"></span>
+            </a>
+            <div>
+                <h1 class="text-lg font-bold text-slate-800">保单明细清单</h1>
+                <p class="text-xs text-slate-500">照会中 (101)</p>
+            </div>
+        </div>
+        <button class="p-2"><span class="iconify text-2xl text-slate-600" data-icon="solar:magnifer-linear"></span></button>
+    </header>
+    
+    <div class="bg-orange-50/50 px-4 py-3 flex items-center justify-between border-b border-slate-100">
+        <div class="flex items-center gap-2">
+            <span class="text-xs text-orange-600 font-medium bg-white px-2 py-1 rounded border border-orange-100 shadow-sm">
+                当前状态: 照会中
+            </span>
+            <span class="text-[10px] text-slate-400">共 101 条记录</span>
+        </div>
+        <span class="iconify text-orange-600" data-icon="solar:filter-bold-duotone"></span>
+    </div>
+    
+    <main class="h-[630px] overflow-y-auto px-4 py-4 hide-scrollbar space-y-3">
+        <!-- 保单卡片 1 - 照会处理中 -->
+        <div class="policy-card bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center">
+                    <span class="font-bold text-slate-800 text-sm">PA20260214000987</span>
+                    <span class="bg-emerald-100 text-emerald-700 text-[9px] ml-2 px-1 rounded">线上单</span>
+                    <span class="bg-orange-100 text-orange-700 text-[9px] ml-1 px-1 rounded">照会处理中</span>
+                </div>
+                <span class="text-orange-600 font-medium text-sm">照会中</span>
+            </div>
+            <div class="grid grid-cols-2 gap-y-1.5 mb-3 border-b border-slate-50 pb-3">
+                <div class="text-slate-400 text-xs">主险名称</div><div class="text-slate-700 text-right text-xs">平安百万医疗险</div>
+                <div class="text-slate-400 text-xs">投保金额</div><div class="text-slate-700 text-right font-medium text-blue-600 text-xs">¥ 8,500.00</div>
+                <div class="text-slate-400 text-xs">银行网点</div><div class="text-slate-700 text-right text-xs">建设银行鼓楼支行</div>
+                <div class="text-slate-400 text-xs">截止时间</div><div class="text-slate-700 text-right text-xs">2026-02-21</div>
+            </div>
+            <div class="bg-amber-50 border border-amber-100 rounded-lg p-2 mb-2">
+                <p class="text-[9px] text-amber-700">
+                    <span class="font-medium">照会内容：</span>需补充被保险人近3年体检报告及就诊记录
+                </p>
+            </div>
+            <div class="flex justify-between items-center text-[9px] text-slate-400">
+                <div class="flex items-center">
+                    <span class="iconify mr-1 text-slate-300 text-xs" data-icon="solar:user-outline"></span>
+                    <span class="text-slate-700 text-xs">王*芳</span>
+                </div>
+                <div class="flex gap-2">
+                    <span>发起时间: 2026-02-14 11:30:00</span>
+                    <button class="text-orange-600 font-medium text-[9px] px-2 py-1 bg-orange-50 rounded">上传资料</button>
+                    <button class="text-blue-600 font-medium text-xs">查看详情</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 保单卡片 2 - 照会待回销 -->
+        <div class="policy-card bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center">
+                    <span class="font-bold text-slate-800 text-sm">BK20260214001534</span>
+                    <span class="bg-indigo-100 text-indigo-700 text-[9px] ml-2 px-1 rounded">线下单</span>
+                    <span class="bg-amber-100 text-amber-700 text-[9px] ml-1 px-1 rounded">照会待回销</span>
+                </div>
+                <span class="text-orange-600 font-medium text-sm">照会中</span>
+            </div>
+            <div class="grid grid-cols-2 gap-y-1.5 mb-3 border-b border-slate-50 pb-3">
+                <div class="text-slate-400 text-xs">主险名称</div><div class="text-slate-700 text-right text-xs">终身寿险</div>
+                <div class="text-slate-400 text-xs">投保金额</div><div class="text-slate-700 text-right font-medium text-blue-600 text-xs">¥ 300,000.00</div>
+                <div class="text-slate-400 text-xs">银行网点</div><div class="text-slate-700 text-right text-xs">农业银行中关村支行</div>
+                <div class="text-slate-400 text-xs">截止时间</div><div class="text-slate-700 text-right text-xs">2026-02-20</div>
+            </div>
+            <div class="bg-amber-50 border border-amber-100 rounded-lg p-2 mb-2">
+                <p class="text-[9px] text-amber-700">
+                    <span class="font-medium">照会内容：</span>需提供财务证明材料，包括收入证明和资产证明
+                </p>
+            </div>
+            <div class="flex justify-between items-center text-[9px] text-slate-400">
+                <div class="flex items-center">
+                    <span class="iconify mr-1 text-slate-300 text-xs" data-icon="solar:user-outline"></span>
+                    <span class="text-slate-700 text-xs">陈*华</span>
+                </div>
+                <div class="flex gap-2">
+                    <span>发起时间: 2026-02-14 08:15:30</span>
+                    <button class="text-amber-600 font-medium text-[9px] px-2 py-1 bg-amber-50 rounded">等待回销</button>
+                    <button class="text-blue-600 font-medium text-xs">查看详情</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="absolute bottom-1 w-32 h-1 bg-slate-200 left-1/2 -translate-x-1/2 rounded-full"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>照会内容</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[780px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- 系统状态栏模拟 -->
+<div class="h-[44px] flex justify-between items-center px-6 shrink-0 bg-white">
+<span class="text-sm font-semibold">10:05</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4 text-custom-green" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6 relative">
+<div class="bg-black h-full w-[31%]"></div>
+</div>
+</div>
+</div>
+<!-- 标题栏 -->
+<div class="h-[56px] bg-white flex items-center px-4 shrink-0 border-b border-gray-50 relative">
+<span class="iconify w-6 h-6 text-gray-700 absolute left-4" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.history.back();"></span>
+<h1 class="text-lg font-medium text-gray-800 text-center w-full">照会内容</h1>
+</div>
+<!-- 内容滚动区 (676px) -->
+<div class="flex-1 overflow-y-auto hide-scrollbar p-3 space-y-3">
+<!-- 照会内容卡片 -->
+<div class="bg-white rounded-lg shadow-sm p-4 text-sm relative">
+<!-- 表头 -->
+<div class="flex items-center py-3 border-b border-gray-100 bg-gray-50/50 -mx-4 px-4 -mt-4 rounded-t-lg">
+<span class="text-gray-500 text-sm font-medium w-24">照会下发日</span>
+<span class="text-gray-500 text-sm font-medium flex-1">照会内容</span>
+</div>
+<!-- 照会内容列表 -->
+<div class="divide-y divide-gray-100">
+<!-- 第一条照会 -->
+<div class="py-4">
+<div class="flex items-start">
+<span class="text-gray-700 text-sm w-24 shrink-0">2026-01-02</span>
+<span class="text-gray-700 text-sm flex-1 leading-relaxed">录制不清晰</span>
+</div>
+</div>
+<!-- 第二条照会 -->
+<div class="py-4">
+<div class="flex items-start">
+<span class="text-gray-700 text-sm w-24 shrink-0">2026-01-01</span>
+<span class="text-gray-700 text-sm flex-1 leading-relaxed">无影像资料上传，请尽快递交录音录像资料</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,563 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>投保追踪</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    body { 
+        background-color: #f1f5f9; 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+    }
+    .glass-effect { 
+        background: rgba(255, 255, 255, 0.8); 
+        backdrop-filter: blur(10px); 
+    }
+    .hide-scrollbar::-webkit-scrollbar { 
+        display: none; 
+    }
+    .status-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .bank-active {
+        background: linear-gradient(135deg, #00A758 0%, #008a45 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 167, 88, 0.3);
+    }
+</style>
+</head>
+<body class="bg-gray-100 min-h-screen flex justify-center items-center">
+<!-- APP容器 (375x812) -->
+<div class="w-[375px] h-[780px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+    <!-- 系统状态栏 (44px) -->
+    <div class="h-[44px] flex justify-between items-center px-6 bg-white">
+        <span class="text-sm font-semibold">9:53</span>
+        <div class="flex items-center space-x-1.5">
+            <span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+            <span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+            <div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
+                <div class="bg-black h-full w-[33%]"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 标题栏 (56px) -->
+    <div class="h-[56px] flex justify-between items-center px-4 bg-white">
+        <h1 class="text-2xl font-bold text-gray-900 ml-2">投保追踪</h1>
+        <div class="flex items-center space-x-5 text-gray-700">
+            <span class="iconify w-6 h-6" data-icon="material-symbols:search"></span>
+            <span class="iconify w-6 h-6" data-icon="material-symbols:settings-outline"></span>
+        </div>
+    </div>
+    
+    <!-- 银行筛选区域 -->
+    <div class="px-4 py-3 bg-white border-b border-gray-100">
+        <!-- 银行选择 -->
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-3">
+            <button class="px-4 py-2 bank-active rounded-full text-sm font-medium whitespace-nowrap" onclick="selectBank('all')">
+                全部银行
+            </button>
+            <button class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium whitespace-nowrap" onclick="selectBank('cmb')">
+                招商银行
+            </button>
+            <button class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium whitespace-nowrap" onclick="selectBank('icbc')">
+                工商银行
+            </button>
+            <button class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium whitespace-nowrap" onclick="selectBank('ccb')">
+                建设银行
+            </button>
+            <button class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium whitespace-nowrap" onclick="selectBank('abc')">
+                农业银行
+            </button>
+            <button class="px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-full text-sm font-medium whitespace-nowrap" onclick="selectBank('boc')">
+                中国银行
+            </button>
+        </div>
+        
+        <!-- 网点选择区域 -->
+        <div id="branchSelection" class="hidden bg-slate-50 rounded-xl p-3 border border-slate-200">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-sm font-bold text-slate-800">选择银行网点</h3>
+                <div class="flex gap-2">
+                    <button class="text-xs text-blue-600 font-medium" onclick="selectAllBranches()">全选</button>
+                    <button class="text-xs text-slate-500" onclick="clearAllBranches()">清空</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto" id="branchList">
+                <!-- 网点选项将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // 银行网点Mock数据
+    const bankBranches = {
+        'cmb': [
+            {id: 'cmb001', name: '招商银行深圳分行', code: 'SH83001'},
+            {id: 'cmb002', name: '招商银行北京分行', code: 'BJ83002'},
+            {id: 'cmb003', name: '招商银行上海分行', code: 'SH83003'},
+            {id: 'cmb004', name: '招商银行广州分行', code: 'GZ83004'},
+            {id: 'cmb005', name: '招商银行杭州分行', code: 'HZ83005'}
+        ],
+        'icbc': [
+            {id: 'icbc001', name: '工商银行长安支行', code: 'CA84001'},
+            {id: 'icbc002', name: '工商银行朝阳支行', code: 'CY84002'},
+            {id: 'icbc003', name: '工商银行海淀支行', code: 'HD84003'},
+            {id: 'icbc004', name: '工商银行浦东支行', code: 'PD84004'}
+        ],
+        'ccb': [
+            {id: 'ccb001', name: '建设银行鼓楼支行', code: 'GL85001'},
+            {id: 'ccb002', name: '建设银行玄武支行', code: 'XW85002'},
+            {id: 'ccb003', name: '建设银行江宁支行', code: 'JN85003'}
+        ],
+        'abc': [
+            {id: 'abc001', name: '农业银行中关村支行', code: 'ZGC86001'},
+            {id: 'abc002', name: '农业银行金融街支行', code: 'JRJ86002'}
+        ],
+        'boc': [
+            {id: 'boc001', name: '中国银行陆家嘴支行', code: 'LJZ87001'},
+            {id: 'boc002', name: '中国银行外滩支行', code: 'WT87002'}
+        ]
+    };
+    
+    let selectedBranches = [];
+    let currentSelectedBank = null; // 记录当前选中的银行
+    
+    function selectBank(bankType) {
+        // 重置所有按钮样式
+        const buttons = document.querySelectorAll('button[onclick^="selectBank"]');
+        buttons.forEach(btn => {
+            btn.classList.remove('bank-active');
+            btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+        });
+        
+        // 设置选中按钮样式
+        event.target.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+        event.target.classList.add('bank-active');
+        
+        // 显示或隐藏网点选择区域
+        const branchSelection = document.getElementById('branchSelection');
+        
+        if (bankType === 'all') {
+            // 选择全部银行时隐藏网点选择区域
+            branchSelection.classList.add('hidden');
+            selectedBranches = [];
+            currentSelectedBank = null;
+        } else {
+            // 如果点击的是同一个银行，则切换显示/隐藏
+            if (currentSelectedBank === bankType) {
+                // 重复点击同一银行，切换折叠状态
+                branchSelection.classList.toggle('hidden');
+                if (branchSelection.classList.contains('hidden')) {
+                    // 如果隐藏了，则清空选中状态
+                    clearAllBranches();
+                }
+            } else {
+                // 点击不同银行，显示网点选择区域
+                branchSelection.classList.remove('hidden');
+                renderBranchList(bankType);
+                currentSelectedBank = bankType;
+            }
+        }
+        
+        // 更新统计数据
+        updateStatistics(bankType);
+    }
+    
+    function renderBranchList(bankType) {
+        const branchList = document.getElementById('branchList');
+        const branches = bankBranches[bankType] || [];
+        
+        branchList.innerHTML = '';
+        branches.forEach(branch => {
+            const branchElement = document.createElement('div');
+            branchElement.className = 'flex items-center p-2 bg-white rounded-lg border border-slate-200 hover:border-blue-300 cursor-pointer';
+            branchElement.innerHTML = `
+                <input type="checkbox" 
+                       id="branch_${branch.id}" 
+                       value="${branch.id}" 
+                       class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                       onchange="toggleBranch('${branch.id}', this.checked)">
+                <label for="branch_${branch.id}" class="ml-2 text-xs text-slate-700 cursor-pointer flex-1">
+                    <div class="font-medium">${branch.name}</div>
+                    <div class="text-[10px] text-slate-500">${branch.code}</div>
+                </label>
+            `;
+            branchList.appendChild(branchElement);
+        });
+    }
+    
+    function toggleBranch(branchId, isSelected) {
+        if (isSelected) {
+            if (!selectedBranches.includes(branchId)) {
+                selectedBranches.push(branchId);
+            }
+        } else {
+            selectedBranches = selectedBranches.filter(id => id !== branchId);
+        }
+        console.log('选中的网点:', selectedBranches);
+    }
+    
+    function selectAllBranches() {
+        const checkboxes = document.querySelectorAll('#branchList input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+            toggleBranch(checkbox.value, true);
+        });
+    }
+    
+    function clearAllBranches() {
+        const checkboxes = document.querySelectorAll('#branchList input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+            toggleBranch(checkbox.value, false);
+        });
+        selectedBranches = [];
+    }
+    
+    function updateStatistics(bankType) {
+        console.log('切换到银行:', bankType);
+        // 这里可以调用API获取对应银行的数据
+    }
+    
+    function navigateToList(statusType, statusName) {
+        // 跳转到对应的保单列表页面
+        let fileName;
+        if (statusName === 'self_reject') {
+            fileName = '保单列表_自核未通过.html';
+        } else if (statusName === 'notice_processing') {
+            fileName = '保单列表_照会中.html';
+        } else {
+            fileName = `保单列表_${statusType}_${statusName}.html`;
+        }
+        window.location.href = fileName;
+    }
+    
+    function navigateToTodo(todoType) {
+        // 跳转到对应的待办事项页面
+        const todoMapping = {
+            '核保阻断': '../【待办】/照会处理_新单照会列表.html',
+            '照会处理': '../【待办】/照会处理_新单照会列表.html',
+            '照会待回销': '../【待办】/照会处理_新单照会列表.html'
+        };
+        const targetPage = todoMapping[todoType] || '../【待办】/待办事项.html';
+        window.location.href = targetPage;
+    }
+    
+    function navigateToAllTodos() {
+        // 跳转到待办事项主页
+        window.location.href = 'file:///D:/AI/0327/%E9%93%B6%E4%BF%9D%E5%B7%A5%E4%BD%9C%E5%8F%B0_V1.5_2026.3.27Null/%E3%80%90%E5%BE%85%E5%8A%9E%E3%80%91/%E5%BE%85%E5%8A%9E%E4%BA%8B%E9%A1%B9.html';
+    }
+    
+    function showStageDetail(stage) {
+        // 隐藏所有阶段详情
+        const stageDetails = document.querySelectorAll('.stage-detail');
+        stageDetails.forEach(detail => {
+            detail.classList.add('hidden');
+        });
+        
+        // 显示选中的阶段详情
+        let targetId;
+        switch(stage) {
+            case 'input':
+                targetId = 'inputStageDetail';
+                break;
+            case 'review':
+                targetId = 'reviewStageDetail';
+                break;
+            case 'underwriting':
+                targetId = 'underwritingStageDetail';
+                break;
+            case 'issuing':
+                targetId = 'issuingStageDetail';
+                break;
+            case 'closed':
+                targetId = 'closedStageDetail';
+                break;
+        }
+        
+        if(targetId) {
+            document.getElementById(targetId).classList.remove('hidden');
+        }
+    }
+    </script>
+    
+    <!-- 内容区 - 滚动区域 -->
+    <div class="flex-1 overflow-y-auto hide-scrollbar bg-gray-50 pb-[86px]">
+        <div class="px-4 pt-4 space-y-6">
+            
+            <!-- 异常保单提醒区 -->
+            <section class="bg-gradient-to-r from-rose-50 to-orange-50 rounded-2xl p-4 shadow-sm border border-rose-100 mb-4">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="iconify text-rose-500 text-xl" data-icon="solar:danger-triangle-bold"></span>
+                    <h2 class="text-base font-bold text-rose-700">需关注</h2>
+                    <span class="ml-auto bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full">168单</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white rounded-xl p-3 border border-rose-200 cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('online', 'self_reject')">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="iconify text-rose-500" data-icon="solar:danger-circle-bold"></span>
+                            <span class="text-sm font-bold text-rose-700">自核未通过</span>
+                        </div>
+                        <p class="text-2xl font-bold text-rose-600">67</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-3 border border-orange-200 cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('online', 'notice_processing')">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="iconify text-orange-500" data-icon="solar:info-circle-bold"></span>
+                            <span class="text-sm font-bold text-orange-700">照会中</span>
+                        </div>
+                        <p class="text-2xl font-bold text-orange-600">101</p>
+                    </div>
+                </div>
+                <button class="w-full mt-3 py-2 bg-rose-500 text-white text-sm font-medium rounded-xl hover:bg-rose-600 transition-colors" onclick="navigateToAllTodos()">
+                    查看待办事项清单
+                </button>
+            </section>
+            
+            <!-- 线上单统计模块 -->
+            <section class="bg-white rounded-2xl p-4 shadow-sm">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-1 h-4 bg-blue-600 rounded-full"></div>
+                    <h2 class="text-base font-bold text-slate-800">线上单统计 (汇总: 867)</h2>
+                </div>
+                
+                <!-- 阶段分布 -->
+                <div class="grid grid-cols-4 gap-3 mb-4">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-3 rounded-xl border border-blue-200 text-center cursor-pointer status-card transition-all hover:scale-105" onclick="navigateToList('online', 'trial')">
+                        <p class="text-xs text-blue-700 font-medium mb-1">试算</p>
+                        <p class="text-2xl font-bold text-blue-900">234</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-3 rounded-xl border border-purple-200 text-center cursor-pointer status-card transition-all hover:scale-105" onclick="navigateToList('online', 'underwriting')">
+                        <p class="text-xs text-purple-700 font-medium mb-1">核保</p>
+                        <p class="text-2xl font-bold text-purple-900">156</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 p-3 rounded-xl border border-green-200 text-center cursor-pointer status-card transition-all hover:scale-105" onclick="navigateToList('online', 'issuing')">
+                        <p class="text-xs text-green-700 font-medium mb-1">承保</p>
+                        <p class="text-2xl font-bold text-green-900">321</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-rose-50 to-rose-100 p-3 rounded-xl border border-rose-200 text-center cursor-pointer status-card transition-all hover:scale-105" onclick="navigateToList('online', 'closed')">
+                        <p class="text-xs text-rose-700 font-medium mb-1">关闭</p>
+                        <p class="text-2xl font-bold text-rose-900">156</p>
+                    </div>
+                </div>
+                
+                
+            </section>
+            
+            <!-- 线下单统计模块 -->
+            <section class="bg-white rounded-2xl p-4 shadow-sm">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-1 h-4 bg-indigo-600 rounded-full"></div>
+                    <h2 class="text-base font-bold text-slate-800">线下单统计 (汇总: 743)</h2>
+                    <span class="ml-auto text-xs text-rose-500 font-medium">异常: 234单</span>
+                </div>
+                
+                <!-- 阶段概览卡片 - 一行5个 -->
+                <div class="grid grid-cols-5 gap-3 mb-6">
+                    <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-3 border border-indigo-200 text-center cursor-pointer hover:scale-105 transition-transform" onclick="showStageDetail('input')">
+                        <p class="text-xs font-bold text-indigo-700 mb-1">录入</p>
+                        <p class="text-xl font-bold text-indigo-900">168</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl p-3 border border-cyan-200 text-center cursor-pointer hover:scale-105 transition-transform" onclick="showStageDetail('review')">
+                        <p class="text-xs font-bold text-cyan-700 mb-1">复核</p>
+                        <p class="text-xl font-bold text-cyan-900">134</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-3 border border-purple-200 text-center cursor-pointer hover:scale-105 transition-transform" onclick="showStageDetail('underwriting')">
+                        <p class="text-xs font-bold text-purple-700 mb-1">核保</p>
+                        <p class="text-xl font-bold text-purple-900">245</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-3 border border-green-200 text-center cursor-pointer hover:scale-105 transition-transform" onclick="showStageDetail('issuing')">
+                        <p class="text-xs font-bold text-green-700 mb-1">承保</p>
+                        <p class="text-xl font-bold text-green-900">196</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl p-3 border border-rose-200 text-center cursor-pointer hover:scale-105 transition-transform" onclick="showStageDetail('closed')">
+                        <p class="text-xs font-bold text-rose-700 mb-1">关闭</p>
+                        <p class="text-xl font-bold text-rose-900">89</p>
+                    </div>
+                </div>
+                
+                <!-- 阶段详情展示区 -->
+                <div id="stageDetailContainer">
+                    <!-- 默认隐藏所有详情，点击阶段卡片才显示 -->
+                    <div id="inputStageDetail" class="stage-detail hidden">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded">录入阶段详情</span>
+                            <span class="text-xs text-slate-500">共 168 份</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('offline', 'input_pending')">
+                                <p class="text-[10px] text-slate-500">录入待分配</p>
+                                <p class="text-xl font-bold text-slate-800 mt-1">78</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('offline', 'input_doing')">
+                                <p class="text-[10px] text-slate-500">录入进行中</p>
+                                <p class="text-xl font-bold text-slate-800 mt-1">90</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 复核阶段详情 (默认隐藏) -->
+                    <div id="reviewStageDetail" class="stage-detail hidden">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-1 bg-cyan-100 text-cyan-700 text-xs font-bold rounded">复核阶段详情</span>
+                            <span class="text-xs text-slate-500">共 134 份</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('offline', 'review_pending')">
+                                <p class="text-[10px] text-slate-500">复核待分配</p>
+                                <p class="text-xl font-bold text-slate-800 mt-1">56</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('offline', 'review_doing')">
+                                <p class="text-[10px] text-slate-500">复核进行中</p>
+                                <p class="text-xl font-bold text-slate-800 mt-1">78</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 核保阶段详情 (默认隐藏) -->
+                    <div id="underwritingStageDetail" class="stage-detail hidden">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded">核保阶段详情</span>
+                            <span class="text-xs text-slate-500">共 245 份</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-white p-2 rounded-lg cursor-pointer hover:bg-slate-50 flex justify-between items-center" onclick="navigateToList('offline', 'underwriting_pending')">
+                                <span class="text-xs text-slate-600">待核保</span>
+                                <span class="text-sm font-bold">45</span>
+                            </div>
+                            <div class="bg-emerald-50 p-2 rounded-lg cursor-pointer hover:bg-emerald-100 flex justify-between items-center" onclick="navigateToList('offline', 'self_approved')">
+                                <span class="text-xs text-emerald-700 font-medium">自核通过</span>
+                                <span class="text-sm font-bold text-emerald-600">78</span>
+                            </div>
+                            <div class="bg-blue-50 p-2 rounded-lg cursor-pointer hover:bg-blue-100 flex justify-between items-center" onclick="navigateToList('offline', 'manual_underwriting')">
+                                <span class="text-xs text-blue-700 font-medium">人工核保中</span>
+                                <span class="text-sm font-bold text-blue-600">34</span>
+                            </div>
+                            <div class="bg-cyan-50 p-2 rounded-lg cursor-pointer hover:bg-cyan-100 flex justify-between items-center" onclick="navigateToList('offline', 'branch_processing')">
+                                <span class="text-xs text-cyan-700 font-medium">分公司处理</span>
+                                <span class="text-sm font-bold text-cyan-600">23</span>
+                            </div>
+                            <div class="bg-orange-50 p-2 rounded-lg cursor-pointer hover:bg-orange-100 flex justify-between items-center border border-orange-100" onclick="navigateToList('offline', 'notice_processing')">
+                                <div class="flex items-center gap-1">
+                                    <span class="iconify text-orange-500 text-xs" data-icon="solar:info-circle-bold"></span>
+                                    <span class="text-xs text-orange-700 font-medium">照会处理中</span>
+                                </div>
+                                <span class="text-sm font-bold text-orange-600">89</span>
+                            </div>
+                            <div class="bg-amber-50 p-2 rounded-lg cursor-pointer hover:bg-amber-100 flex justify-between items-center border border-amber-100" onclick="navigateToList('offline', 'notice_pending_return')">
+                                <div class="flex items-center gap-1">
+                                    <span class="iconify text-amber-500 text-xs" data-icon="solar:clock-circle-bold"></span>
+                                    <span class="text-xs text-amber-700 font-medium">照会待回销</span>
+                                </div>
+                                <span class="text-sm font-bold text-amber-600">67</span>
+                            </div>
+                            <div class="bg-rose-50 p-2 rounded-lg cursor-pointer hover:bg-rose-100 flex justify-between items-center border border-rose-100" onclick="navigateToList('offline', 'underwriting_rejected')">
+                                <div class="flex items-center gap-1">
+                                    <span class="iconify text-rose-500 text-xs" data-icon="solar:danger-circle-bold"></span>
+                                    <span class="text-xs text-rose-700 font-medium">人工核保拒保延期</span>
+                                </div>
+                                <span class="text-sm font-bold text-rose-600">9</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 承保阶段详情 (默认隐藏) -->
+                    <div id="issuingStageDetail" class="stage-detail hidden">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">承保阶段详情</span>
+                            <span class="text-xs text-slate-500">共 196 份</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('offline', 'underwriting_success')">
+                                <p class="text-[10px] text-slate-500">承保成功</p>
+                                <p class="text-xl font-bold text-slate-800 mt-1">167</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('offline', 'underwriting_pending')">
+                                <p class="text-[10px] text-slate-500">承保处理中</p>
+                                <p class="text-xl font-bold text-slate-800 mt-1">29</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 关闭阶段详情 (默认隐藏) -->
+                    <div id="closedStageDetail" class="stage-detail hidden">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-1 bg-rose-100 text-rose-700 text-xs font-bold rounded">关闭阶段详情</span>
+                            <span class="text-xs text-slate-500">共 89 份</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('offline', 'policy_closed')">
+                                <p class="text-[10px] text-slate-500">投保单关闭</p>
+                                <p class="text-xl font-bold text-slate-800 mt-1">52</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm cursor-pointer hover:shadow-md transition-shadow" onclick="navigateToList('offline', 'timeout_closed')">
+                                <p class="text-[10px] text-slate-500">超时关闭</p>
+                                <p class="text-xl font-bold text-slate-800 mt-1">37</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+
+            </section>
+            
+            <!-- 转化率概览 -->
+            <section class="bg-white rounded-2xl p-4 shadow-sm">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-1 h-4 bg-orange-500 rounded-full"></div>
+                    <h2 class="text-base font-bold text-slate-800">转化率概览</h2>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-slate-600">试算 → 核保</span>
+                        <span class="text-sm font-bold text-blue-600">72.5%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-slate-600">核保 → 承保</span>
+                        <span class="text-sm font-bold text-green-600">85.3%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-slate-600">承保成功率</span>
+                        <span class="text-sm font-bold text-emerald-600">96.7%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-slate-600">关闭率</span>
+                        <span class="text-sm font-bold text-rose-600">5.2%</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="h-[80px] bg-white border-t border-gray-100 flex items-center justify-around px-2 pb-2 absolute bottom-0 left-0 right-0 z-10">
+        <div class="flex flex-col items-center space-y-1 group cursor-pointer relative">
+            <span class="iconify text-2xl text-gray-400" data-icon="mdi:chat-processing-outline"></span>
+            <span class="text-[10px] text-gray-400">消息</span>
+        </div>
+        <div class="flex flex-col items-center space-y-1 group cursor-pointer">
+            <span class="iconify text-2xl text-gray-400" data-icon="mdi:account-box-outline"></span>
+            <span class="text-[10px] text-gray-400">通讯录</span>
+        </div>
+        <div class="flex flex-col items-center space-y-1 group cursor-pointer">
+            <span class="iconify text-2xl text-orange-500" data-icon="mdi:view-grid"></span>
+            <span class="text-[10px] text-orange-500 font-bold">工作台</span>
+        </div>
+        <div class="flex flex-col items-center space-y-1 group cursor-pointer">
+            <span class="iconify text-2xl text-gray-400" data-icon="mdi:account-outline"></span>
+            <span class="text-[10px] text-gray-400">我的</span>
+        </div>
+    </div>
+    
+    <!-- 底部安全条 -->
+    <div class="h-6 bg-white flex justify-center items-center shrink-0 absolute bottom-0 left-0 right-0 z-20">
+        <div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+    </div>
+</div>
+</body>
+</html>

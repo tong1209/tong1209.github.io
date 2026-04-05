@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>消息中心</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP Container: 375x812 -->
+<div class="w-[375px] h-[780px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Title Bar -->
+<div class="h-[56px] flex items-center justify-between px-5 pt-4 bg-white z-10">
+<h1 class="text-xl font-bold text-gray-900">消息</h1>
+<div class="flex items-center space-x-4">
+<span class="iconify text-xl text-gray-700 cursor-pointer" data-icon="mdi:magnify"></span>
+<span class="iconify text-xl text-gray-700 cursor-pointer" data-icon="mdi:plus-circle-outline"></span>
+</div>
+<!-- 底部安全条 -->
+<div class="h-6 bg-white flex justify-center items-center shrink-0 absolute bottom-0 left-0 right-0 z-20">
+<div class="w-32 h-1 bg-gray-200 rounded-full"></div>
+</div>
+</div>
+<!-- Windows Login Placeholder -->
+<div class="bg-gray-50 px-5 py-3 flex items-center justify-between cursor-pointer border-b border-gray-100">
+<div class="flex items-center space-x-2">
+<span class="iconify text-gray-400 text-lg" data-icon="mdi:laptop"></span>
+<span class="text-xs text-gray-500">Windows 宏1站已登录</span>
+</div>
+<span class="iconify text-gray-300 text-sm" data-icon="mdi:chevron-right"></span>
+</div>
+<!-- Message List -->
+<div class="flex-1 overflow-y-auto hide-scrollbar pb-[86px]">
+<!-- Item 1: 新单消息通知 -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-pointer" onclick="window.location.href='【聊天助手】/待办助手聊天框.html'">
+<div class="relative flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-custom-green flex items-center justify-center text-white text-lg font-bold">
+          <span class="iconify w-6 h-6" data-icon="material-symbols:receipt-long"></span>
+        </div>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full border-2 border-white">9</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">新单消息通知</h3>
+<span class="text-[10px] text-gray-400">5分钟前</span>
+</div>
+<p class="text-xs text-gray-500 truncate">您有9条新单消息通知请查看</p>
+</div>
+</div>
+
+<!-- Item 1-2: 保全消息通知 -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-pointer">
+<div class="relative flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-custom-green flex items-center justify-center text-white text-lg font-bold">
+          <span class="iconify w-6 h-6" data-icon="material-symbols:shield"></span>
+        </div>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full border-2 border-white">5</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">保全消息通知</h3>
+<span class="text-[10px] text-gray-400">10分钟前</span>
+</div>
+<p class="text-xs text-gray-500 truncate">您有5条保全消息通知请查看</p>
+</div>
+</div>
+
+<!-- Item 1-3: 收付消息通知 -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-pointer">
+<div class="relative flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-custom-green flex items-center justify-center text-white text-lg font-bold">
+          <span class="iconify w-6 h-6" data-icon="material-symbols:payments"></span>
+        </div>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full border-2 border-white">3</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">收付消息通知</h3>
+<span class="text-[10px] text-gray-400">15分钟前</span>
+</div>
+<p class="text-xs text-gray-500 truncate">您有3条收付消息通知请查看</p>
+</div>
+</div>
+
+<!-- Item 1-4: 双录质检消息通知 -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-pointer">
+<div class="relative flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-custom-green flex items-center justify-center text-white text-lg font-bold">
+          <span class="iconify w-6 h-6" data-icon="material-symbols:verified"></span>
+        </div>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full border-2 border-white">2</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">双录质检消息通知</h3>
+<span class="text-[10px] text-gray-400">20分钟前</span>
+</div>
+<p class="text-xs text-gray-500 truncate">您有2条双录质检消息通知请查看</p>
+</div>
+</div>
+<!-- Item 2: Group -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50">
+<div class="w-12 h-12 rounded-xl bg-custom-green flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+          银保
+        </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">银保数字化项目</h3>
+<span class="text-[10px] text-gray-400">01/04</span>
+</div>
+<p class="text-xs text-gray-500 truncate">Geoffrey X Lin (林旭): 好，谢谢</p>
+</div>
+</div>
+<!-- Item 3: Group -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50">
+<div class="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+          渠道
+        </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">渠道不止Digital</h3>
+<span class="text-[10px] text-gray-400">01/04</span>
+</div>
+<p class="text-xs text-gray-500 truncate">Miao M Hui (惠苗): 我先无脑转...</p>
+</div>
+</div>
+<!-- Item 4: Personal with Unread -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50">
+<div class="relative flex-shrink-0">
+<div class="w-12 h-12 rounded-full bg-custom-green flex items-center justify-center text-white text-lg font-bold">
+            振华
+          </div>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1 rounded-full border-2 border-white">3</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">Kyle Zh Xiong (熊振华)</h3>
+<span class="text-[10px] text-gray-400">13:58</span>
+</div>
+<p class="text-xs text-gray-500 truncate">👌</p>
+</div>
+</div>
+<!-- Item 5: Personal -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50">
+<div class="w-12 h-12 rounded-full bg-custom-green flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+          惠苗
+        </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">Miao M Hui (惠苗)</h3>
+<span class="text-[10px] text-gray-400">14:07</span>
+</div>
+<p class="text-xs text-gray-500 truncate text-emerald-600">[图片]</p>
+</div>
+</div>
+<!-- Item 6: Large Group -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50">
+<div class="grid grid-cols-2 gap-0.5 w-12 h-12 rounded-xl bg-gray-200 p-0.5 flex-shrink-0">
+<div class="bg-gray-400 rounded-sm"></div>
+<div class="bg-teal-400 rounded-sm"></div>
+<div class="bg-blue-400 rounded-sm"></div>
+<div class="bg-purple-400 rounded-sm"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">MSL IT All</h3>
+<span class="text-[10px] text-gray-400">昨天</span>
+</div>
+<p class="text-xs text-gray-500 truncate"><span class="text-red-500">[有人@我]</span> Perry Jb Gu: 收到</p>
+</div>
+</div>
+<!-- Item 7: Group -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50">
+<div class="w-12 h-12 rounded-xl bg-orange-400 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+          保单
+        </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">保单咨询沟通群</h3>
+<span class="text-[10px] text-gray-400">11:59</span>
+</div>
+<p class="text-xs text-gray-500 truncate">Whitney Hl Han (韩慧莉): @Qic...</p>
+</div>
+</div>
+<!-- Item 8: 投保追踪助手 -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-pointer" onclick="window.location.href='【聊天助手】/投保追踪助手聊天框.html'">
+<div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+          助
+        </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">投保追踪助手</h3>
+<span class="text-[10px] text-gray-400">刚刚</span>
+</div>
+<p class="text-xs text-gray-500 truncate">您的保单申请已受理，预计3个工作日内完成审核</p>
+</div>
+</div>
+<!-- Item 9: Juliet -->
+<div class="px-5 py-4 flex items-start space-x-3 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-pointer" onclick="window.location.href='【聊天助手】/Juliet聊天框.html'">
+<div class="w-12 h-12 rounded-full bg-pink-400 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+          Ju
+        </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-semibold text-gray-800 truncate">Juliet</h3>
+<span class="text-[10px] text-gray-400">10:00</span>
+</div>
+<p class="text-xs text-gray-500 truncate">好的，我会尽快查看这些文件。谢谢你的分享！</p>
+</div>
+</div>
+</div>
+<!-- 底部导航栏 (80px) -->
+<div class="h-[80px] bg-white border-t border-gray-100 flex items-center justify-around px-2 pb-2 absolute bottom-0 left-0 right-0 z-10">
+<div class="flex flex-col items-center space-y-1 group cursor-pointer relative" onclick="window.location.href='消息列表界面.html'">
+<div class="relative">
+<span class="iconify text-2xl text-orange-500" data-icon="mdi:chat-processing-outline"></span>
+<span class="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center border border-white">39</span>
+</div>
+<span class="text-[10px] text-orange-500 font-bold">消息</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='通讯录.html'">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:account-box-outline"></span>
+<span class="text-[10px] text-gray-400">通讯录</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='首页.html'">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:view-grid"></span>
+<span class="text-[10px] text-gray-400">工作台</span>
+</div>
+<div class="flex flex-col items-center space-y-1 group cursor-pointer" onclick="window.location.href='我的.html'">
+<div class="relative">
+<span class="iconify text-2xl text-gray-400" data-icon="mdi:account-outline"></span>
+<span class="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center border border-white">1</span>
+</div>
+<span class="text-[10px] text-gray-400">我的</span>
+</div>
+</div>
+</div>
+</body>
+</html>

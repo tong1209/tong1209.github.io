@@ -1,0 +1,659 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Juliet聊天</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+    
+    /* 聊天操作菜单 */
+    .chat-menu {
+      position: relative;
+    }
+    
+    /* 我的消息的聊天菜单 */
+    .chat-message.my-message .chat-menu {
+      display: flex;
+      justify-content: flex-end;
+      flex: 1;
+    }
+    
+    /* 我的消息气泡 */
+    .chat-message.my-message .message-bubble {
+      margin-left: auto;
+      border-radius: 0 8px 8px 8px;
+    }
+    
+    /* 统一消息气泡样式 */
+    .message-bubble {
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 8px;
+    }
+    
+    /* Juliet消息气泡 */
+    .chat-message:not(.my-message) .message-bubble {
+      border-radius: 8px 0 8px 8px;
+    }
+    
+    /* 统一图片宽度 */
+    .chat-image {
+      max-width: 70%;
+    }
+    
+    /* 统一文件列表宽度 */
+    .file-card {
+      max-width: 100%;
+    }
+    
+    .menu-popup {
+      position: absolute;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      space-x: 24px;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+    }
+    
+    .menu-popup::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: rgba(0, 0, 0, 0.7) transparent transparent transparent;
+    }
+    
+    .chat-message.active .menu-popup {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      font-size: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    
+    .menu-item:hover {
+      transform: scale(1.1);
+    }
+    
+    .menu-item .iconify {
+      width: 16px;
+      height: 16px;
+      margin-bottom: 2px;
+    }
+    
+    .chat-message {
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    
+    .chat-message:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    /* 美化消息气泡 */
+    .message-bubble {
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .message-bubble:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* 美化头像 */
+    .avatar {
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+    
+    .avatar:hover {
+      transform: scale(1.05);
+    }
+    
+    .avatar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      background-color: #4CAF50;
+      border: 2px solid white;
+      border-radius: 50%;
+    }
+    
+    /* 美化输入框 */
+    .chat-input {
+      transition: all 0.3s ease;
+    }
+    
+    .chat-input:focus-within {
+      box-shadow: 0 -2px 10px rgba(0, 167, 88, 0.1);
+    }
+    
+    /* 发送按钮动画 */
+    .send-button {
+      transition: all 0.3s ease;
+    }
+    
+    .send-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(0, 167, 88, 0.3);
+    }
+    
+    /* 消息加载动画 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .chat-message {
+      animation: fadeIn 0.3s ease forwards;
+    }
+    
+    /* 美化文件卡片 */
+    .file-card {
+      transition: all 0.2s ease;
+    }
+    
+    .file-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* 美化链接 */
+    .chat-link {
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    
+    .chat-link:hover {
+      color: #007AFF;
+      text-decoration: none;
+    }
+    
+    .chat-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: #007AFF;
+      transition: width 0.2s ease;
+    }
+    
+    .chat-link:hover::after {
+      width: 100%;
+    }
+    
+    /* 美化图片 */
+    .chat-image {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .chat-image:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* 美化标题栏 */
+    .title-bar {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<!-- APP Container: 375x812 -->
+<div class="w-[375px] h-[780px] bg-white border border-gray-200 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- Title Bar -->
+<div class="h-[56px] flex items-center justify-between px-5 pt-4 title-bar z-10">
+<div class="flex items-center space-x-3">
+<span class="iconify text-xl text-gray-700 cursor-pointer" data-icon="mdi:arrow-left" onclick="window.location.href='../消息列表界面.html'"></span>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white text-sm font-bold avatar">
+          Ju
+        </div>
+<h1 class="text-sm font-bold text-gray-900">Juliet</h1>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<span class="iconify text-xl text-gray-700 cursor-pointer" data-icon="mdi:phone"></span>
+<span class="iconify text-xl text-gray-700 cursor-pointer" data-icon="mdi:dots-vertical"></span>
+</div>
+</div>
+<!-- Chat Messages -->
+<div class="flex-1 overflow-y-auto hide-scrollbar px-4 py-2 space-y-4">
+<!-- System Message -->
+<div class="flex justify-center">
+<span class="text-[10px] text-gray-400 bg-gray-100 px-3 py-1 rounded-full">今天 10:00</span>
+</div>
+<!-- Juliet Message -->
+<div class="flex items-start space-x-3 chat-message" onclick="toggleMenu(this)">
+<div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          Ju
+        </div>
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none message-bubble">
+<p class="text-xs text-gray-700">嗨，最近怎么样？我刚整理了一些文件，想分享给你。</p>
+</div>
+</div>
+</div>
+<!-- My Message -->
+<div class="flex items-start justify-end space-x-3 chat-message my-message" onclick="toggleMenu(this)">
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="bg-custom-green rounded-lg rounded-tr-none message-bubble">
+<p class="text-xs text-white">挺好的，谢谢关心！你整理了什么文件？</p>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          我
+        </div>
+</div>
+<!-- Juliet Message - Text with Number -->
+<div class="flex items-start space-x-3 chat-message" onclick="toggleMenu(this)">
+<div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          Ju
+        </div>
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none message-bubble" style="width: 180px;">
+<p class="text-xs text-gray-700">我整理了3个项目的资料，包括：</p>
+<p class="text-xs text-gray-700 mt-1">1. 2026年Q1销售数据</p>
+<p class="text-xs text-gray-700 mt-1">2. 客户满意度调查报告</p>
+<p class="text-xs text-gray-700 mt-1">3. 新产品上市计划</p>
+</div>
+</div>
+</div>
+<!-- Juliet Message - Image -->
+<div class="flex items-start space-x-3 chat-message" onclick="toggleMenu(this)">
+<div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          Ju
+        </div>
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="flex flex-col space-y-2">
+<div class="bg-gray-100 rounded-lg rounded-tl-none message-bubble">
+<p class="text-xs text-gray-700">这是我们上次会议的照片：</p>
+</div>
+<div class="rounded-lg overflow-hidden chat-image">
+<img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=business%20meeting%20in%20office%2C%20professional%20setting%2C%20people%20discussing%20documents%2C%20bright%20modern%20office&image_size=square" alt="会议照片" class="w-full h-auto">
+</div>
+</div>
+</div>
+</div>
+<!-- My Message -->
+<div class="flex items-start justify-end space-x-3 chat-message my-message" onclick="toggleMenu(this)">
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="bg-custom-green rounded-lg rounded-tr-none message-bubble">
+<p class="text-xs text-white">照片拍得不错！看起来大家都很专注。</p>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          我
+        </div>
+</div>
+<!-- Juliet Message - Link -->
+<div class="flex items-start space-x-3 chat-message" onclick="toggleMenu(this)">
+<div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          Ju
+        </div>
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none message-bubble">
+<p class="text-xs text-gray-700">对了，这是我们需要参考的行业报告链接：</p>
+<a href="https://example.com/industry-report-2026" class="text-xs text-blue-500 underline mt-1 block chat-link">2026年保险行业发展趋势报告</a>
+</div>
+</div>
+</div>
+<!-- Juliet Message - Files -->
+<div class="flex items-start space-x-3 chat-message" onclick="toggleMenu(this)">
+<div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          Ju
+        </div>
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none message-bubble">
+<p class="text-xs text-gray-700">以下是我整理的文件，你可以下载查看：</p>
+
+<!-- PDF File -->
+<div class="flex items-center space-x-2 mt-2 p-2 bg-white rounded-lg file-card">
+<span class="iconify text-red-500" data-icon="mdi:file-pdf-box"></span>
+<div class="flex-1">
+<p class="text-xs text-gray-700">2026年Q1销售数据.pdf</p>
+<p class="text-xs text-gray-400">2.5MB</p>
+</div>
+<span class="iconify text-gray-400" data-icon="mdi:download"></span>
+</div>
+
+<!-- Word File -->
+<div class="flex items-center space-x-2 mt-2 p-2 bg-white rounded-lg file-card">
+<span class="iconify text-blue-500" data-icon="mdi:file-word-box"></span>
+<div class="flex-1">
+<p class="text-xs text-gray-700">客户满意度调查报告.docx</p>
+<p class="text-xs text-gray-400">1.8MB</p>
+</div>
+<span class="iconify text-gray-400" data-icon="mdi:download"></span>
+</div>
+
+<!-- Excel File -->
+<div class="flex items-center space-x-2 mt-2 p-2 bg-white rounded-lg file-card">
+<span class="iconify text-green-500" data-icon="mdi:file-excel-box"></span>
+<div class="flex-1">
+<p class="text-xs text-gray-700">新产品上市计划.xlsx</p>
+<p class="text-xs text-gray-400">3.2MB</p>
+</div>
+<span class="iconify text-gray-400" data-icon="mdi:download"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- My Message -->
+<div class="flex items-start justify-end space-x-3 chat-message my-message" onclick="toggleMenu(this)">
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="bg-custom-green rounded-lg rounded-tr-none message-bubble">
+<p class="text-xs text-white">好的，我会尽快查看这些文件。谢谢你的分享！</p>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          我
+        </div>
+</div>
+<!-- Juliet Message -->
+<div class="flex items-start space-x-3 chat-message" onclick="toggleMenu(this)">
+<div class="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 avatar">
+          Ju
+        </div>
+<div class="chat-menu">
+<div class="menu-popup">
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:share-variant"></span>
+<span>转发</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:star-outline"></span>
+<span>收藏</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:message-reply"></span>
+<span>引用</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:delete-outline"></span>
+<span>删除</span>
+</div>
+<div class="menu-item">
+<span class="iconify" data-icon="mdi:checkbox-multiple-marked-outline"></span>
+<span>多选</span>
+</div>
+</div>
+<div class="bg-gray-100 rounded-lg rounded-tl-none message-bubble">
+<p class="text-xs text-gray-700">不客气！如果有任何问题，随时告诉我。我们可以安排一个时间讨论这些内容。</p>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+function toggleMenu(element) {
+  // 先关闭所有其他菜单
+  document.querySelectorAll('.chat-message').forEach(msg => {
+    if (msg !== element) {
+      msg.classList.remove('active');
+    }
+  });
+  // 切换当前菜单
+  element.classList.toggle('active');
+}
+
+// 点击其他地方关闭菜单
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.chat-message')) {
+    document.querySelectorAll('.chat-message').forEach(msg => {
+      msg.classList.remove('active');
+    });
+  }
+});
+</script>
+
+<!-- Chat Input -->
+<div class="border-t border-gray-100 p-3 bg-white chat-input">
+<div class="flex items-center space-x-2">
+<div class="flex-1 bg-gray-100 rounded-full px-4 py-2 flex items-center">
+<span class="iconify text-gray-400 mr-2" data-icon="mdi:emoticon-outline"></span>
+<input type="text" placeholder="输入消息..." class="bg-transparent border-none outline-none text-xs flex-1">
+<span class="iconify text-gray-400 ml-2" data-icon="mdi:paperclip"></span>
+</div>
+<button class="w-10 h-10 rounded-full bg-custom-green flex items-center justify-center text-white send-button">
+<span class="iconify" data-icon="mdi:send"></span>
+</button>
+</div>
+</div>
+</div>
+</body>
+</html>

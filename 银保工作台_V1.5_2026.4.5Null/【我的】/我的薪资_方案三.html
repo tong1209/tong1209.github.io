@@ -1,0 +1,706 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>我的薪资 - 方案三</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* 自定义绿色 */
+    .text-custom-green {
+      color: #00A758;
+    }
+    
+    .bg-custom-green {
+      background-color: #00A758;
+    }
+    
+    /* 商务精英风格 */
+    .text-orange-primary {
+      color: #F9AB2E;
+    }
+    
+    .bg-orange-primary {
+      background-color: #F9AB2E;
+    }
+    
+    .border-orange-primary {
+      border-color: #F9AB2E;
+    }
+    
+    /* 商务卡片样式 */
+    .card-business {
+      background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+      border: 1px solid #e9ecef;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .card-business:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      border-color: #F9AB2E;
+    }
+    
+    /* 商务按钮 */
+    .btn-business {
+      background: linear-gradient(180deg, #F9AB2E 0%, #e09a2a 100%);
+      color: white;
+      border: none;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .btn-business:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(249, 171, 46, 0.3);
+    }
+    
+    /* 数据强调 */
+    .highlight-business {
+      color: #F9AB2E;
+      font-weight: 600;
+      position: relative;
+    }
+    
+    .highlight-business::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #F9AB2E 0%, transparent 100%);
+    }
+    
+    /* 商务分割线 */
+    .divider-business {
+      border-top: 1px solid #dee2e6;
+      position: relative;
+    }
+    
+    .divider-business::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 60px;
+      height: 1px;
+      background-color: #F9AB2E;
+    }
+    
+    /* 图标着色 */
+    .icon-business {
+      color: #F9AB2E;
+    }
+    
+    /* 状态标签 */
+    .tag-business {
+      background-color: #fff8f0;
+      color: #F9AB2E;
+      border: 1px solid #F9AB2E;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    
+    /* 全局字体 */
+    body {
+      font-family: 'NotoSansCJKsc-Medium', sans-serif;
+    }
+    
+    /* 表格样式 */
+    .bonus-table {
+      font-size: 12px;
+      border-collapse: collapse;
+    }
+    
+    .bonus-table th,
+    .bonus-table td {
+      padding: 6px 16px;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+      white-space: nowrap;
+    }
+    
+    .bonus-table th:last-child,
+    .bonus-table td:last-child {
+      text-align: right;
+    }
+    
+    .bonus-table th {
+      background-color: #f9fafb;
+      font-weight: 500;
+      color: #6b7280;
+    }
+    
+    .bonus-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* 表格容器样式 */
+    .table-container {
+      margin-top: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 美化横向滚动条 */
+    .table-wrapper::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .table-wrapper::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+    }
+    
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex justify-center items-center">
+<!-- APP Container: 375x812 -->
+<div class="w-[375px] h-[780px] bg-white border border-gray-300 rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col">
+<!-- 状态栏 -->
+<div class="h-[44px] bg-white flex justify-between items-center px-6 shrink-0 border-b border-gray-200">
+<span class="text-sm font-semibold">10:05</span>
+<div class="flex items-center space-x-1.5 opacity-70">
+<span class="iconify w-4 h-4" data-icon="material-symbols:signal-cellular-4-bar"></span>
+<span class="iconify w-4 h-4" data-icon="material-symbols:wifi"></span>
+<div class="flex items-center border border-black rounded-[2px] px-[1px] h-3 w-6">
+<div class="bg-black h-full w-[32%]"></div>
+</div>
+</div>
+</div>
+<!-- 标题栏 -->
+<div class="h-[56px] bg-white flex items-center px-4 shrink-0 border-b border-gray-200">
+<span class="iconify w-6 h-6 text-gray-700 cursor-pointer" data-icon="material-symbols:arrow-back-ios-new-rounded" onclick="window.location.href='../我的.html';"></span>
+<h1 class="flex-1 text-center text-lg font-medium text-gray-900">我的薪资</h1>
+<div class="w-10"></div>
+</div>
+
+<!-- 内容区 -->
+<div class="flex-1 overflow-y-auto hide-scrollbar px-4 py-4 space-y-4">
+<!-- 薪资概览 -->
+<div class="card-business rounded-lg p-4">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-base font-bold text-gray-900">薪资概览</h2>
+<select class="text-xs border border-gray-300 rounded-lg px-2 py-1 bg-white">
+<option>2026年1月</option>
+<option>2025年12月</option>
+<option>2025年11月</option>
+</select>
+</div>
+<div class="divider-business mb-4"></div>
+<div class="text-center mb-4">
+<p class="text-sm text-gray-500 uppercase tracking-wider">本月薪资</p>
+<p class="text-3xl font-bold highlight-business mt-1">¥15,800.00</p>
+</div>
+
+</div>
+
+<!-- 薪资明细 -->
+<div class="card-business rounded-lg p-4">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-base font-bold text-gray-900">薪资明细</h2>
+<div class="w-10"></div>
+</div>
+<div class="divider-business mb-4"></div>
+<div class="space-y-3">
+<div class="cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all duration-200" onclick="toggleBonusDetail('monthlyBonusDetail', event)">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">月度业务奖金</span>
+<div class="flex items-center space-x-2">
+<span class="text-sm text-gray-900 font-medium">¥8,000.00</span>
+<span class="icon-business iconify w-4 h-4" data-icon="material-symbols:chevron-right"></span>
+</div>
+</div>
+<!-- 月度业务奖金明细表格 -->
+<div id="monthlyBonusDetail" class="table-container" style="display: none;">
+<div class="table-wrapper">
+<table class="bonus-table">
+<thead>
+<tr>
+<th>Policy Num</th>
+<th>Bank Name</th>
+<th>Policy Issue Date</th>
+<th>Premium payment period</th>
+<th>Premium</th>
+<th>Bonus Rate</th>
+<th>BSM(CM)业务奖金</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4305795455</td>
+<td>宁波银行</td>
+<td>20250324</td>
+<td>5</td>
+<td>300000</td>
+<td>0.005</td>
+<td>1500</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all duration-200" onclick="toggleBonusDetail('cmBonusDetail', event)">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">CM管理奖金</span>
+<div class="flex items-center space-x-2">
+<span class="text-sm text-gray-900 font-medium">¥5,800.00</span>
+<span class="icon-business iconify w-4 h-4" data-icon="material-symbols:chevron-right"></span>
+</div>
+</div>
+<!-- CM管理奖金明细表格 -->
+<div id="cmBonusDetail" class="table-container" style="display: none;">
+<div class="table-wrapper">
+<table class="bonus-table">
+<thead>
+<tr>
+<th>Policy Num</th>
+<th>Bank Name</th>
+<th>Policy Issue Date</th>
+<th>Premium payment period</th>
+<th>Premium</th>
+<th>CM(SD) Name</th>
+<th>CM(SD)每月管理奖</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P000373151</td>
+<td>交通银行</td>
+<td>20251201</td>
+<td>5</td>
+<td>200000</td>
+<td>王承啸</td>
+<td>150</td>
+</tr>
+<tr>
+<td>P000389298</td>
+<td>交通银行</td>
+<td>20251209</td>
+<td>3</td>
+<td>50000</td>
+<td>王承啸</td>
+<td>22.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">SD管理奖金</span>
+<span class="text-sm text-gray-900">¥0.00</span>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">季度奖</span>
+<span class="text-sm text-gray-900">¥800.00</span>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">年度达成奖金</span>
+<span class="text-sm text-gray-900">¥200.00</span>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">直销津贴</span>
+<span class="text-sm text-gray-900">¥1,000.00</span>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">品质扣款</span>
+<span class="text-sm text-red-600">¥-200.00</span>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">总部开门红竞赛方案兑现（2025.第3季度）</span>
+<span class="text-sm text-gray-900">¥1,500.00</span>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">总部开门红竞赛方案兑现（2025.第4季度）</span>
+<span class="text-sm text-gray-900">¥2,000.00</span>
+</div>
+<div class="cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all duration-200" onclick="toggleBonusDetail('competitionBonusDetail', event)">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">分公司竞赛奖励</span>
+<div class="flex items-center space-x-2">
+<span class="text-sm text-gray-900 font-medium">¥800.00</span>
+<span class="icon-business iconify w-4 h-4" data-icon="material-symbols:chevron-right"></span>
+</div>
+</div>
+<!-- 分公司竞赛奖励明细表格 -->
+<div id="competitionBonusDetail" class="table-container" style="display: none;">
+<div class="table-wrapper">
+<table class="bonus-table">
+<thead>
+<tr>
+<th>保单号</th>
+<th>客户姓名</th>
+<th>递交日期（不涉及可为空）</th>
+<th>回访日期</th>
+<th>Plan Code</th>
+<th>产品缴别</th>
+<th>出单渠道</th>
+<th>实际出单网点</th>
+<th>首期保险费（元）</th>
+<th>CM奖励比例</th>
+<th>保单对应BSM Name</th>
+<th>保单对应CM</th>
+<th>CM Agent Code</th>
+<th>当月应发奖励金</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P000356876</td>
+<td>周志清</td>
+<td>2025-11-18</td>
+<td>2025-11-25</td>
+<td>BQR_0001</td>
+<td>3</td>
+<td>宁波银行</td>
+<td>宁波银行上海长宁支行</td>
+<td>500,000</td>
+<td>0.05%</td>
+<td>陈煌佳</td>
+<td>王承啸</td>
+<td>SH84865</td>
+<td>250</td>
+</tr>
+<tr>
+<td>P000316708</td>
+<td>董凌云</td>
+<td>2025-10-21</td>
+<td>2025-11-14</td>
+<td>BQR_0001</td>
+<td>0</td>
+<td>宁波银行</td>
+<td>宁波银行上海虹口支行</td>
+<td>500,000</td>
+<td>0.02%</td>
+<td>高冰男</td>
+<td>王承啸</td>
+<td>SH84865</td>
+<td>100</td>
+</tr>
+<tr>
+<td>P000191566</td>
+<td>胡建芳</td>
+<td>2025-08-10</td>
+<td>2025-10-21</td>
+<td>BPO_0001</td>
+<td>0</td>
+<td>宁波银行</td>
+<td>宁波银行上海浦东支行</td>
+<td>250,000</td>
+<td>0.02%</td>
+<td>高冰男</td>
+<td>王承啸</td>
+<td>SH84865</td>
+<td>50</td>
+</tr>
+<tr>
+<td>P000199623</td>
+<td>刘灿灿</td>
+<td>2025-08-14</td>
+<td>2025-11-11</td>
+<td>BPO_0001</td>
+<td>0</td>
+<td>宁波银行</td>
+<td>宁波银行上海嘉定支行</td>
+<td>300,000</td>
+<td>0.02%</td>
+<td>陈煌佳</td>
+<td>王承啸</td>
+<td>SH84865</td>
+<td>60</td>
+</tr>
+<tr>
+<td>P000235888</td>
+<td>黄振华</td>
+<td>2025-08-29</td>
+<td>2025-10-29</td>
+<td>BPO_0001</td>
+<td>0</td>
+<td>宁波银行</td>
+<td>宁波银行上海黄浦支行</td>
+<td>500,000</td>
+<td>0.02%</td>
+<td>陈煌佳</td>
+<td>王承啸</td>
+<td>SH84865</td>
+<td>100</td>
+</tr>
+<tr>
+<td>P900032771</td>
+<td>倪欧亚</td>
+<td>2025-07-22</td>
+<td>2025-10-16</td>
+<td>BPO_0001</td>
+<td>3</td>
+<td>宁波银行</td>
+<td>宁波银行上海杨浦支行</td>
+<td>100,000</td>
+<td>0.10%</td>
+<td>陈煌佳</td>
+<td>王承啸</td>
+<td>SH84865</td>
+<td>100</td>
+</tr>
+<tr>
+<td>P000235903</td>
+<td>崔晓栋</td>
+<td>2025-08-29</td>
+<td>2025-10-11</td>
+<td>BPO_0001</td>
+<td>0</td>
+<td>宁波银行</td>
+<td>宁波银行上海五角场支行</td>
+<td>300,000</td>
+<td>0.02%</td>
+<td>高冰男</td>
+<td>王承啸</td>
+<td>SH84865</td>
+<td>60</td>
+</tr>
+<tr>
+<td>P000328719</td>
+<td>吴波</td>
+<td>2025-10-31</td>
+<td>2025-11-12</td>
+<td>BQR_0001</td>
+<td>0</td>
+<td>宁波银行</td>
+<td>宁波银行上海虹口支行</td>
+<td>100,000</td>
+<td>0.02%</td>
+<td>高冰男</td>
+<td>王承啸</td>
+<td>SH84865</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all duration-200" onclick="toggleBonusDetail('preTaxDetail', event)">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">税前加扣款合计</span>
+<div class="flex items-center space-x-2">
+<span class="text-sm text-gray-900 font-medium">¥900.00</span>
+<span class="icon-business iconify w-4 h-4" data-icon="material-symbols:chevron-right"></span>
+</div>
+</div>
+<!-- 税前加扣款合计明细 -->
+<div id="preTaxDetail" class="table-container" style="display: none;">
+<div class="table-wrapper">
+<table class="bonus-table">
+<thead>
+<tr>
+<th>ele_code</th>
+<th>加扣款名称</th>
+<th>金额</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>月度业务奖（个人）</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>101</td>
+<td>月度管理奖金</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>102</td>
+<td>续保奖金</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>103</td>
+<td>季度达成奖金（个人）</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>104</td>
+<td>季度达成奖金（主管）</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>105</td>
+<td>半年度服务奖（主管）</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>106</td>
+<td>年度达成奖金（主管）</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>107</td>
+<td>长期服务特别奖发放</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>108</td>
+<td>竞赛赛奖金（分公司）</td>
+<td>¥100.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all duration-200" onclick="toggleBonusDetail('afterTaxDetail', event)">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-600">税后加扣款合计</span>
+<div class="flex items-center space-x-2">
+<span class="text-sm text-gray-900 font-medium">¥200.00</span>
+<span class="icon-business iconify w-4 h-4" data-icon="material-symbols:chevron-right"></span>
+</div>
+</div>
+<!-- 税后加扣款合计明细 -->
+<div id="afterTaxDetail" class="table-container" style="display: none;">
+<div class="table-wrapper">
+<table class="bonus-table">
+<thead>
+<tr>
+<th>ele_code</th>
+<th>加扣款名称</th>
+<th>金额</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>109</td>
+<td>个税调整</td>
+<td>¥100.00</td>
+</tr>
+<tr>
+<td>110</td>
+<td>增值税调整</td>
+<td>¥100.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">仅计税加扣款</span>
+<span class="text-sm text-gray-900">¥0.00</span>
+</div>
+<div class="divider-business my-2"></div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">个人所得税</span>
+<span class="text-sm text-gray-900">¥800.00</span>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">附加税</span>
+<span class="text-sm text-gray-900">¥0.00</span>
+</div>
+<div class="flex justify-between items-center p-2">
+<span class="text-sm text-gray-600">增值税</span>
+<span class="text-sm text-gray-900">¥0.00</span>
+</div>
+
+</div>
+</div>
+
+<!-- 历史薪资 -->
+<div class="card-business rounded-lg p-4">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-base font-bold text-gray-900">历史薪资</h2>
+<div class="w-10"></div>
+</div>
+<div class="divider-business mb-4"></div>
+<div class="space-y-3">
+<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border-l-2 border-orange-primary">
+<div>
+<p class="text-sm font-medium text-gray-900">2025年12月</p>
+<p class="text-xs text-gray-500 mt-1">发放日期：2025-12-30</p>
+</div>
+<span class="text-lg font-semibold highlight-business">¥14,500.00</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border-l-2 border-orange-primary">
+<div>
+<p class="text-sm font-medium text-gray-900">2025年11月</p>
+<p class="text-xs text-gray-500 mt-1">发放日期：2025-11-30</p>
+</div>
+<span class="text-lg font-semibold highlight-business">¥15,200.00</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border-l-2 border-orange-primary">
+<div>
+<p class="text-sm font-medium text-gray-900">2025年10月</p>
+<p class="text-xs text-gray-500 mt-1">发放日期：2025-10-30</p>
+</div>
+<span class="text-lg font-semibold highlight-business">¥14,800.00</span>
+</div>
+</div>
+</div>
+
+<!-- 薪资设置 -->
+<div class="card-business rounded-lg p-4">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-base font-bold text-gray-900">薪资单预览</h2>
+</div>
+<div class="divider-business mb-4"></div>
+<div class="space-y-3">
+<div class="flex items-center p-3 rounded-lg cursor-pointer btn-business">
+            <div class="flex items-center space-x-3">
+              <span class="iconify w-5 h-5 text-white" data-icon="material-symbols:visibility"></span>
+              <span class="text-sm text-white font-medium uppercase tracking-wider">薪资单预览</span>
+            </div>
+          </div>
+</div>
+</div>
+</div>
+
+
+<script>
+// 奖金明细展示功能
+function toggleBonusDetail(id, event) {
+const detail = document.getElementById(id);
+const container = event.currentTarget;
+const arrow = container.querySelector('.iconify[data-icon="material-symbols:chevron-right"], .iconify[data-icon="material-symbols:expand-more"]');
+
+if (detail.style.display === 'none') {
+    detail.style.display = 'block';
+    if (arrow) {
+        arrow.setAttribute('data-icon', 'material-symbols:expand-more');
+    }
+} else {
+    detail.style.display = 'none';
+    if (arrow) {
+        arrow.setAttribute('data-icon', 'material-symbols:chevron-right');
+    }
+}
+}
+</script>
+</body>
+</html>
